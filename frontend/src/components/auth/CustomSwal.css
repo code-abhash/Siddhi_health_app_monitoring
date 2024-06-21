@@ -1,0 +1,15 @@
+/* CustomSwal.css */
+.my-swal {
+    width: 300px !important; /* Adjust the width */
+    height: auto !important; /* Adjust the height if needed */
+    font-size: 14px !important; /* Adjust the font size */
+  }
+  
+  .my-swal .swal2-title {
+    font-size: 18px !important; /* Adjust title font size */
+  }
+  
+  .my-swal .swal2-content {
+    font-size: 14px !important; /* Adjust content font size */
+  }
+  

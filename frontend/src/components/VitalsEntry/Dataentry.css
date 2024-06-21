@@ -1,0 +1,10 @@
+body > #root > div {
+  min-height: 100vh;
+}
+.data_form {
+  width: 100%;
+}
+
+.ent_clr {
+  background-color: rgb(255, 254, 254);
+}

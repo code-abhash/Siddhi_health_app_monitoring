@@ -1,0 +1,14 @@
+
+.home_page{
+    background-color: rgb(235, 236, 238);
+}
+.dash_col,.nav_home,.real_bg{
+    background-color: rgb(240, 246, 249);
+}
+.but_pan{
+    background-color: rgba(188, 189, 191, 1);
+    color: rgb(77, 79, 83);
+}
+.p_txt{
+    color: rgba(102, 102, 102, 1);
+}
