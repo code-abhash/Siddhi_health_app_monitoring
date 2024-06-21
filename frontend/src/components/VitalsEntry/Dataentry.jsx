@@ -278,9 +278,7 @@ function Dataentry() {
     e.preventDefault();
 
     const formData = {
-      patientName,
       patientId,
-      doctorName,
       appointmentDate,
       appointmentTime,
       heartRate,
@@ -310,19 +308,6 @@ function Dataentry() {
       }
     }
     
-
-    // try {
-    //   const response = await axios.post(
-    //     "http://127.0.0.1:8000/api/patientsrecordlist/",
-    //     formData
-    //   );
-    //   console.log("Data submitted successfully:", response.data);
-    //   alert("Data submitted successfully");
-    //   navigate("/home");
-    // } catch (error) {
-    //   console.error("Error submitting data:", error);
-    //   alert("Failed to submit data");
-    // }
   };
   const fetchPredictionData = () => {
     const data = {

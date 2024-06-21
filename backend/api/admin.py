@@ -12,7 +12,7 @@ class Patientadmin(admin.ModelAdmin):
     list_display=['patientName', 'patientId', 'doctorName','medConditions','location','medication','pastMedHis','patientAge','patientHeight','patientSex','patientBloodGroup']
     
 class PatientRecordadmin(admin.ModelAdmin):
-    list_display=['appointmentDate','appointmentTime', 'heartRate', 'diastolicBP', 'systolicBP', 'bodyTemp', 'spo2Value']
+    list_display=['patientId','appointmentDate','appointmentTime', 'heartRate', 'diastolicBP', 'systolicBP', 'bodyTemp', 'spo2Value','respRate']
     
 # class Doctoradmin(admin.ModelAdmin):
 #     list_display=['role','Name','specialty']

@@ -55,6 +55,7 @@ class PatientRecords(models.Model):
     systolicBP = models.IntegerField()
     bodyTemp = models.CharField(max_length=20)
     spo2Value = models.CharField(max_length=25, null=True)
+    respRate=models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return f"{self.patientId} - {self.appointmentDate} {self.appointmentTime}"

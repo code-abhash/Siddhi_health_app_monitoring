@@ -74,45 +74,8 @@ def patientslist(request):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# class PatientRecordsListCreate(generics.ListCreateAPIView):
-#     queryset = PatientRecords.objects.all()
-#     permission_classes=([AllowAny])
-#     serializer_class = PatientRecordsSerializer
 
-# @api_view(['GET','POST'])
-# def patientrecordlist(request):
-#     if request.method== 'GET':
-#         patientrecords=PatientRecords.objects.all()
-#         serializer = PatientRecordsSerializer(patientrecords, many=True)
-#         return Response(serializer.data)
-    
-#     elif request.method == 'POST':
-        
-#         serializer = PatientRecordsSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
 
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# class PatientListView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         serializer = PatientSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# class PatientRecordsListView(generics.CreateAPIView):
-#     def post(self, request, *args, **kwargs):
-#         patient_id = request.data.get('patientId')
-#         patient = get_object_or_404(Patient, patientId=patient_id)
-#         serializer = PatientRecordsSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save(patient=patient)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PatientDropList(generics.ListAPIView):
     queryset = Patient.objects.all()
@@ -123,22 +86,6 @@ class PatientRecordsListCreate(generics.ListCreateAPIView):
     serializer_class = PatientRecordsSerializer
 
 
-# @api_view(['GET','POST'])
-# def patientsrecordlist(request):
-#     if request.method== 'GET':
-#         patientrecords=PatientRecords.objects.all()
-#         serializer = PatientRecordsSerializer(patientrecords, many=True)
-#         return Response(serializer.data)
-    
-#     elif request.method == 'POST':
-#         serializer = PatientRecordsSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def patient_records_create(request):
@@ -154,39 +101,7 @@ def patient_records_list(request):
     serializer = PatientRecordsSerializer(patientrecords, many=True)
     return Response(serializer.data)
 
-# def get_patient_data(request, patient_id):
-#     patient = get_object_or_404(Patient, patientId=patient_id)
-#     data = {
-#         'patientId': patient.patientId,
-#         'patientName': patient.patientName,
-#         'doctorName': patient.doctorName,
-#         'medConditions': patient.medConditions,
-#         'location': patient.location,
-#         'medication': patient.medication,
-#         'pastMedHis': patient.pastMedHis,
-#         'patientAge': patient.patientAge,
-#         'patientHeight': patient.patientHeight,
-#         'patientSex': patient.patientSex,
-#         'patientBloodGroup': patient.patientBloodGroup,
-#     }
-#     return JsonResponse(data)
 
-# def get_patient_records(request, patient_id):
-#     patient_record = PatientRecords.objects.filter(patientId=patient_id).order_by('-appointmentDate', '-appointmentTime').first()
-#     if patient_record:
-#         record = {
-#             'patientId': patient_record.patientId,
-#             'appointmentDate': patient_record.appointmentDate,
-#             'appointmentTime': patient_record.appointmentTime,
-#             'heartRate': patient_record.heartRate,
-#             'diastolicBP': patient_record.diastolicBP,
-#             'systolicBP': patient_record.systolicBP,
-#             'bodyTemp': patient_record.bodyTemp,
-#             'spo2Value': patient_record.spo2Value,
-#         }
-#     else:
-#         record = {}
-#     return JsonResponse(record)
 
 def get_patient_info(request, patient_id):
     patient = get_object_or_404(Patient, patientId=patient_id)
@@ -215,6 +130,7 @@ def get_patient_info(request, patient_id):
             'systolicBP': recent_record.systolicBP,
             'bodyTemp': recent_record.bodyTemp,
             'spo2Value': recent_record.spo2Value,
+            'respRate': recent_record.respRate,
         }
     else:
         recent_record_data = {}
@@ -225,47 +141,6 @@ def get_patient_info(request, patient_id):
     }
 
     return JsonResponse(data)
-
-# def get_val_chart(request, patient_id):
-#     patient_record = PatientRecords.objects.filter(patientId=patient_id)
-#     if patient_record:
-#         record = {
-#             'patientId': patient_record.patientId,
-#             'appointmentDate': patient_record.appointmentDate,
-#             'appointmentTime': patient_record.appointmentTime,
-#             'heartRate': patient_record.heartRate,
-#             'diastolicBP': patient_record.diastolicBP,
-#             'systolicBP': patient_record.systolicBP,
-#             'bodyTemp': patient_record.bodyTemp,
-#             'spo2Value': patient_record.spo2Value,
-#         }
-#     else:
-#         record = {}
-#     return JsonResponse(record)
-
-# def get_val_chart(request, patient_id):
-#     try:
-        # Query patient record filtered by patientId
-    #     patient_record = PatientRecords.objects.filter(patientId=patient_id)
-        
-    #     if patient_record:
-    #         # Extract specific fields from the patient record
-    #         record = {
-    #             'patientId': patient_record.patientId,
-    #             'appointmentDate': patient_record.appointmentDate,
-    #             'appointmentTime': patient_record.appointmentTime.strftime('%H:%M'),  # Format time if needed
-    #             'heartRate': patient_record.heartRate,
-    #             'diastolicBP': patient_record.diastolicBP,
-    #             'systolicBP': patient_record.systolicBP,
-    #             'bodyTemp': patient_record.bodyTemp,
-    #             'spo2Value': patient_record.spo2Value,
-    #         }
-
-    #         return JsonResponse(record)
-    #     else:
-    #         return JsonResponse({'error': 'Patient record not found.'}, status=404)
-    # except Exception as e:
-    #     return JsonResponse({'error': str(e)}, status=500)
 
 
 def get_val_chart(request, patient_id):
