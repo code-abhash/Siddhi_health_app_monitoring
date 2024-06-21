@@ -248,6 +248,7 @@ import SPO2Slider from "./SPO2Button";
 import SystolicBPSlider from "./SystolicBPButton";
 import DiastolicBPSlider from "./DiastolicBPButton";
 import Infobutton from "../Infobutton/Infobutton";
+import RespiratoryRateButton from "./RespiratoryRateButton"; 
 import Panel from "../Home/Panel";
 import axios from "axios";
 import Footer from "../Footer";
@@ -255,29 +256,39 @@ import Footer from "../Footer";
 function Dataentry() {
   const navigate = useNavigate();
 
-  const [patientId, setPatientId] = useState("abc");
-  const [patientName, setPatientName] = useState("abc");
-  const [doctorName, setDoctorName] = useState("abc");
-  const [bodyTemp, setBodyTemp] = useState("97");
-  const [heartRate, setHeartRate] = useState("100");
-  const [spo2Value, setSpo2Value] = useState("89");
-  const [systolicBP, setSystolicBP] = useState("100");
-  const [diastolicBP, setDiastolicBP] = useState("100");
+  const [patientId, setPatientId] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [doctorName, setDoctorName] = useState("");
+  const [bodyTemp, setBodyTemp] = useState("");
+  const [heartRate, setHeartRate] = useState("");
+  const [spo2Value, setSpo2Value] = useState("");
+  const [systolicBP, setSystolicBP] = useState("");
+  const [diastolicBP, setDiastolicBP] = useState("");
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
+  const [respRate, setRespRate] = useState("");
+  
+  const [predictionTextAsthma, setPredictionTextAsthma] = useState("");
+  const [predictionTextDiarrhea, setPredictionTextDiarrhea] = useState("");
+  const [predictionTextPneumonia, setPredictionTextPneumonia] = useState("");
+  const [predictionTextFever, setPredictionTextFever] = useState("");
+  const [predictionTextCough, setPredictionTextCough] = useState("");
 
   const submitVal = async (e) => {
     e.preventDefault();
 
     const formData = {
-      patientId: patientId,
-      appointmentDate: appointmentDate,
-      appointmentTime: appointmentTime,
-      heartRate: heartRate,
-      diastolicBP: diastolicBP,
-      systolicBP: systolicBP,
-      bodyTemp: bodyTemp,
-      spo2Value: spo2Value,
+      patientName,
+      patientId,
+      doctorName,
+      appointmentDate,
+      appointmentTime,
+      heartRate,
+      diastolicBP,
+      systolicBP,
+      bodyTemp,
+      spo2Value,
+      respRate,
     };
 
     try {
@@ -287,7 +298,8 @@ function Dataentry() {
       );
       console.log("Data submitted successfully:", response.data);
       alert("Data submitted successfully");
-      navigate("/home");
+      fetchPredictionData();
+      
     } catch (error) {
       if (error.response) {
         console.error("Error submitting data:", error.response.data);
@@ -297,6 +309,7 @@ function Dataentry() {
         alert("Failed to submit data: " + error.message);
       }
     }
+    
 
     // try {
     //   const response = await axios.post(
@@ -310,6 +323,45 @@ function Dataentry() {
     //   console.error("Error submitting data:", error);
     //   alert("Failed to submit data");
     // }
+  };
+  const fetchPredictionData = () => {
+    const data = {
+      patientName,
+      patientId,
+      doctorName,
+      appointmentDate,
+      appointmentTime,
+      heartRate,
+      diastolicBP,
+      systolicBP,
+      bodyTemp,
+      spo2Value,
+      respRate,
+    };
+
+    fetch("http://localhost:5000/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setPredictionTextAsthma(data["Asthma likelihood"]);
+        setPredictionTextDiarrhea(data["Diarrhea likelihood"]);
+        setPredictionTextPneumonia(data["Pneumonia likelihood"]);
+        setPredictionTextFever(data["Fever likelihood"]);
+        setPredictionTextCough(data["Cough likelihood"]);
+      })
+      .catch((error) => {
+        console.error("Error fetching prediction:", error);
+      });
   };
 
   const cancelVal = (e) => {
@@ -332,6 +384,9 @@ function Dataentry() {
   };
   const getsystolicBP = (data) => {
     setSystolicBP(data);
+  };
+  const getRespRate = (data) => {
+    setRespRate(data);
   };
   const handlePatientSelect = (patient) => {
     setPatientId(patient.patientId);
@@ -493,7 +548,55 @@ function Dataentry() {
             <div className="col-span-1">
               <DiastolicBPSlider getdiastolicBP={getdiastolicBP} />
             </div>
+            <div className="col-span-1 p-4 rounded-xl shadow-lg">
+                <RespiratoryRateButton getRespRate={getRespRate} />{" "}
+                {/* Use the new component */}
+              </div>
           </div>
+          {/* Predictions */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+              <div className="col-span-1 p-4 rounded-xl shadow-lg bg-white">
+                <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  Asthma Prediction
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {predictionTextAsthma}
+                </p>
+              </div>
+              <div className="col-span-1 p-4 rounded-xl shadow-lg bg-white">
+                <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  Diarrhea Prediction
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {predictionTextDiarrhea}
+                </p>
+              </div>
+              <div className="col-span-1 p-4 rounded-xl shadow-lg bg-white">
+                <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  Pneumonia Prediction
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {predictionTextPneumonia}
+                </p>
+              </div>
+              <div className="col-span-1 p-4 rounded-xl shadow-lg bg-white">
+                <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  Fever Prediction
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {predictionTextFever}
+                </p>
+              </div>
+              <div className="col-span-1 p-4 rounded-xl shadow-lg bg-white">
+                <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  Cough Prediction
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {predictionTextCough}
+                </p>
+              </div>
+            </div>
+
 
           <div className="mt-8 flex justify-center items-center space-x-6">
             <button
