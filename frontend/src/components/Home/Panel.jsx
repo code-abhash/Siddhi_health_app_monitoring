@@ -316,7 +316,7 @@ const Panel = ({ onPatientSelect }) => {
         <div className="relative flex">
           <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="font-medium bg-gray-200 text-gray-900 flex items-center justify-between px-6 py-2 text-lg tracking-wider  hover:bg-gray-700 rounded-lg transition duration-300 ease-in-out"
+            className="font-semibold bg-gray-400 flex items-center justify-between px-6 py-2 text-lg tracking-wider  hover:bg-gray-500 rounded-lg transition duration-300 ease-in-out"
           >
             {selectedPatient ? `${selectedPatient.patientId} - ${selectedPatient.patientName}` : 'PatientId-Name'}
             {!isOpen ? (
@@ -331,7 +331,7 @@ const Panel = ({ onPatientSelect }) => {
               {patients.map((patient, i) => (
                 <div
                   key={i}
-                  className="px-6 py-1 hover:bg-gray-700 hover:cursor-pointer transition duration-300 ease-in-out"
+                  className="px-6 py-1 hover:bg-gray-500 hover:cursor-pointer transition duration-300 ease-in-out"
                   onClick={() => handleSelect(patient)}
                 >
                   {patient.patientId} - {patient.patientName}
