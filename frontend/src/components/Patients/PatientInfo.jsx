@@ -23,7 +23,6 @@ const PatientInfo = ({patientId}) => {
   if (!patientData) {
     return (
       <div className="font-roboto flex flex-col gap-6 p-6">
-        <h2 className="text-gray-800 text-xl font-bold">Patient Name</h2>
         <h2 className="text-lg font-semibold">Condition:</h2>
         <h2 className="text-lg font-semibold">Location: </h2>
         <h2 className="text-lg font-semibold">Recent Vitals: </h2>
@@ -41,7 +40,6 @@ const PatientInfo = ({patientId}) => {
 
   return (
     <div className="font-roboto flex flex-col gap-6 p-6">
-      <h2 className="text-gray-800 text-xl font-bold">{patientData.patientName}</h2>
       <h2 className="text-lg font-semibold">Condition: {patientData.medConditions}</h2>
       <h2 className="text-lg font-semibold">Location: {patientData.location}</h2>
       <h2 className="text-lg font-semibold">Recent Vitals: </h2>
