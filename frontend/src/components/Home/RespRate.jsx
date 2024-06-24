@@ -1,106 +1,31 @@
-// // import React, { useState } from 'react';
-// // import { Line } from 'react-chartjs-2';
-// // import 'chart.js/auto';
-
-// // const TemperatureChart = () => {
-// //   // Hardcoded data for testing
-// //   const dayData = {
-// //     labels: ['00:00', '01:00', '02:00', '03:00', '04:00'],
-// //     datasets: [
-// //       {
-// //         label: 'Temperature Per Day',
-// //         data: [96, 99, 97, 100, 102],
-// //         fill: false,
-// //         borderColor: 'rgb(255, 99, 132)',
-// //         tension: 0.1
-// //       }
-// //     ]
-// //   };
-
-// //   const weekData = {
-// //     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-// //     datasets: [
-// //       {
-// //         label: 'Temperature Per Week',
-// //         data: [96, 99, 97, 100, 102, 98, 101],
-// //         fill: false,
-// //         borderColor: 'rgb(255, 99, 132)',
-// //         tension: 0.1
-// //       }
-// //     ]
-// //   };
-
-// //   const monthData = {
-// //     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-// //     datasets: [
-// //       {
-// //         label: 'Temperature Per Month',
-// //         data: [96, 99, 97, 100, 102],
-// //         fill: false,
-// //         borderColor: 'rgb(255, 99, 132)',
-// //         tension: 0.1
-// //       }
-// //     ]
-// //   };
-
-// //   const [data, setData] = useState(dayData); // Default to dayData
-// //   const [filter, setFilter] = useState('per day'); // Default filter
-
-// //   const handleFilterChange = (e) => {
-// //     const newFilter = e.target.value;
-// //     setFilter(newFilter);
-    
-// //     if (newFilter === 'per day') {
-// //       setData(dayData);
-// //     } else if (newFilter === 'per week') {
-// //       setData(weekData);
-// //     } else if (newFilter === 'per month') {
-// //       setData(monthData);
-// //     }
-// //   };
-
-// //   return (
-// //     <>
-// //       <select value={filter} onChange={handleFilterChange}>
-// //         <option value="per day">Per Day</option>
-// //         <option value="per week">Per Week</option>
-// //         <option value="per month">Per Month</option>
-// //       </select>
-// //       <Line data={data} />
-// //     </>
-// //   );
-// // };
-
-// // export default TemperatureChart;
 // import React, { useEffect, useState } from 'react';
 // import { Line } from 'react-chartjs-2';
 // import 'chart.js/auto';
 // import axios from 'axios';
 
-// const TempChart = ({ patientId }) => {
+// const RespRateChart = ({ patientId }) => {
 //   const [chartData, setChartData] = useState({});
 
 //   const chart = async () => {
 //     let appoint_time = [];
-//     let body_Temp = [];
+//     let resp_Rate = [];
 
 //     try {
 //       const res = await axios.get(`http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals`);
-//       console.log(res); // Log the full response
+//       console.log('API response:', res); // Log the entire response
 //       const data = res.data; // Adjust this line based on actual response structure
 
 //       if (Array.isArray(data)) {
 //         for (const dataObj of data) {
 //           appoint_time.push(dataObj.appointmentTime);
-//           body_Temp.push(parseInt(dataObj.bodyTemp, 10));
-//           console.log(dataObj.bodyTemp)
+//           resp_Rate.push(parseInt(dataObj.respRate, 10));
 //         }
 //         setChartData({
 //           labels: appoint_time,
 //           datasets: [
 //             {
 //               label: "HeartRate of patients",
-//               data: body_Temp,
+//               data: resp_Rate,
 //               backgroundColor: ["rgba(75, 192, 192, 0.6)"],
 //               borderWidth: 4,
 //             },
@@ -119,8 +44,6 @@
 //   }, [patientId]);
 
 //   return (
-    
-      
 //     <>
 //       {chartData && chartData.labels ? (
 //         <Line data={chartData} />
@@ -131,15 +54,14 @@
 //   );
 // };
 
-// export default TempChart;
-
+// export default RespRateChart;
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import axios from 'axios';
 import moment from 'moment';
 
-const TemperatureChart = ({ patientId }) => {
+const RespiratoryRateChart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
   const [filterType, setFilterType] = useState('day');
 
@@ -151,13 +73,13 @@ const TemperatureChart = ({ patientId }) => {
 
       if (Array.isArray(data)) {
         let appoint_times = [];
-        let temperatureValues = [];
+        let respiratoryRates = [];
 
         if (filterType === 'day') {
           // Filter data for today
           for (const dataObj of data) {
             appoint_times.push(dataObj.appointmentTime);
-            temperatureValues.push(parseFloat(dataObj.bodyTemp));
+            respiratoryRates.push(parseInt(dataObj.respRate, 10));
           }
         } else if (filterType === 'week') {
           // Filter data for the current week
@@ -181,16 +103,16 @@ const TemperatureChart = ({ patientId }) => {
             if (!acc[date]) {
               acc[date] = [];
             }
-            acc[date].push(parseFloat(current.bodyTemp));
+            acc[date].push(parseInt(current.respRate, 10));
             return acc;
           }, {});
 
-          // Calculate average temperature per day
-          temperatureValues = appoint_times.map(date => {
-            const temps = groupedData[date];
-            if (temps) {
-              const avgTemp = temps.reduce((sum, temp) => sum + temp, 0) / temps.length;
-              return avgTemp;
+          // Calculate average respiratory rate per day
+          respiratoryRates = appoint_times.map(date => {
+            const rates = groupedData[date];
+            if (rates) {
+              const avgRate = rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+              return avgRate;
             }
             return null;
           });
@@ -221,17 +143,17 @@ const TemperatureChart = ({ patientId }) => {
               if (!acc[weekIndex]) {
                 acc[weekIndex] = [];
               }
-              acc[weekIndex].push(parseFloat(current.bodyTemp));
+              acc[weekIndex].push(parseInt(current.respRate, 10));
             }
             return acc;
           }, {});
 
-          // Calculate average temperature per week
-          temperatureValues = appoint_times.map((_, index) => {
-            const temps = groupedData[index];
-            if (temps) {
-              const avgTemp = temps.reduce((sum, temp) => sum + temp, 0) / temps.length;
-              return avgTemp;
+          // Calculate average respiratory rate per week
+          respiratoryRates = appoint_times.map((_, index) => {
+            const rates = groupedData[index];
+            if (rates) {
+              const avgRate = rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+              return avgRate;
             }
             return null;
           });
@@ -241,9 +163,9 @@ const TemperatureChart = ({ patientId }) => {
           labels: appoint_times,
           datasets: [
             {
-              label: "Temperature Values",
-              data: temperatureValues,
-              backgroundColor: ["rgba(255, 99, 132, 0.6)"],
+              label: "Respiratory Rate Values",
+              data: respiratoryRates,
+              backgroundColor: ["rgba(54, 162, 235, 0.6)"],
               borderWidth: 4,
             },
           ],
@@ -286,4 +208,4 @@ const TemperatureChart = ({ patientId }) => {
   );
 };
 
-export default TemperatureChart;
+export default RespiratoryRateChart;

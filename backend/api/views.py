@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 
 
 
@@ -158,3 +159,26 @@ def get_val_chart(request, patient_id):
             return JsonResponse({'error': 'No records found for the patient.'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+@api_view(['GET'])
+def get_patient_vitals(request, patientId):
+    try:
+        filter_type = request.query_params.get('filter_type', None)
+
+        records = PatientRecords.objects.filter(patientId=patientId)
+
+        if filter_type == 'day':
+            records = records.filter(appointmentDate=datetime.now().date())
+        elif filter_type == 'month':
+            records = records.filter(appointmentDate__month=datetime.now().month)
+        elif filter_type == 'week':
+            start_of_week = datetime.now().date() - timedelta(days=datetime.now().weekday())
+            end_of_week = start_of_week + timedelta(days=6)
+            records = records.filter(appointmentDate__gte=start_of_week, appointmentDate__lte=end_of_week)
+
+        serializer = PatientRecordsSerializer(records, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except PatientRecords.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
