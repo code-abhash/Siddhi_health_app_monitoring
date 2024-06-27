@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function AddPatientForm() {
   const initialFormData = {
-    patientName: '',
-    patientId: '',
-    doctorName: '',
-    medConditions: '',
-    location: '',
-    medication: '',
-    pastMedHis: '',
-    patientAge: '',
-    patientHeight: '',
-    patientSex: '',
-    patientBloodGroup: '',
-    disease: '',
-    room: '',
+    patientName: "",
+    patientId: "",
+    doctorName: "",
+    medConditions: "",
+    location: "",
+    medication: "",
+    pastMedHis: "",
+    patientAge: "",
+    patientHeight: "",
+    patientSex: "",
+    patientBloodGroup: "",
+    disease: "",
+    room: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -26,7 +26,7 @@ function AddPatientForm() {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    if (e.target.name === 'patientId') {
+    if (e.target.name === "patientId") {
       setShowHint(true); // Show hint when typing in patientId field
     } else {
       setShowHint(false); // Hide hint for other fields
@@ -37,25 +37,28 @@ function AddPatientForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/patientslistcreate/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/patientslistcreate/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      alert('Data submitted successfully');
+      alert("Data submitted successfully");
       window.location.reload();
       setFormData(initialFormData); // Reset form data after successful submission
       setShowForm(false); // Close the popup form after submission
     } catch (error) {
-      console.error('Error submitting data:', error);
-      alert('Failed to submit data');
+      console.error("Error submitting data:", error);
+      alert("Failed to submit data");
     }
   };
 
@@ -80,16 +83,23 @@ function AddPatientForm() {
               <div className="fixed inset-0 transition-opacity">
                 <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
               </div>
-
-              <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
+              <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+              &#8203;
               <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <h1 className="text-lg font-semibold text-gray-900 mb-4">Patient Information Form</h1>
+                  <h1 className="text-lg font-semibold text-gray-900 mb-4">
+                    Patient Information Form
+                  </h1>
                   <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="overflow-y-auto max-h-96">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="patientName" className="block font-semibold text-gray-900">Patient Name</label>
+                          <label
+                            htmlFor="patientName"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Name
+                          </label>
                           <input
                             type="text"
                             id="patientName"
@@ -102,7 +112,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="patientId" className="block font-semibold text-gray-900">Patient ID</label>
+                          <label
+                            htmlFor="patientId"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient ID
+                          </label>
                           <div className="relative">
                             <input
                               type="text"
@@ -114,19 +129,24 @@ function AddPatientForm() {
                               onBlur={() => setShowHint(false)} // Hide hint on blur
                               className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                               placeholder="Patient ID"
-                              pattern="^patient\d{4}$" // Pattern for patient ID like patient0001
-                              title="Patient ID must be in the format patient followed by 4 digits (e.g., patient0001)"
+                              pattern="[0-9]{4}" // Pattern for patient ID like 0001
+                              title="Patient ID must be in the format of 4 digits (e.g., 0001)"
                               required
                             />
                             {showHint && (
                               <small className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
-                                Format:patientXXXXX
+                                Format: XXXX
                               </small>
                             )}
                           </div>
                         </div>
                         <div>
-                          <label htmlFor="doctorName" className="block font-semibold text-gray-900">Doctor Name</label>
+                          <label
+                            htmlFor="doctorName"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Doctor Name
+                          </label>
                           <input
                             type="text"
                             id="doctorName"
@@ -139,7 +159,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="medConditions" className="block font-semibold text-gray-900">Medical Conditions</label>
+                          <label
+                            htmlFor="medConditions"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Medical Conditions
+                          </label>
                           <input
                             type="text"
                             id="medConditions"
@@ -152,7 +177,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="location" className="block font-semibold text-gray-900">Location</label>
+                          <label
+                            htmlFor="location"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Location
+                          </label>
                           <input
                             type="text"
                             id="location"
@@ -164,7 +194,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="medication" className="block font-semibold text-gray-900">Medication</label>
+                          <label
+                            htmlFor="medication"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Medication
+                          </label>
                           <input
                             type="text"
                             id="medication"
@@ -176,7 +211,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="pastMedHis" className="block font-semibold text-gray-900">Past Medical History</label>
+                          <label
+                            htmlFor="pastMedHis"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Past Medical History
+                          </label>
                           <input
                             type="text"
                             id="pastMedHis"
@@ -189,7 +229,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="patientAge" className="block font-semibold text-gray-900">Patient Age</label>
+                          <label
+                            htmlFor="patientAge"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Age
+                          </label>
                           <input
                             type="number"
                             id="patientAge"
@@ -202,7 +247,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="patientHeight" className="block font-semibold text-gray-900">Patient Height(cm)</label>
+                          <label
+                            htmlFor="patientHeight"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Height(cm)
+                          </label>
                           <input
                             type="number"
                             id="patientHeight"
@@ -215,7 +265,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="patientSex" className="block font-semibold text-gray-900">Patient Sex</label>
+                          <label
+                            htmlFor="patientSex"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Sex
+                          </label>
                           <select
                             id="patientSex"
                             name="patientSex"
@@ -231,7 +286,12 @@ function AddPatientForm() {
                           </select>
                         </div>
                         <div>
-                          <label htmlFor="patientBloodGroup" className="block font-semibold text-gray-900">Patient Blood Group</label>
+                          <label
+                            htmlFor="patientBloodGroup"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Blood Group
+                          </label>
                           <input
                             type="text"
                             id="patientBloodGroup"
@@ -244,7 +304,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="disease" className="block font-semibold text-gray-900">Disease</label>
+                          <label
+                            htmlFor="disease"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Disease
+                          </label>
                           <input
                             type="text"
                             id="disease"
@@ -257,7 +322,12 @@ function AddPatientForm() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="room" className="block font-semibold text-gray-900">Room</label>
+                          <label
+                            htmlFor="room"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Room
+                          </label>
                           <input
                             type="number"
                             id="room"
