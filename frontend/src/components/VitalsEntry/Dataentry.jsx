@@ -51,7 +51,7 @@ function Dataentry() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/patientrecords/",
+        "http://127.0.0.1:8000/api/patientsrecordlist/",
         formData
       );
       console.log("Data submitted successfully:", response.data);

@@ -42,6 +42,8 @@ class Patient(models.Model):
     patientHeight=models.CharField(max_length=20)
     patientSex=models.CharField(max_length=20)
     patientBloodGroup=models.CharField(max_length=20)
+    disease=models.CharField(max_length=100, null=True)
+    room=models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return self.patientId

@@ -1,25 +1,12 @@
-// src/components/Sidebar.jsx
-// import React from 'react';
 
-// const Sidebar = () => {
-//   return (
-//     <div className="bg-green-400 flex flex-col gap-4 p-6">
-//       <h2 className="text-xl font-medium">Patient_Name</h2>
-//       <p className='text-lg font-normal'>Age: 55 years</p>
-//       <p className='text-lg font-normal'>Height: 175 cm</p>
-//       <p className='text-lg font-normal'>Weight: 70 kg</p>
-//       <p className='text-lg font-normal'>Sex: Male</p>
-//     </div>
-//   );
-// };
-
-// export default Sidebar;
 
 import React from 'react';
 import { FaUserMd, FaWeight, FaRulerVertical, FaTransgender } from 'react-icons/fa';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDisease } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = ({patientId}) => {
   const [patientData, setPatientData] = useState(null);
@@ -57,6 +44,10 @@ return (
       <FaTransgender className="text-red-500" />
       <p className="text-lg font-normal">Sex:</p>
     </div>
+    <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
+    <FontAwesomeIcon icon={faDisease} />
+      <p className="text-lg font-normal">Disease:</p>
+    </div>
   </aside>
 );
 }
@@ -78,6 +69,10 @@ return (
   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
     <FaTransgender className="text-red-500" />
     <p className="text-lg font-normal">Sex: {patientData.patientSex}</p>
+  </div>
+  <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
+  <FontAwesomeIcon icon={faDisease} />
+    <p className="text-lg font-normal">Disease: {patientData.disease}</p>
   </div>
 </aside>
 );

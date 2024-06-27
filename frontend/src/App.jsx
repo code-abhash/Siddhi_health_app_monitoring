@@ -111,10 +111,13 @@ import Home from './components/Home/Home';
 import Patients from './components/Patients/Patients';
 import PRecords from './components/PRecords/PRecords';
 import Dataentry from './components/VitalsEntry/Dataentry';
-import PatientForm from './components/VitalsEntry/PatientRecords';
+// import PatientForm from './components/VitalsEntry/PatientRecords';
 import Login from './components/auth/Login';
 import { AuthProvider } from "../Auth_contxt/Authcontext";
 import PrivateRoute from "../utils/PrivateRoute";
+import AddPatientForm from "./components/Patient-Records/AddNewPatient";
+import PatientDetailsTable from "./components/Patient-Records/PatientRecordsData";
+import PatientRecordsTab from "./components/Patient-Records/PatientRecordsTab";
 
 const App = () => {
   return (
@@ -138,7 +141,7 @@ const App = () => {
             path="/PRecords" 
             element={
               <PrivateRoute>
-                <PRecords />
+                <PatientRecordsTab />
               </PrivateRoute>
             }
           />
@@ -147,14 +150,6 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Dataentry />
-              </PrivateRoute>
-            }
-          />
-          <Route 
-            path="/patientform" 
-            element={
-              <PrivateRoute>
-                <PatientForm />
               </PrivateRoute>
             }
           />

@@ -14,14 +14,10 @@ urlpatterns = [
     path('patientsrecordlistview/', views.patient_records_list, name='patient_recordlistview'),
     path('patientslistcreate/', views.PatientlistCreate.as_view(), name='patients_list_view'),
     path('patientdrop/',views.PatientDropList.as_view(), name='patient-id-list'),
-    path('patientrecords/', views.PatientRecordsListCreate.as_view(), name='patient_records_list_create'),
-    #path('patients/<str:patient_id>/', views.get_patient_data, name='get_patient_data'),
+    #path('patientrecords/', views.PatientRecordsListCreate.as_view(), name='patient_records_list_create'),
     path('patientinfo/<str:patient_id>/', views.get_patient_info, name='get_patient_info'),
-    path('patientchart/<str:patient_id>/', views.get_val_chart, name='get_patient_chart'),
     path('v1/patients/<str:patientId>/vitals', views.get_patient_vitals, name='patient-records-list'),
-    #path('patients/<str:patient_id>/', views.get_patient_data, name='get_patient_data'),
-    #path('patientrecords/<str:patient_id>/', views.get_patient_records, name='get_patient_records'),
-    #path('patientrecordslist/', views.patientrecordlist, name='patient_records_list'),
+    path('patients/<str:patient_id>/', views.patient_detail, name='patient_detail'),
     path('', views.getRoutes),
     
 ]

@@ -9,7 +9,7 @@ class Profileadmin(admin.ModelAdmin):
     list_display=['role','Name','specialty','verified']
 
 class Patientadmin(admin.ModelAdmin):
-    list_display=['patientName', 'patientId', 'doctorName','medConditions','location','medication','pastMedHis','patientAge','patientHeight','patientSex','patientBloodGroup']
+    list_display=['patientName', 'patientId', 'doctorName','medConditions','location','medication','pastMedHis','patientAge','patientHeight','patientSex','patientBloodGroup','disease','room']
     
 class PatientRecordadmin(admin.ModelAdmin):
     list_display=['patientId','appointmentDate','appointmentTime', 'heartRate', 'diastolicBP', 'systolicBP', 'bodyTemp', 'spo2Value','respRate']
