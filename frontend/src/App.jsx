@@ -102,6 +102,77 @@
 
 // export default App;
 
+// import React from "react";
+// import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+// import Navbar from "./components/Home/Navbar";
+// import Disease from './components/Disease/Disease';
+// import Signup from './components/auth/Signup';
+// import Home from './components/Home/Home';
+// import Patients from './components/Patients/Patients';
+// import PRecords from './components/PRecords/PRecords';
+// import Dataentry from './components/VitalsEntry/Dataentry';
+// import PatientForm from './components/VitalsEntry/PatientRecords';
+// import Login from './components/auth/Login';
+// import { AuthProvider } from "../Auth_contxt/Authcontext";
+// import PrivateRoute from "../utils/PrivateRoute";
+// import ForgotPassword from "./components/auth/ForgotPassword";
+// import ResetPassword from "./components/auth/ResetPassword";
+
+// const App = () => {
+//   return (
+//     <Router>
+//       <AuthProvider>
+//         <Routes>
+//           <Route path="/" element={<Navigate to="/home" />} />
+//           <Route path="/home" element={<Home />} />
+//           <Route path="/register" element={<Signup />} />
+//           <Route path="/login" element={<Login />} />
+//           <Route path="/disease" element={<Disease />} />
+//           <Route path="/forgot-password" element={<ForgotPassword />} />
+//         <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/register" element={<Register />} />
+//         // Other routes
+//           <Route 
+//             path="/patients" 
+//             element={
+//               <PrivateRoute>
+//                 <Patients />
+//               </PrivateRoute>
+//             }
+//           />
+//           <Route 
+//             path="/PRecords" 
+//             element={
+//               <PrivateRoute>
+//                 <PRecords />
+//               </PrivateRoute>
+//             }
+//           />
+//           <Route 
+//             path="/nurse" 
+//             element={
+//               <PrivateRoute>
+//                 <Dataentry />
+//               </PrivateRoute>
+//             }
+//           />
+//           <Route 
+//             path="/patientform" 
+//             element={
+//               <PrivateRoute>
+//                 <PatientForm />
+//               </PrivateRoute>
+//             }
+//           />
+//         </Routes>
+//       </AuthProvider>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./components/Home/Navbar";
@@ -115,6 +186,8 @@ import PatientForm from './components/VitalsEntry/PatientRecords';
 import Login from './components/auth/Login';
 import { AuthProvider } from "../Auth_contxt/Authcontext";
 import PrivateRoute from "../utils/PrivateRoute";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 const App = () => {
   return (
@@ -126,6 +199,9 @@ const App = () => {
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/disease" element={<Disease />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
+          {/* Other routes */}
           <Route 
             path="/patients" 
             element={
