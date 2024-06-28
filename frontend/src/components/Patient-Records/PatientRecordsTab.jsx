@@ -7,15 +7,24 @@ import Footer from '../Footer'
 
 const PatientRecordsTab = () => {
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      
-        <AddPatientForm />
+    <div className="flex flex-col min-h-screen">
+  <header className="w-full">
+    <Navbar />
+  </header>
+
+  <main className="flex-grow mt-4 p-4 bg-gray-100">
+    <div className="max-w-7xl mx-auto">
+      <AddPatientForm />
+      <div className="mt-8">
         <PatientDetailsTable />
-        <div className='mt-20'>
-      <Footer />
       </div>
     </div>
+  </main>
+
+  <footer className="w-full mt-4">
+    <Footer />
+  </footer>
+</div>
   )
 }
 

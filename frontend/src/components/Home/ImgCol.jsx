@@ -1,12 +1,23 @@
-import React from 'react';
-import ImageSlider from './HomePageImages.jsx'// Adjust the import path as per your project structure
-import  homeimg1  from './img/homeimg1.webp'; // Adjust the import path based on your project structure
-import  homeimg2  from './img/homeimg2.jpeg'; // Adjust the import path based on your project structure
-
+import React from "react";
+import ImageSlider from "./HomePageImages.jsx"; // Adjust the import path as per your project structure
+import charak1 from "./img/charak1.jpeg";
+import charak2 from "./img/charak2.webp";
+import charak3 from "./img/charak3.webp";
+import charak4 from "./img/charak4.jpeg";
 const ImgCol = () => {
   const images = [
-    { url: homeimg1, caption: 'Pioneering healthcare at Charak: Innovating for better lives.' },
-    { url: homeimg2, caption: 'Leading medical expertise at Charak: Transforming healthcare.' },
+    {
+      url: charak1,
+    },
+    {
+      url: charak2,
+    },
+    {
+      url: charak3,
+    },
+    {
+      url: charak4,
+    },
     // Add more image URLs as needed
   ];
 

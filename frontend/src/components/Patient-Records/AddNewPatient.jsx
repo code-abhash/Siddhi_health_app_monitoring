@@ -28,7 +28,7 @@ function AddPatientForm() {
     if (e.target.name === "patientId") {
       setShowHint(true); // Show hint when typing in patientId field
     } else {
-      setShowHint(false); // Hide hint for other fields
+      setShowHint(false); // Hide hint for AB fields
     }
   };
 
@@ -177,7 +177,7 @@ function AddPatientForm() {
                         </div>
                         <div>
                           <label
-                            htmlFor="location"
+                            htmlFor="Ward"
                             className="block font-semibold text-gray-900"
                           >
                             Ward
@@ -189,7 +189,7 @@ function AddPatientForm() {
                             value={formData.ward}
                             onChange={handleChange}
                             className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            placeholder="Enter Location"
+                            placeholder="Enter Ward No."
                           />
                         </div>
                         <div>
@@ -265,6 +265,32 @@ function AddPatientForm() {
                         </div>
                         <div>
                           <label
+                            htmlFor="patientBloodGroup"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Blood Group
+                          </label>
+                          <select
+                            id="patientBloodGroup"
+                            name="patientBloodGroup"
+                            value={formData.patientBloodGroup}
+                            onChange={handleChange}
+                            className="mt-1 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required
+                          >
+                            <option value="">Select Patient Blood Group</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label
                             htmlFor="patientSex"
                             className="block font-semibold text-gray-900"
                           >
@@ -283,24 +309,6 @@ function AddPatientForm() {
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
                           </select>
-                        </div>
-                        <div>
-                          <label
-                            htmlFor="patientBloodGroup"
-                            className="block font-semibold text-gray-900"
-                          >
-                            Patient Blood Group
-                          </label>
-                          <input
-                            type="text"
-                            id="patientBloodGroup"
-                            name="patientBloodGroup"
-                            value={formData.patientBloodGroup}
-                            onChange={handleChange}
-                            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            placeholder="Enter Patient Blood Group"
-                            
-                          />
                         </div>
                         {/* <div>
                           <label
@@ -335,7 +343,6 @@ function AddPatientForm() {
                             onChange={handleChange}
                             className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Enter Bed No."
-                            
                           />
                         </div>
                       </div>
