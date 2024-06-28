@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { FaUserMd, FaWeight, FaRulerVertical, FaTransgender } from 'react-icons/fa';
+import { FaRibbon, FaWeight, FaRulerVertical, FaTransgender } from 'react-icons/fa';
 import { MdCatchingPokemon } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -27,7 +27,7 @@ const Sidebar = ({patientId}) => {
 
   if (!patientData) {
 return (
-  <aside className="shadow-xl font-roboto bg-gradient-to-b from-gray-50 to-blue-100 rounded-lg p-6 flex flex-col gap-6">
+  <aside className="shadow-2xl font-roboto  bg-gray-50 rounded-lg p-6 flex flex-col gap-6">
     <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
       <MdCatchingPokemon className="text-yellow-500" />
       <p className="text-lg font-normal">Age:</p>
@@ -41,11 +41,11 @@ return (
       <p className="text-lg font-normal">B-Group:</p>
     </div>
     <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-      <FaTransgender className="text-red-500" />
+      <FaTransgender className="text-pink-900" />
       <p className="text-lg font-normal">Sex:</p>
     </div>
     <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-    <FontAwesomeIcon icon={faDisease} />
+    <FaRibbon className='text-red-500' />
       <p className="text-lg font-normal">Disease:</p>
     </div>
   </aside>
@@ -53,7 +53,7 @@ return (
 }
 
 return (
-<aside className="shadow-xl font-roboto bg-gradient-to-b from-gray-50 to-blue-100 rounded-lg p-6 flex flex-col gap-6">
+<aside className="shadow-2xl font-roboto bg-gray-50 rounded-lg p-6 flex flex-col gap-6">
   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
     <MdCatchingPokemon className="text-yellow-500" />
     <p className="text-lg font-normal">Age: {patientData.patientAge}</p>
@@ -67,11 +67,11 @@ return (
     <p className="text-lg font-normal">B-Group: {patientData.patientBloodGroup}</p>
   </div>
   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-    <FaTransgender className="text-red-500" />
+    <FaTransgender className="text-pink-900" />
     <p className="text-lg font-normal">Sex: {patientData.patientSex}</p>
   </div>
   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-  <FontAwesomeIcon icon={faDisease} />
+  <FaRibbon className='text-red-500' />
     <p className="text-lg font-normal">Disease: {patientData.disease}</p>
   </div>
 </aside>
