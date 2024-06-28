@@ -107,7 +107,7 @@ const RespiratoryRateChart = ({ patientId }) => {
           labels: appoint_times,
           datasets: [
             {
-              label: "Respiratory Rate Values",
+              label: "Respiratory Rate Values(rpm)",
               data: respiratoryRates,
               backgroundColor: ["rgba(54, 162, 235, 0.6)"],
               borderWidth: 4,

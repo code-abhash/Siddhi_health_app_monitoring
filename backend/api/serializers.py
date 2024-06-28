@@ -71,5 +71,6 @@ class PatientDropSerializer(serializers.ModelSerializer):
 class EditablePatientRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model=Patient
-        fields=['patientName','doctorName','disease','room']
+        fields=['patientName','doctorName','medConditions','bed']
+
     

@@ -23,15 +23,15 @@ const PatientInfo = ({patientId}) => {
   if (!patientData) {
     return (
       <div className="font-roboto flex flex-col gap-6 p-6">
-        <h2 className="text-lg font-semibold">Condition:</h2>
-        <h2 className="text-lg font-semibold">Location: </h2>
+        <h2 className="text-lg font-semibold">MedCondition:</h2>
+        <h2 className="text-lg font-semibold">Ward: </h2>
         <h2 className="text-lg font-semibold">Recent Vitals: </h2>
         <ul>
           <li>Heart Rate: </li>
           <li>Diastolic BP: </li>
           <li>Systolic BP: </li>
           <li>Body Temp: </li>
-          <li>SPO2 Value: </li>
+          <li>SpO<sub>2</sub> Value: </li>
         </ul>
         <h2 className="text-lg font-semibold">Medication: </h2>
       </div>
@@ -41,17 +41,16 @@ const PatientInfo = ({patientId}) => {
   return (
     <div className="font-roboto flex flex-col gap-6 p-6">
       <h2 className="text-lg font-semibold">Condition: {patientData.medConditions}</h2>
-      <h2 className="text-lg font-semibold">Location: {patientData.location}</h2>
+      <h2 className="text-lg font-semibold">Ward: {patientData.ward}</h2>
       <h2 className="text-lg font-semibold">Recent Vitals: </h2>
       <ul className="list-disc list-inside">
-        <li>Heart Rate: {recentRecord.heartRate}</li>
-        <li>Diastolic BP: {recentRecord.diastolicBP}</li>
-        <li>Systolic BP: {recentRecord.systolicBP}</li>
-        <li>Body Temp: {recentRecord.bodyTemp}</li>
-        <li>SPO2 Value: {recentRecord.spo2Value}</li>
+        <li>Heart Rate(bpm): {recentRecord.heartRate}</li>
+        <li>Diastolic BP(mmHg): {recentRecord.diastolicBP}</li>
+        <li>Systolic BP(mmHg): {recentRecord.systolicBP}</li>
+        <li>Body Temp(°F): {recentRecord.bodyTemp}</li>
+        <li>SpO<sub>2</sub>(%) Value: {recentRecord.spo2Value}</li>
       </ul>
       <h2 className="text-lg font-semibold">Medication: {patientData.medication}</h2>
-      <h2 className="text-lg font-semibold">Past Medical History: {patientData.pastMedHis}</h2>
     </div>
   );
 };

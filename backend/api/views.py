@@ -113,15 +113,14 @@ def get_patient_info(request, patient_id):
         'patientName': patient.patientName,
         'doctorName': patient.doctorName,
         'medConditions': patient.medConditions,
-        'location': patient.location,
+        'ward': patient.ward,
         'medication': patient.medication,
         'pastMedHis': patient.pastMedHis,
         'patientAge': patient.patientAge,
         'patientHeight': patient.patientHeight,
         'patientSex': patient.patientSex,
         'patientBloodGroup': patient.patientBloodGroup,
-        'disease':patient.disease,
-        'room':patient.room
+        'bed':patient.bed
     }
 
     if recent_record:
@@ -192,3 +191,5 @@ def patient_detail(request, patient_id):
     elif request.method == 'DELETE':
         patient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+

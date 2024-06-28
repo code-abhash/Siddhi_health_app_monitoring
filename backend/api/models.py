@@ -35,15 +35,14 @@ class Patient(models.Model):
     patientId = models.CharField(max_length=100, unique=True)
     doctorName = models.CharField(max_length=100)
     medConditions=models.CharField(max_length=1000)
-    location=models.CharField( max_length=500, null=True)
+    ward=models.CharField( max_length=500, null=True)
     medication=models.CharField(max_length=1000)
     pastMedHis=models.CharField(max_length=1000)
     patientAge=models.IntegerField()
     patientHeight=models.CharField(max_length=20)
     patientSex=models.CharField(max_length=20)
     patientBloodGroup=models.CharField(max_length=20)
-    disease=models.CharField(max_length=100, null=True)
-    room=models.CharField(max_length=20, null=True)
+    bed=models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return self.patientId
@@ -61,4 +60,6 @@ class PatientRecords(models.Model):
 
     def __str__(self):
         return f"{self.patientId} - {self.appointmentDate} {self.appointmentTime}"
+    
+
 

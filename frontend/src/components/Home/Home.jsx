@@ -9,6 +9,7 @@ import Footer from '../Footer'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUpRightFromSquare} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import ImgCol from "./ImgCol";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,14 +18,16 @@ const Home = () => {
       <div className="shadow-md">
         <Navbar />
       </div>
-      <div className="p-4">
+      <ImgCol/>
+
+      {/* <div className="p-4">
         <p className="text-xl font-bold mb-2">Dashboard <Infobutton message={`This dashboard has info like:
 - New Patients: It tells about new patients enrolled 
 - Active Patients: It tells about the patients still active
 - Total Patients: Total aptients number
 - Visitors: New visitors numbers`}/></p>
         <Dashboard />
-      </div>
+      </div> */}
       {/* <div className="p-4">
         <p className="text-xl font-bold mb-2">Disease Panel <Infobutton message={`This is disease panel with drop down to select disease.
           The health status button to go to disaese summary page`}/></p>
@@ -56,6 +59,7 @@ const Home = () => {
         </div>
       </div>
       <Footer/>
+      
     </div>
   );
 };

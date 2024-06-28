@@ -29,7 +29,7 @@ const HeartChart = ({ patientId }) => {
             labels: appoint_times,
             datasets: [
               {
-                label: "Heart Rate of Patients",
+                label: "Heart Rate of Patients(bpm)",
                 data: heartRates,
                 backgroundColor: ["rgba(255, 99, 132, 0.6)"],
                 borderWidth: 4,
@@ -122,7 +122,7 @@ const HeartChart = ({ patientId }) => {
           labels: appoint_times,
           datasets: [
             {
-              label: filterType === 'day' ? "Heart Rate per Hour" : (filterType === 'week' ? "Average Heart Rate per Day" : "Average Heart Rate per Week"),
+              label: filterType === 'day' ? "Heart Rate per Hour(bpm)" : (filterType === 'week' ? "Average Heart Rate per Day(bpm)" : "Average Heart Rate per Week(bpm)"),
               data: heartRates,
               backgroundColor: ["rgba(255, 99, 132, 0.6)"],
               borderWidth: 4,

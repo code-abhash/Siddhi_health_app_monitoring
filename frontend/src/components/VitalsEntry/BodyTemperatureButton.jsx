@@ -48,8 +48,8 @@ const BodyTemperatureButton = (props) => {
           type="range"
           name="body-temperature"
           id="body-temperature"
-          min="93"
-          max="107"
+          min="95"
+          max="110"
           value={bodyTemp}
           onChange={handleSliderChange}
           className="form-range h-4 w-full bg-gray-200 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -61,8 +61,8 @@ const BodyTemperatureButton = (props) => {
           value={bodyTemp}
           onChange={handleInputChange}
           className="form-input ml-4 block w-24 text-center border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          min="93"
-          max="107"
+          min="95"
+          max="110"
         />
       </div>
       <div className="mt-4 text-center">

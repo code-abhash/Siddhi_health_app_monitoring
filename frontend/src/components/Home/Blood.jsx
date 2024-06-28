@@ -129,13 +129,13 @@ const BloodPressureChart = ({ patientId }) => {
           labels: appoint_times,
           datasets: [
             {
-              label: "Systolic Blood Pressure",
+              label: "Systolic Blood Pressure(mmHg)",
               data: systolicValues,
               backgroundColor: ["rgba(255, 99, 132, 0.6)"],
               borderWidth: 4,
             },
             {
-              label: "Diastolic Blood Pressure",
+              label: "Diastolic Blood Pressure(mmHg)",
               data: diastolicValues,
               backgroundColor: ["rgba(54, 162, 235, 0.6)"],
               borderWidth: 4,

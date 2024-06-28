@@ -44,10 +44,7 @@ return (
       <FaTransgender className="text-pink-900" />
       <p className="text-lg font-normal">Sex:</p>
     </div>
-    <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-    <FaRibbon className='text-red-500' />
-      <p className="text-lg font-normal">Disease:</p>
-    </div>
+    
   </aside>
 );
 }
@@ -69,10 +66,6 @@ return (
   <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
     <FaTransgender className="text-pink-900" />
     <p className="text-lg font-normal">Sex: {patientData.patientSex}</p>
-  </div>
-  <div className="flex items-center gap-2 hover:bg-green-100 p-2 rounded-md">
-  <FaRibbon className='text-red-500' />
-    <p className="text-lg font-normal">Disease: {patientData.disease}</p>
   </div>
 </aside>
 );

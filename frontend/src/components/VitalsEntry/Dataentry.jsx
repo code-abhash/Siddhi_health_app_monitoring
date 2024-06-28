@@ -15,6 +15,7 @@ import Footer from "../Footer";
 
 function Dataentry() {
   const navigate = useNavigate();
+  
 
   const [patientId, setPatientId] = useState("");
   const [patientName, setPatientName] = useState("");
@@ -319,9 +320,22 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Asthma Prediction
                   </h3>
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                  {/* <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextAsthma}
-                  </p>
+                  </p> */}
+                  {predictionTextAsthma==0?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextAsthma} Not yet predicted
+                  </p>):predictionTextAsthma>0 && predictionTextAsthma<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextAsthma} Possiblity Of No Asthama
+                  </p>):predictionTextAsthma>=0.5 && predictionTextAsthma<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextAsthma} Possiblity Of Asthama
+                  </p>):predictionTextAsthma>0.75 && predictionTextAsthma<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextAsthma} Possiblity Of Asthama
+                    </p>):(<p className="font-bold text-red-900">{predictionTextAsthma}<br/>Need Attention High Asthama</p>
+                    
+                  )}
                 </div>
               </div>
             </div>
@@ -346,9 +360,20 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Diarrhea Prediction
                   </h3>
+                  
+                   {predictionTextDiarrhea==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea}
-                  </p>
+                    {predictionTextDiarrhea} Not yet predicted
+                  </p>):predictionTextDiarrhea>0 && predictionTextDiarrhea<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextDiarrhea} Possiblity Of No Diarrhea
+                  </p>):predictionTextDiarrhea>=0.5 && predictionTextDiarrhea<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextDiarrhea} Possiblity Of Diarrhea
+                  </p>):predictionTextDiarrhea>0.75 && predictionTextDiarrhea<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextDiarrhea} Possiblity Of Diarrhea
+                    </p>):(<p className="font-bold text-red-900">{predictionTextDiarrhea}<br/>Need Attention High Diarrhea</p>
+                    
+                  )}
                 </div>
               </div>
             </div>
@@ -373,9 +398,20 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Pneumonia Prediction
                   </h3>
+                  {predictionTextPneumonia==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia}
-                  </p>
+                    {predictionTextPneumonia} Not yet predicted
+                  </p>):predictionTextPneumonia>0 && predictionTextPneumonia<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextPneumonia} Possiblity Of No Pneuomonia
+                  </p>):predictionTextPneumonia>=0.5 && predictionTextPneumonia<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextPneumonia} Possiblity Of Pneuomonia
+                  </p>):predictionTextPneumonia>0.75 && predictionTextPneumonia<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextPneumonia} Possiblity Of Pneuomonia
+                    </p>):(<p className="font-bold text-red-900">{predictionTextPneumonia}<br/>Need Attention High Pneumonia</p>
+                    
+                  )}
+                
                 </div>
               </div>
             </div>
@@ -400,9 +436,19 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Fever Prediction
                   </h3>
+                  {predictionTextFever==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever}
-                  </p>
+                    {predictionTextFever} Not yet predicted
+                  </p>):predictionTextFever>0 && predictionTextFever<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextFever} Possiblity Of No fever
+                  </p>):predictionTextFever>=0.5 && predictionTextFever<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextFever} Possiblity Of fever
+                  </p>):predictionTextFever>0.75 && predictionTextFever<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextFever} Possiblity Of fever
+                    </p>):(<p className="font-bold text-red-900">{predictionTextFever}<br/>Need Attention High Fever</p>
+                    
+                  )}
                 </div>
               </div>
             </div>
@@ -427,9 +473,19 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Cough Prediction
                   </h3>
+                  {predictionTextCough==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough}
-                  </p>
+                    {predictionTextCough} Not yet predicted
+                  </p>):predictionTextCough>0 && predictionTextCough<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextCough} Possiblity Of No Cough
+                  </p>):predictionTextCough>=0.5 && predictionTextCough<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextCough} Possiblity Of Cough
+                  </p>):predictionTextCough>0.75 && predictionTextCough<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextCough} Possiblity Of Cough
+                    </p>):(<p className="font-bold text-red-900">{predictionTextCough}<br/>Need Attention High Cough</p>
+                    
+                  )}
                 </div>
               </div>
             </div>

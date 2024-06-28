@@ -6,15 +6,14 @@ function AddPatientForm() {
     patientId: "",
     doctorName: "",
     medConditions: "",
-    location: "",
+    ward: "",
     medication: "",
     pastMedHis: "",
     patientAge: "",
     patientHeight: "",
     patientSex: "",
     patientBloodGroup: "",
-    disease: "",
-    room: "",
+    bed: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -181,13 +180,13 @@ function AddPatientForm() {
                             htmlFor="location"
                             className="block font-semibold text-gray-900"
                           >
-                            Location
+                            Ward
                           </label>
                           <input
                             type="text"
-                            id="location"
-                            name="location"
-                            value={formData.location}
+                            id="ward"
+                            name="ward"
+                            value={formData.ward}
                             onChange={handleChange}
                             className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Enter Location"
@@ -300,10 +299,10 @@ function AddPatientForm() {
                             onChange={handleChange}
                             className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="Enter Patient Blood Group"
-                            required
+                            
                           />
                         </div>
-                        <div>
+                        {/* <div>
                           <label
                             htmlFor="disease"
                             className="block font-semibold text-gray-900"
@@ -320,23 +319,23 @@ function AddPatientForm() {
                             placeholder="Enter Disease"
                             required
                           />
-                        </div>
+                        </div> */}
                         <div>
                           <label
-                            htmlFor="room"
+                            htmlFor="bed"
                             className="block font-semibold text-gray-900"
                           >
-                            Room
+                            Bed
                           </label>
                           <input
                             type="number"
-                            id="room"
-                            name="room"
-                            value={formData.room}
+                            id="bed"
+                            name="bed"
+                            value={formData.bed}
                             onChange={handleChange}
                             className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            placeholder="Enter Room"
-                            required
+                            placeholder="Enter Bed No."
+                            
                           />
                         </div>
                       </div>
