@@ -1,4 +1,4 @@
-from api.models import User, Profile, Patient, PatientRecords
+from api.models import User, Profile, Patient, PatientRecords,PatientDescription
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -72,5 +72,17 @@ class EditablePatientRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model=Patient
         fields=['patientName','doctorName','medConditions','bed']
+
+class PatientDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PatientDescription
+        fields='__all__'
+
+class EditPatientDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PatientDescription
+        fields=['description','treatment','diagnosis','symptoms']
+
+
 
     

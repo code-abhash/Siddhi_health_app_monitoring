@@ -18,6 +18,9 @@ urlpatterns = [
     path('patientinfo/<str:patient_id>/', views.get_patient_info, name='get_patient_info'),
     path('v1/patients/<str:patientId>/vitals', views.get_patient_vitals, name='patient-records-list'),
     path('patients/<str:patient_id>/', views.patient_detail, name='patient_detail'),
+    path('patient_description/', views.patient_description, name='create_patient_description'),  # For POST
+    path('patient_description/<str:patient_id>/', views.patient_description, name='patient_description_detail'),  # For GET and PUT
+
     
     path('', views.getRoutes),
     

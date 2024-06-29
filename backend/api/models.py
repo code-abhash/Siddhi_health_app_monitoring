@@ -63,7 +63,7 @@ class PatientRecords(models.Model):
     
 
 class PatientDescription(models.Model):
-    patientId = models.CharField(max_length=100)
+    patientId = models.CharField(max_length=100,unique=True)
     description = models.TextField(default="No description available.")
     treatment = models.TextField(default="No treatment information available.")
     diagnosis = models.TextField(default="No diagnosis information available.")

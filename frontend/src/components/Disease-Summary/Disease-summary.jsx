@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios"; // Import axios
-import Details_page from "./Details_page";
+import AddDetails from "./AddDetails";
 import {
   UserIcon,
   BriefcaseIcon,
@@ -14,6 +14,7 @@ import {
   LifebuoyIcon,
   FingerPrintIcon,
 } from "@heroicons/react/24/outline";
+import DetailsShow from "./DeatilsShow";
 
 const Disease_summary = () => {
   const { patientId } = useParams();
@@ -114,7 +115,9 @@ const Disease_summary = () => {
       </div>
       {/* Add any additional details you want to display */}
     </div>
-    <Details_page patientId={patientId} />
+   
+    <DetailsShow patientId={patientId}/>
+    <AddDetails patientId={patientId} />
   </>
   );
 };

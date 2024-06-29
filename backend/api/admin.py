@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import User, Profile, Patient, PatientRecords
+from api.models import User, Profile, Patient, PatientRecords,PatientDescription
 
 class Useradmin(admin.ModelAdmin):
     list_display=['username','email','role']
@@ -14,6 +14,9 @@ class Patientadmin(admin.ModelAdmin):
 class PatientRecordadmin(admin.ModelAdmin):
     list_display=['patientId','appointmentDate','appointmentTime', 'heartRate', 'diastolicBP', 'systolicBP', 'bodyTemp', 'spo2Value','respRate']
 
+
+class PatientDescriptionadmin(admin.ModelAdmin):
+    list_display=['patientId','description','treatment','diagnosis','symptoms']
 
 
     
@@ -30,4 +33,5 @@ admin.site.register(User, Useradmin)
 admin.site.register(Profile, Profileadmin)
 admin.site.register(Patient, Patientadmin)
 admin.site.register(PatientRecords, PatientRecordadmin)
+admin.site.register(PatientDescription,PatientDescriptionadmin)
 
