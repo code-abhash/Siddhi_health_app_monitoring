@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
@@ -8,10 +7,16 @@ import moment from 'moment';
 const SPO2Chart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
   const [filterType, setFilterType] = useState('day');
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
 
   const chart = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`);
+      let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
+      if (filterType === 'day') {
+        url += `&date=${selectedDate}`;
+      }
+
+      const res = await axios.get(url);
       console.log(res); // Log the full response
       const data = res.data;
 
@@ -20,13 +25,22 @@ const SPO2Chart = ({ patientId }) => {
         let spo2Values = [];
 
         if (filterType === 'day') {
-          // Filter data for today
           for (const dataObj of data) {
             appoint_times.push(dataObj.appointmentTime);
             spo2Values.push(parseInt(dataObj.spo2Value, 10));
           }
+          setChartData({
+            labels: appoint_times,
+            datasets: [
+              {
+                label: "SPO2 Values (%)",
+                data: spo2Values,
+                backgroundColor: ["rgba(75, 192, 192, 0.6)"],
+                borderWidth: 4,
+              },
+            ],
+          });
         } else if (filterType === 'week') {
-          // Filter data for the current week
           const startOfWeek = moment().startOf('week');
           const endOfWeek = moment().endOf('week');
 
@@ -35,13 +49,11 @@ const SPO2Chart = ({ patientId }) => {
             return date.isBetween(startOfWeek, endOfWeek, null, '[]');
           });
 
-          // Prepare labels for each day of the week
           for (let i = 0; i < 7; i++) {
             const dayLabel = startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD');
             appoint_times.push(dayLabel);
           }
 
-          // Group filtered data by day
           const groupedData = filteredData.reduce((acc, current) => {
             const date = moment(current.appointmentDate).format('YYYY-MM-DD');
             if (!acc[date]) {
@@ -51,7 +63,6 @@ const SPO2Chart = ({ patientId }) => {
             return acc;
           }, {});
 
-          // Calculate average SPO2 values per day
           spo2Values = appoint_times.map(date => {
             const rates = groupedData[date];
             if (rates) {
@@ -61,7 +72,6 @@ const SPO2Chart = ({ patientId }) => {
             return null;
           });
         } else if (filterType === 'month') {
-          // Filter data for the current month
           const startOfMonth = moment().startOf('month');
           const endOfMonth = moment().endOf('month');
 
@@ -70,14 +80,12 @@ const SPO2Chart = ({ patientId }) => {
             return date.isBetween(startOfMonth, endOfMonth, null, '[]');
           });
 
-          // Prepare labels for each week of the month
           appoint_times = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
           const weekLabels = appoint_times.map((_, index) => ({
             start: startOfMonth.clone().add(index, 'weeks').startOf('week'),
             end: startOfMonth.clone().add(index, 'weeks').endOf('week')
           }));
 
-          // Group filtered data by week
           const groupedData = filteredData.reduce((acc, current) => {
             const date = moment(current.appointmentDate);
             const weekIndex = weekLabels.findIndex(
@@ -92,7 +100,6 @@ const SPO2Chart = ({ patientId }) => {
             return acc;
           }, {});
 
-          // Calculate average SPO2 values per week
           spo2Values = appoint_times.map((_, index) => {
             const rates = groupedData[index];
             if (rates) {
@@ -107,14 +114,13 @@ const SPO2Chart = ({ patientId }) => {
           labels: appoint_times,
           datasets: [
             {
-              label: "SPO2 Values(%)",
+              label: filterType === 'day' ? "SPO2 Values per Hour (%)" : (filterType === 'week' ? "Average SPO2 Values per Day (%)" : "Average SPO2 Values per Week (%)"),
               data: spo2Values,
               backgroundColor: ["rgba(75, 192, 192, 0.6)"],
               borderWidth: 4,
             },
           ],
         });
-
       } else {
         console.error('Data is not an array:', data);
       }
@@ -125,10 +131,14 @@ const SPO2Chart = ({ patientId }) => {
 
   useEffect(() => {
     chart();
-  }, [patientId, filterType]);
+  }, [patientId, filterType, selectedDate]);
 
   const handleFilterChange = (e) => {
     setFilterType(e.target.value);
+  };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
   };
 
   return (
@@ -141,6 +151,12 @@ const SPO2Chart = ({ patientId }) => {
           <option value="month">Month</option>
         </select>
       </div>
+      {filterType === 'day' && (
+        <div>
+          <label htmlFor="date">Select Date:</label>
+          <input type="date" id="date" value={selectedDate} onChange={handleDateChange} />
+        </div>
+      )}
       <>
         {chartData && chartData.labels ? (
           <Line data={chartData} />
@@ -153,4 +169,3 @@ const SPO2Chart = ({ patientId }) => {
 };
 
 export default SPO2Chart;
-

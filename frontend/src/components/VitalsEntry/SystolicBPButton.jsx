@@ -29,7 +29,7 @@ const SystolicBPButton = (props) => {
 
   // Function to handle direct input change
   const handleInputChange = (event) => {
-    const value = Math.max(90, Math.min(160, Number(event.target.value)));
+    const value = Math.max(50, Math.min(200, Number(event.target.value)));
     setSystolicBP(value);
   };
 
@@ -48,8 +48,8 @@ const SystolicBPButton = (props) => {
           type="range"
           name="systolic-bp"
           id="systolic-bp"
-          min="90"
-          max="160"
+          min="50"
+          max="200"
           value={systolicBP}
           onChange={handleSliderChange}
           className="form-range h-4 w-full bg-gray-200 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -61,8 +61,8 @@ const SystolicBPButton = (props) => {
           value={systolicBP}
           onChange={handleInputChange}
           className="form-input ml-4 block w-24 text-center border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          min="90"
-          max="160"
+          min="50"
+          max="200"
         />
       </div>
       <div className="mt-4 text-center">

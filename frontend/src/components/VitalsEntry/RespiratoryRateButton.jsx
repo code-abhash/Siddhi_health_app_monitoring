@@ -30,7 +30,7 @@ const RespiratoryRateButton = (props) => {
 
   // Function to handle direct input change
   const handleInputChange = (event) => {
-    const value = Math.max(10, Math.min(30, Number(event.target.value)));
+    const value = Math.max(10, Math.min(40, Number(event.target.value)));
     setRespRate(value);
   };
 
@@ -50,7 +50,7 @@ const RespiratoryRateButton = (props) => {
           name="respiratory-rate"
           id="respiratory-rate"
           min="10"
-          max="30"
+          max="40"
           value={respRate}
           onChange={handleSliderChange}
           className="form-range h-4 w-full bg-gray-200 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -63,7 +63,7 @@ const RespiratoryRateButton = (props) => {
           onChange={handleInputChange}
           className="form-input ml-4 block w-24 text-center border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           min="10"
-          max="30"
+          max="40"
         />
       </div>
       <div className="mt-4 text-center">

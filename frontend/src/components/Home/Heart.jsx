@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
@@ -8,10 +7,16 @@ import moment from 'moment';
 const HeartChart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
   const [filterType, setFilterType] = useState('day');
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
 
   const chart = async () => {
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`);
+      let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
+      if (filterType === 'day') {
+        url += `&date=${selectedDate}`;
+      }
+
+      const res = await axios.get(url);
       console.log(res); // Log the full response
       const data = res.data;
 
@@ -20,7 +25,6 @@ const HeartChart = ({ patientId }) => {
         let heartRates = [];
 
         if (filterType === 'day') {
-          // Filter data for today
           for (const dataObj of data) {
             appoint_times.push(dataObj.appointmentTime);
             heartRates.push(parseInt(dataObj.heartRate, 10));
@@ -36,9 +40,7 @@ const HeartChart = ({ patientId }) => {
               },
             ],
           });
-
         } else if (filterType === 'week') {
-          // Filter data for the current week
           const startOfWeek = moment().startOf('week');
           const endOfWeek = moment().endOf('week');
 
@@ -47,13 +49,11 @@ const HeartChart = ({ patientId }) => {
             return date.isBetween(startOfWeek, endOfWeek, null, '[]');
           });
 
-          // Prepare labels for each day of the week
           for (let i = 0; i < 7; i++) {
             const dayLabel = startOfWeek.clone().add(i, 'days').format('YYYY-MM-DD');
             appoint_times.push(dayLabel);
           }
 
-          // Group filtered data by day
           const groupedData = filteredData.reduce((acc, current) => {
             const date = moment(current.appointmentDate).format('YYYY-MM-DD');
             if (!acc[date]) {
@@ -63,7 +63,6 @@ const HeartChart = ({ patientId }) => {
             return acc;
           }, {});
 
-          // Calculate average heart rate per day
           heartRates = appoint_times.map(date => {
             const rates = groupedData[date];
             if (rates) {
@@ -72,42 +71,35 @@ const HeartChart = ({ patientId }) => {
             }
             return null;
           });
+        } else if (filterType === 'month') {
+          const startOfMonth = moment().startOf('month');
+          const endOfMonth = moment().endOf('month');
 
-        }
-          // Filter data for the current month
-          else if (filterType === 'month') {
-            // Filter data for the current month
-            const startOfMonth = moment().startOf('month');
-            const endOfMonth = moment().endOf('month');
-  
-            const filteredData = data.filter(item => {
-              const date = moment(item.appointmentDate);
-              return date.isBetween(startOfMonth, endOfMonth, null, '[]');
-            });
-  
-            // Prepare labels for each week of the month
-            appoint_times = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-            const weekLabels = appoint_times.map((_, index) => ({
-              start: startOfMonth.clone().add(index, 'weeks').startOf('week'),
-              end: startOfMonth.clone().add(index, 'weeks').endOf('week')
-            }));
-  
-            // Group filtered data by week
-            const groupedData = filteredData.reduce((acc, current) => {
-              const date = moment(current.appointmentDate);
-              const weekIndex = weekLabels.findIndex(
-                week => date.isBetween(week.start, week.end, null, '[]')
-              );
-              if (weekIndex !== -1) {
-                if (!acc[weekIndex]) {
-                  acc[weekIndex] = [];
-                }
-                acc[weekIndex].push(parseInt(current.heartRate, 10));
+          const filteredData = data.filter(item => {
+            const date = moment(item.appointmentDate);
+            return date.isBetween(startOfMonth, endOfMonth, null, '[]');
+          });
+
+          appoint_times = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+          const weekLabels = appoint_times.map((_, index) => ({
+            start: startOfMonth.clone().add(index, 'weeks').startOf('week'),
+            end: startOfMonth.clone().add(index, 'weeks').endOf('week')
+          }));
+
+          const groupedData = filteredData.reduce((acc, current) => {
+            const date = moment(current.appointmentDate);
+            const weekIndex = weekLabels.findIndex(
+              week => date.isBetween(week.start, week.end, null, '[]')
+            );
+            if (weekIndex !== -1) {
+              if (!acc[weekIndex]) {
+                acc[weekIndex] = [];
               }
-              return acc;
-            }, {});
+              acc[weekIndex].push(parseInt(current.heartRate, 10));
+            }
+            return acc;
+          }, {});
 
-          // Calculate average heart rate per week
           heartRates = appoint_times.map((_, index) => {
             const rates = groupedData[index];
             if (rates) {
@@ -115,7 +107,7 @@ const HeartChart = ({ patientId }) => {
               return avgRate;
             }
             return null;
-            });
+          });
         }
 
         setChartData({
@@ -139,10 +131,14 @@ const HeartChart = ({ patientId }) => {
 
   useEffect(() => {
     chart();
-  }, [patientId, filterType]);
+  }, [patientId, filterType, selectedDate]);
 
   const handleFilterChange = (e) => {
     setFilterType(e.target.value);
+  };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
   };
 
   return (
@@ -155,6 +151,12 @@ const HeartChart = ({ patientId }) => {
           <option value="month">Month</option>
         </select>
       </div>
+      {filterType === 'day' && (
+        <div>
+          <label htmlFor="date">Select Date:</label>
+          <input type="date" id="date" value={selectedDate} onChange={handleDateChange} />
+        </div>
+      )}
       <>
         {chartData && chartData.labels ? (
           <Line data={chartData} />
