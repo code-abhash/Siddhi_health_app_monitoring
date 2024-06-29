@@ -30,7 +30,7 @@ const HeartRateButton = (props) => {
 
   // Function to handle direct input change
   const handleInputChange = (event) => {
-    const value = Math.max(40, Math.min(160, Number(event.target.value)));
+    const value = Math.max(40, Math.min(180, Number(event.target.value)));
     setHeartRate(value);
   };
 
@@ -50,7 +50,7 @@ const HeartRateButton = (props) => {
           name="heart-rate"
           id="heart-rate"
           min="40"
-          max="160"
+          max="180"
           value={heartRate}
           onChange={handleSliderChange}
           className="form-range h-4 w-full bg-gray-200 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -63,7 +63,7 @@ const HeartRateButton = (props) => {
           onChange={handleInputChange}
           className="form-input ml-4 block w-24 text-center border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           min="40"
-          max="160"
+          max="180"
         />
       </div>
       <div className="mt-4 text-center">
