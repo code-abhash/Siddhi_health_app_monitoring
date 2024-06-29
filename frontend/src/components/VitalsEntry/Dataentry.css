@@ -8,3 +8,11 @@ body > #root > div {
 .ent_clr {
   background-color: rgb(255, 254, 254);
 }
+.custom-toast {
+  background-color: #4caf50;
+  color: #9a1313; 
+  font-weight: bold; 
+  font-size: 14px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(159, 108, 108, 0.1); 
+}

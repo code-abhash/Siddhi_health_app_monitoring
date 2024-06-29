@@ -12,6 +12,9 @@ import RespiratoryRateButton from "./RespiratoryRateButton";
 import Panel from "../Home/Panel";
 import axios from "axios";
 import Footer from "../Footer";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function Dataentry() {
   const navigate = useNavigate();
@@ -37,6 +40,7 @@ function Dataentry() {
 
   const submitVal = async (e) => {
     e.preventDefault();
+    
 
     const formData = {
       patientId,
@@ -102,11 +106,51 @@ function Dataentry() {
         setPredictionTextPneumonia(data["Pneumonia likelihood"]);
         setPredictionTextFever(data["Fever likelihood"]);
         setPredictionTextCough(data["Cough likelihood"]);
+        if (data['Asthma likelihood'] !== 0) {
+          showNotification('Asthma', predictionTextAsthma);
+        }
+        if (data['Diarrhea likelihood'] !== 0) {
+          showNotification('Diarrhea', predictionTextDiarrhea);
+        }
+        if (data['Pneumonia likelihood'] !== 0) {
+          showNotification('Pneumonia', predictionTextPneumonia);
+        }
+        if (data['Fever likelihood'] !== 0) {
+          showNotification('Fever', predictionTextFever);
+        }
+        if (data['Cough likelihood'] !== 0) {
+          showNotification('Cough', predictionTextCough);
+        }
+       
       })
       .catch((error) => {
         console.error("Error fetching prediction:", error);
       });
   };
+
+  const showNotification = (category, likelihood,duration = 10000) => {
+    const notificationMessage = getNotificationMessage(category, likelihood);
+    toast.info(notificationMessage, {
+      
+      autoClose: duration, // 5 seconds
+      className: 'custom-toast',
+    });
+  };
+
+  const getNotificationMessage = (category, likelihood) => {
+    if (likelihood === 0) {
+      return `${category} prediction not yet available.`;
+    } else if (likelihood > 0.3 && likelihood < 0.5) {
+      return `Possibility of  ${category}.`;
+    } else if (likelihood >= 0.5 && likelihood < 0.75) {
+      return `High Possibility of ${category}.`;
+    } else if (likelihood >= 0.75 && likelihood < 0.95) {
+      return `Special Attention ${category}.`;
+    } else {
+      return ` very High ${category} risk. Attention needed.`;
+    }
+  };
+   
 
   const cancelVal = (e) => {
     e.preventDefault();
@@ -143,6 +187,7 @@ function Dataentry() {
   return (
     <>
       <Navbar />
+      
       <div className="bg-gray-50 font-roboto">
         <div className="space-y-12 mr-5 ml-5">
           <div className="border-b border-gray-900/10 pb-12">
@@ -326,13 +371,16 @@ function Dataentry() {
                   {predictionTextAsthma==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextAsthma} Not yet predicted
-                  </p>):predictionTextAsthma>0 && predictionTextAsthma<0.5?(
+                  </p>):predictionTextAsthma<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Possiblity Of No Asthama
+                    {predictionTextAsthma} No Pneumonia
+                  </p>):predictionTextAsthma>0.3 && predictionTextAsthma<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextAsthma} Asthama
                   </p>):predictionTextAsthma>=0.5 && predictionTextAsthma<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Possiblity Of Asthama
+                    {predictionTextAsthma} High Asthama
                   </p>):predictionTextAsthma>0.75 && predictionTextAsthma<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Possiblity Of Asthama
+                    {predictionTextAsthma} Serious Asthama
                     </p>):(<p className="font-bold text-red-900">{predictionTextAsthma}<br/>Need Attention High Asthama</p>
                     
                   )}
@@ -364,13 +412,16 @@ function Dataentry() {
                    {predictionTextDiarrhea==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextDiarrhea} Not yet predicted
-                  </p>):predictionTextDiarrhea>0 && predictionTextDiarrhea<0.5?(
+                  </p>):predictionTextDiarrhea<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Possiblity Of No Diarrhea
+                    {predictionTextDiarrhea} No Diarrhea
+                  </p>):predictionTextDiarrhea>0.3 && predictionTextDiarrhea<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextDiarrhea} Diarrhea
                   </p>):predictionTextDiarrhea>=0.5 && predictionTextDiarrhea<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Possiblity Of Diarrhea
+                    {predictionTextDiarrhea} High Diarrhea
                   </p>):predictionTextDiarrhea>0.75 && predictionTextDiarrhea<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Possiblity Of Diarrhea
+                    {predictionTextDiarrhea} Serious Diarrhea
                     </p>):(<p className="font-bold text-red-900">{predictionTextDiarrhea}<br/>Need Attention High Diarrhea</p>
                     
                   )}
@@ -401,13 +452,16 @@ function Dataentry() {
                   {predictionTextPneumonia==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextPneumonia} Not yet predicted
-                  </p>):predictionTextPneumonia>0 && predictionTextPneumonia<0.5?(
+                  </p>):predictionTextPneumonia<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Possiblity Of No Pneuomonia
+                    {predictionTextPneumonia} No Pneumonia
+                  </p>):predictionTextPneumonia>0.3 && predictionTextPneumonia<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextPneumonia} Pneuomonia
                   </p>):predictionTextPneumonia>=0.5 && predictionTextPneumonia<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Possiblity Of Pneuomonia
+                    {predictionTextPneumonia} High Pneuomonia
                   </p>):predictionTextPneumonia>0.75 && predictionTextPneumonia<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Possiblity Of Pneuomonia
+                    {predictionTextPneumonia} Serious Pneuomonia
                     </p>):(<p className="font-bold text-red-900">{predictionTextPneumonia}<br/>Need Attention High Pneumonia</p>
                     
                   )}
@@ -439,13 +493,16 @@ function Dataentry() {
                   {predictionTextFever==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextFever} Not yet predicted
-                  </p>):predictionTextFever>0 && predictionTextFever<0.5?(
+                  </p>):predictionTextFever<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} Possiblity Of No fever
+                    {predictionTextFever} No Fever
+                  </p>):predictionTextFever>0.3 && predictionTextFever<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextFever}  fever
                   </p>):predictionTextFever>=0.5 && predictionTextFever<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} Possiblity Of fever
+                    {predictionTextFever} High fever
                   </p>):predictionTextFever>0.75 && predictionTextFever<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} Possiblity Of fever
+                    {predictionTextFever} Serious fever
                     </p>):(<p className="font-bold text-red-900">{predictionTextFever}<br/>Need Attention High Fever</p>
                     
                   )}
@@ -476,13 +533,16 @@ function Dataentry() {
                   {predictionTextCough==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextCough} Not yet predicted
-                  </p>):predictionTextCough>0 && predictionTextCough<0.5?(
+                  </p>):predictionTextCough<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} Possiblity Of No Cough
+                    {predictionTextCough} No Cough
+                  </p>):predictionTextCough>0.3 && predictionTextCough<0.5?(
+                  <p className="mt-1 text-sm leading-6 text-gray-800">
+                    {predictionTextCough}  Cough
                   </p>):predictionTextCough>=0.5 && predictionTextCough<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} Possiblity Of Cough
+                    {predictionTextCough} High Cough
                   </p>):predictionTextCough>0.75 && predictionTextCough<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} Possiblity Of Cough
+                    {predictionTextCough} Serious Cough
                     </p>):(<p className="font-bold text-red-900">{predictionTextCough}<br/>Need Attention High Cough</p>
                     
                   )}
@@ -510,6 +570,8 @@ function Dataentry() {
         </div>
 
         <Footer />
+        <ToastContainer />
+        
       </div>
     </>
   );
