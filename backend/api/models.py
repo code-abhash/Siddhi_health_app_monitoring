@@ -62,4 +62,12 @@ class PatientRecords(models.Model):
         return f"{self.patientId} - {self.appointmentDate} {self.appointmentTime}"
     
 
+class PatientDescription(models.Model):
+    patientId = models.CharField(max_length=100)
+    description = models.TextField(default="No description available.")
+    treatment = models.TextField(default="No treatment information available.")
+    diagnosis = models.TextField(default="No diagnosis information available.")
+    symptoms = models.TextField(default="No symptoms information available.")
 
+    def __str__(self):
+        return f"{self.patientId}"
