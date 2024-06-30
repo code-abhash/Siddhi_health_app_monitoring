@@ -10,7 +10,7 @@ import {
 
 const PatientInfo = ({ patientId }) => {
   const [patientData, setPatientData] = useState(null);
-  const [recentRecord, setRecentRecord] = useState(null);
+  const [recentRecord, setRecentRecord] = useState({}); // initialize with empty object
 
   useEffect(() => {
     if (patientId) {
@@ -18,7 +18,7 @@ const PatientInfo = ({ patientId }) => {
         .get(`http://127.0.0.1:8000/api/patientinfo/${patientId}/`)
         .then((response) => {
           setPatientData(response.data.patientData);
-          setRecentRecord(response.data.recentRecord);
+          setRecentRecord(response.data.recentRecord || {}); // handle both null and empty object
         })
         .catch((error) => {
           console.error("Error fetching patient info:", error);
@@ -31,7 +31,6 @@ const PatientInfo = ({ patientId }) => {
       <div className="font-roboto flex flex-col gap-6 p-6">
         <h2 className="text-lg font-bold">MedCondition:</h2>
         <h2 className="text-lg font-bold">Ward: </h2>
-        <h2 className="text-lg font-bold">Recent Vitals: </h2>
         <div className="font-roboto">
           <h2 className="text-lg font-bold text-gray-800 mb-2">
             Recent Vitals:
@@ -77,7 +76,18 @@ const PatientInfo = ({ patientId }) => {
         Condition: {patientData.medConditions}
       </h2>
       <h2 className="text-lg font-semibold">Ward: {patientData.ward}</h2>
-      {recentRecord ? (
+      {console.log(recentRecord)}
+      {recentRecord === null || Object.keys(recentRecord).length === 0 ? (
+        <div className="font-roboto">
+          <p className="text-gray-900">No vitals collected yet..</p>
+          <button
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            onClick={() => (window.location.href = "/nurse")}
+          >
+            Collect Vitals
+          </button>
+        </div>
+      ) : (
         <div className="font-roboto">
           <h2 className="text-lg font-bold text-gray-800 mb-2">
             Recent Vitals:
@@ -114,13 +124,6 @@ const PatientInfo = ({ patientId }) => {
               <strong>Respiratory Rate:</strong> {recentRecord.respRate}
             </li>
           </ul>
-        </div>
-      ) : (
-        <div className="font-roboto">
-          <p className="text-gray-500">No vitals collected yet.</p>
-          <a href="/nurse" className="text-blue-500 underline">
-            Go to vitals entry page
-          </a>
         </div>
       )}
       <h2 className="text-lg font-semibold">
