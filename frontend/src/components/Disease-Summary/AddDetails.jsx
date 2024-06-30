@@ -75,12 +75,14 @@ const AddDetails = ({ patientId }) => {
 
   return (
     <div>
+      <div className='flex justify-end'>
       <button
         onClick={() => setShowForm(true)}
-        className={`bg-${isEditing ? 'blue' : 'green'}-500 hover:bg-${isEditing ? 'blue' : 'green'}-700 text-white font-bold py-2 px-4 rounded-lg`}
+        className={`bg-${isEditing ? 'blue' : 'green'}-500 hover:bg-${isEditing ? 'blue' : 'green'}-700 text-white font-bold py-2 px-4 m-6 rounded-lg`}
       >
         {isEditing ? 'Edit Description' : 'Add Description'}
       </button>
+      </div>
 
       {showForm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
