@@ -19,7 +19,7 @@ import DetailsShow from "./DeatilsShow";
 const Disease_summary = () => {
   const { patientId } = useParams();
   const [patientDetails, setPatientDetails] = useState(null);
-  const [recentRecord, setRecentRecord] = useState(null);
+  const [recentRecord, setRecentRecord] = useState({});
 
   useEffect(() => {
     if (patientId) {
@@ -27,7 +27,7 @@ const Disease_summary = () => {
         .get(`http://127.0.0.1:8000/api/patientinfo/${patientId}/`)
         .then((response) => {
           setPatientDetails(response.data.patientData);
-          setRecentRecord(response.data.recentRecord);
+          setRecentRecord(response.data.recentRecord || {});
         })
         .catch((error) => {
           console.error("Error fetching patient info:", error);
@@ -45,7 +45,7 @@ const Disease_summary = () => {
       Disease Summary for Patient ID: {patientDetails.patientId}
     </h2>
     <div className="bg-gray-50 p-6 rounded-lg shadow-lg flex justify-between">
-      {recentRecord && (
+      {/* {recentRecord && (
         <div className="font-roboto">
           <h2 className="text-lg font-bold text-gray-800 mb-2">Recent Vitals:</h2>
           <span className="text-medium">
@@ -81,7 +81,56 @@ const Disease_summary = () => {
             </li>
           </ul>
         </div>
-      )}
+      )} */}
+      {recentRecord === null || Object.keys(recentRecord).length === 0 ? (
+          <div className="font-roboto">
+            <p className="text-gray-900">No vitals collected yet..</p>
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={() => (window.location.href = "/nurse")}
+            >
+              Collect Vitals
+            </button>
+          </div>
+        ) : (
+          <div className="font-roboto">
+            <h2 className="text-lg font-bold text-gray-800 mb-2">
+              Recent Vitals:
+            </h2>
+            <span className="text-medium">
+              Collected latestly on {recentRecord.appointmentDate}
+            </span>
+            <ul className="list-disc list-inside">
+              <li className="flex items-center">
+                <HeartIcon className="w-5 h-5 text-red-500 mr-2" />
+                <strong>Heart Rate:</strong> {recentRecord.heartRate}
+              </li>
+              <li className="flex items-center">
+                <ChartBarIcon className="w-5 h-5 text-blue-500 mr-2" />
+                <strong>Diastolic BP:</strong> {recentRecord.diastolicBP}
+              </li>
+              <li className="flex items-center">
+                <ChartBarIcon className="w-5 h-5 text-blue-500 mr-2" />
+                <strong>Systolic BP:</strong> {recentRecord.systolicBP}
+              </li>
+              <li className="flex items-center">
+                <ShieldCheckIcon className="w-5 h-5 text-yellow-500 mr-2" />
+                <strong>Body Temperature:</strong> {recentRecord.bodyTemp}
+              </li>
+              <li className="flex items-center">
+                <FingerPrintIcon className="w-5 h-5 text-green-500 mr-2" />
+                <strong>
+                  SpO<sub>2</sub>:
+                </strong>{" "}
+                {recentRecord.spo2Value}
+              </li>
+              <li className="flex items-center">
+                <LifebuoyIcon className="w-5 h-5 text-purple-500 mr-2" />
+                <strong>Respiratory Rate:</strong> {recentRecord.respRate}
+              </li>
+            </ul>
+          </div>
+        )}
       <div className="max-w-md bg-white shadow-md rounded-lg overflow-hidden">
         <div className="p-4">
           <ul className="space-y-2">
