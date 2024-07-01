@@ -31,6 +31,7 @@ function Dataentry() {
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [respRate, setRespRate] = useState("");
+  const [medication, setMedication] = useState("");
 
   const [predictionTextAsthma, setPredictionTextAsthma] = useState("");
   const [predictionTextDiarrhea, setPredictionTextDiarrhea] = useState("");
@@ -52,6 +53,7 @@ function Dataentry() {
       bodyTemp,
       spo2Value,
       respRate,
+      medication,
     };
 
     try {
@@ -85,6 +87,7 @@ function Dataentry() {
       bodyTemp,
       spo2Value,
       respRate,
+      
     };
 
     fetch("http://localhost:5000/predict", {
@@ -107,19 +110,20 @@ function Dataentry() {
         setPredictionTextFever(data["Fever likelihood"]);
         setPredictionTextCough(data["Cough likelihood"]);
         if (data['Asthma likelihood'] !== 0) {
-          showNotification('Asthma', predictionTextAsthma);
+          
+          showNotification('Asthma', data['Asthma likelihood']);
         }
         if (data['Diarrhea likelihood'] !== 0) {
-          showNotification('Diarrhea', predictionTextDiarrhea);
+          showNotification('Diarrhea', data['Diarrhea likelihood']);
         }
         if (data['Pneumonia likelihood'] !== 0) {
-          showNotification('Pneumonia', predictionTextPneumonia);
+          showNotification('Pneumonia', data['Pneumonia likelihood']);
         }
         if (data['Fever likelihood'] !== 0) {
-          showNotification('Fever', predictionTextFever);
+          showNotification('Fever', data['Fever likelihood']);
         }
         if (data['Cough likelihood'] !== 0) {
-          showNotification('Cough', predictionTextCough);
+          showNotification('Cough', data['Cough likelihood']);
         }
        
       })
@@ -128,13 +132,16 @@ function Dataentry() {
       });
   };
 
-  const showNotification = (category, likelihood,duration = 10000) => {
+  const showNotification = (category, likelihood) => {
     const notificationMessage = getNotificationMessage(category, likelihood);
     toast.info(notificationMessage, {
       
-      autoClose: duration, // 5 seconds
+      autoClose: 10000, // 5 seconds
       className: 'custom-toast',
-    });
+    }
+    
+  );
+  
   };
 
   const getNotificationMessage = (category, likelihood) => {
@@ -150,6 +157,17 @@ function Dataentry() {
       return ` very High ${category} risk. Attention needed.`;
     }
   };
+  const medicationsList = [
+      "Ceftriaxone",
+      "Cefepime",
+      "Meropenem",
+      "Piperacillin/tazobactam",
+      "Ciprofloxacin",
+      "Levofloxacin",
+      "Vancomycin",
+      "Linezolid",
+      "Tigecycline",
+    ];
    
 
   const cancelVal = (e) => {
@@ -311,6 +329,8 @@ function Dataentry() {
                   required
                 />
               </div>
+              
+              
             </div>
 
             {/* HeartRateSlider Component */}
@@ -341,6 +361,43 @@ function Dataentry() {
               <RespiratoryRateButton getRespRate={getRespRate} />{" "}
               {/* Use the new component */}
             </div>
+            <div className="col-span-1 p-4 rounded-xl shadow-lg">
+              <label
+                htmlFor="medication"
+                className="block font-semibold text-lg leading-6 text-gray-900"
+              >
+                Medication{" "}
+                <Infobutton message="Select Medicines" />
+              </label>
+              <div className="mt-2 font-bold">
+                {/* <input
+                  id="doctor_name"
+                  name="medication"
+                  type="text"
+                  className="ent_clr block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder="Enter Medications"
+                  value={medication}
+                  onChange={(e) => setMedication(e.target.value)}
+                  
+                /> */}
+                 <select
+          id="medication"
+          name="medication"
+          className="block flex-1 border-0 bg-transparent p-1.5 pl-1 pt-4 shadow-lg border-hidden rounded-md text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+          value={medication}
+          onChange={(e) => setMedication(e.target.value)}
+          required
+        >
+          <option value="" disabled>--Select Medication--</option>
+          {medicationsList.map((med, index) => (
+            <option key={index} value={med}>
+              {med}
+            </option>
+          ))}
+        </select>
+              </div>
+            </div>
+
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
@@ -372,6 +429,8 @@ function Dataentry() {
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextAsthma} Not yet predicted
                   </p>):predictionTextAsthma<=0.3?(
+                    
+                     
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextAsthma} No Pneumonia
                   </p>):predictionTextAsthma>0.3 && predictionTextAsthma<0.5?(
@@ -531,6 +590,7 @@ function Dataentry() {
                     Cough Prediction
                   </h3>
                   {predictionTextCough==0?(
+                    
                   <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextCough} Not yet predicted
                   </p>):predictionTextCough<=0.3?(

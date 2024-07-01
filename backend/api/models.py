@@ -32,11 +32,9 @@ class Profile(models.Model):
 
 class Patient(models.Model):
     patientName = models.CharField(max_length=100)
-    patientId = models.CharField(max_length=100, unique=True)
+    patientId = models.CharField(max_length=100, unique=True, primary_key=True)
     doctorName = models.CharField(max_length=100)
-    medConditions=models.CharField(max_length=1000)
     ward=models.CharField( max_length=500, null=True)
-    medication=models.CharField(max_length=1000)
     pastMedHis=models.CharField(max_length=1000)
     patientAge=models.IntegerField()
     patientHeight=models.CharField(max_length=20)
@@ -48,7 +46,7 @@ class Patient(models.Model):
         return self.patientId
     
 class PatientRecords(models.Model):
-    patientId = models.CharField(max_length=100)
+    patientId = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name='records')
     appointmentDate = models.DateField()
     appointmentTime = models.TimeField()
     heartRate = models.CharField(max_length=20)
@@ -57,17 +55,19 @@ class PatientRecords(models.Model):
     bodyTemp = models.CharField(max_length=20)
     spo2Value = models.CharField(max_length=25, null=True)
     respRate=models.CharField(max_length=20, null=True)
+    medication=models.CharField(max_length=1000,null=True)
 
     def __str__(self):
-        return f"{self.patientId} - {self.appointmentDate} {self.appointmentTime}"
+        return f"{self.patientId.patientId} - {self.appointmentDate} {self.appointmentTime}"
     
 
 class PatientDescription(models.Model):
-    patientId = models.CharField(max_length=100,unique=True)
+    # patientId = models.CharField(max_length=100,unique=True)
+    patientId = models.OneToOneField(Patient, on_delete=models.CASCADE, primary_key=True, related_name='description')
     description = models.TextField(default="No description available.")
     treatment = models.TextField(default="No treatment information available.")
     diagnosis = models.TextField(default="No diagnosis information available.")
     symptoms = models.TextField(default="No symptoms information available.")
 
     def __str__(self):
-        return f"{self.patientId}"
+        return f"{self.patientId.patientId}"

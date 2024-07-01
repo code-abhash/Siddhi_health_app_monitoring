@@ -29,8 +29,8 @@ const PatientInfo = ({ patientId }) => {
   if (!patientData) {
     return (
       <div className="font-roboto flex flex-col gap-6 p-6">
-        <h2 className="text-lg font-bold">MedCondition:</h2>
-        <h2 className="text-lg font-bold">Ward: </h2>
+        {/* <h2 className="text-lg font-bold">MedCondition:</h2> */}
+        
         <div className="font-roboto">
           <h2 className="text-lg font-bold text-gray-800 mb-2">
             Recent Vitals:
@@ -72,10 +72,10 @@ const PatientInfo = ({ patientId }) => {
 
   return (
     <div className="font-roboto flex flex-col gap-4 p-6">
-      <h2 className="text-lg font-semibold">
+      {/* <h2 className="text-lg font-semibold">
         Condition: {patientData.medConditions}
-      </h2>
-      <h2 className="text-lg font-semibold">Ward: {patientData.ward}</h2>
+      </h2> */}
+      
       {console.log(recentRecord)}
       {recentRecord === null || Object.keys(recentRecord).length === 0 ? (
         <div className="font-roboto">
@@ -127,7 +127,7 @@ const PatientInfo = ({ patientId }) => {
         </div>
       )}
       <h2 className="text-lg font-semibold">
-        Medication: {patientData.medication}
+        Medication: {recentRecord.medication}
       </h2>
     </div>
   );

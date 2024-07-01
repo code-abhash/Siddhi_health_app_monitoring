@@ -311,9 +311,7 @@ function PatientDetailsTable() {
     patientId: "",
     patientName: "",
     doctorName: "",
-    medConditions: "",
     ward: "",
-    medication: "",
     pastMedHis: "",
     patientAge: "",
     patientHeight: "",
@@ -365,9 +363,9 @@ function PatientDetailsTable() {
       patientId: patient.patientId,
       patientName: patient.patientName,
       doctorName: patient.doctorName,
-      medConditions: patient.medConditions,
+      
       ward: patient.ward,
-      medication: patient.medication,
+      
       pastMedHis: patient.pastMedHis,
       patientAge: patient.patientAge,
       patientHeight: patient.patientHeight,
@@ -384,6 +382,11 @@ function PatientDetailsTable() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const dataToSubmit = {
+      ...formData,
+      ward: formData.ward === "" ? null : formData.ward,
+      bed: formData.bed === "" ? null : formData.bed,
+    };
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/patients/${formData.patientId}/`,
@@ -392,7 +395,7 @@ function PatientDetailsTable() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(dataToSubmit),
         }
       );
       if (response.ok) {
@@ -430,8 +433,8 @@ function PatientDetailsTable() {
         accessor: "doctorName",
       },
       {
-        Header: "Medical Conditions",
-        accessor: "medConditions",
+        Header: "Ward",
+        accessor: "ward",
       },
       {
         Header: "Bed Number",
@@ -440,7 +443,7 @@ function PatientDetailsTable() {
       {
         Header: "Actions",
         Cell: ({ row }) => (
-          <div className="flex flex-row p-2 justify-around">
+          <div className="flex flex-row p-2 justify-start">
             <div className="flex justify-around gap-4">
               <button
                 className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -506,7 +509,7 @@ function PatientDetailsTable() {
                   {headerGroup.headers.map((column) => (
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className="p-5 bg-gray-600 text-white text-left first-of-type:rounded-l-lg last-of-type:rounded-r-lg"
+                      className="p-5  bg-gray-600 text-white text-left first-of-type:rounded-l-lg last-of-type:rounded-r-lg"
                     >
                       {column.render("Header")}
                       <span>
@@ -557,7 +560,7 @@ function PatientDetailsTable() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-gray-900">
-                    Patient Name
+                    Patient Name *
                   </label>
                   <input
                     type="text"
@@ -572,7 +575,7 @@ function PatientDetailsTable() {
                 </div>
                 <div>
                   <label className="block font-semibold text-gray-900">
-                    Patient ID
+                    Patient ID *
                   </label>
                   <input
                     type="text"
@@ -590,7 +593,7 @@ function PatientDetailsTable() {
                 </div>
                 <div>
                   <label className="block font-semibold text-gray-900">
-                    Doctor Name
+                    Doctor Name *
                   </label>
                   <input
                 type="text"
@@ -603,26 +606,12 @@ function PatientDetailsTable() {
                 required
               />
             </div>
-            <div>
-              <label className="block font-semibold text-gray-900">
-                Medical Conditions
-              </label>
-              <input
-                type="text"
-                id="medConditions"
-                name="medConditions"
-                value={formData.medConditions}
-                onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter Medical Conditions"
-                required
-              />
-            </div>
+           
             <div>
               <label className="block font-semibold text-gray-900">
                 Ward
               </label>
-              <input
+              {/* <input
                 type="text"
                 id="ward"
                 name="ward"
@@ -630,27 +619,25 @@ function PatientDetailsTable() {
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Enter Ward"
-                required
-              />
+                
+              /> */}
+              <select
+                            id="ward"
+                            name="ward"
+                            value={formData.ward}
+                            onChange={handleInputChange}
+                            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="">--Select Ward--</option>
+                            <option value="Tc1">Tc1</option>
+                            <option value="Tc2">Tc2</option>
+                            <option value="Tc3">Tc3</option>
+                          </select>
             </div>
+            
             <div>
               <label className="block font-semibold text-gray-900">
-                Medication
-              </label>
-              <input
-                type="text"
-                id="medication"
-                name="medication"
-                value={formData.medication}
-                onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter Medication"
-                required
-              />
-            </div>
-            <div>
-              <label className="block font-semibold text-gray-900">
-                Past Medical History
+                Past Medical History *
               </label>
               <input
                 type="text"
@@ -665,7 +652,7 @@ function PatientDetailsTable() {
             </div>
             <div>
               <label className="block font-semibold text-gray-900">
-                Patient Age
+                Patient Age *
               </label>
               <input
                 type="number"
@@ -680,7 +667,7 @@ function PatientDetailsTable() {
             </div>
             <div>
               <label className="block font-semibold text-gray-900">
-                Patient Height
+                Patient Height *
               </label>
               <input
                 type="text"
@@ -693,21 +680,33 @@ function PatientDetailsTable() {
                 required
               />
             </div>
+            
             <div>
-              <label className="block font-semibold text-gray-900">
-                Patient Blood Group
-              </label>
-              <input
-                type="text"
-                id="patientBloodGroup"
-                name="patientBloodGroup"
-                value={formData.patientBloodGroup}
-                onChange={handleInputChange}
-                className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter Patient Blood Group"
-                required
-              />
-            </div>
+                          <label
+                            htmlFor="patientBloodGroup"
+                            className="block font-semibold text-gray-900"
+                          >
+                            Patient Blood Group *
+                          </label>
+                          <select
+                            id="patientBloodGroup"
+                            name="patientBloodGroup"
+                            value={formData.patientBloodGroup}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            required
+                          >
+                            <option value="">Select Patient Blood Group</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                          </select>
+                        </div>
             <div>
               <label className="block font-semibold text-gray-900">
                 Patient Sex
@@ -735,20 +734,20 @@ function PatientDetailsTable() {
                 onChange={handleInputChange}
                 className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Enter Bed Number"
-                required
+                
               />
             </div>
           </div>
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-end mt-6 ">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
             >
               Save Changes
             </button>
             <button
               type="button"
-              className="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
               onClick={() => setEditPatient(null)}
             >
               Cancel

@@ -95,11 +95,11 @@ const Disease_summary = () => {
               <strong className="text-gray-700">Doctor Name:</strong>
               {patientDetails.doctorName}
             </li>
-            <li className="flex items-center">
+            {/* <li className="flex items-center">
               <ExclamationCircleIcon className="w-5 h-5 text-pink-500 mr-2" />
               <strong className="text-gray-700">Med Conditions:</strong>
               {patientDetails.medConditions}
-            </li>
+            </li> */}
             <li className="flex items-center">
               <BuildingOfficeIcon className="w-5 h-5 text-orange-500 mr-2" />
               <strong className="text-gray-700">Ward:</strong>

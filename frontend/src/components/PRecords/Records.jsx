@@ -375,7 +375,7 @@ const Records = () => {
                     {cell.render("Cell")}
                   </td>
                 ))}
-                <td className="p-4 flex flex-row gap-2 justify-around">
+                <td className="p-10 flex flex-row gap-2 justify-start">
                   <button
                     onClick={() => handleEditClick(row)}
                     className="p-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -284,9 +284,9 @@ def get_patient_info(request, patient_id):
         'patientId': patient.patientId,
         'patientName': patient.patientName,
         'doctorName': patient.doctorName,
-        'medConditions': patient.medConditions,
+        
         'ward': patient.ward,
-        'medication': patient.medication,
+        
         'pastMedHis': patient.pastMedHis,
         'patientAge': patient.patientAge,
         'patientHeight': patient.patientHeight,
@@ -305,6 +305,7 @@ def get_patient_info(request, patient_id):
             'bodyTemp': recent_record.bodyTemp,
             'spo2Value': recent_record.spo2Value,
             'respRate': recent_record.respRate,
+            'medication': recent_record.medication,
         }
     else:
         recent_record_data = {}
