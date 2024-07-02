@@ -125,6 +125,7 @@ import "./Auth.css";
 import "./CustomSwal.css";
 import AuthContext from "../../../Auth_contxt/Authcontext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -154,7 +155,9 @@ const Login = () => {
     e.preventDefault();
     if (username.length > 0) {
       loginUser(username, password);
+     
     }
+
   };
 
   const toggleShowPassword = () => {

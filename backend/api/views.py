@@ -216,6 +216,18 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = RegisterSerializer
 
+@api_view(['GET'])
+def userList(request):
+    username = request.query_params.get('username', None)
+
+    if username is not None:
+        users = User.objects.filter(username=username)
+    else:
+        users = User.objects.all()
+
+    serializer = RegisterSerializer(users, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getRoutes(request):

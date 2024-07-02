@@ -87,7 +87,7 @@ const Disease_summary = () => {
             <p className="text-gray-900">No vitals collected yet..</p>
             <button
               className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-              onClick={() => (window.location.href = "/nurse")}
+              onClick={() => (window.location.href = "/patientvitals")}
             >
               Collect Vitals
             </button>

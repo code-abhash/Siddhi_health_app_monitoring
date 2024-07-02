@@ -149,10 +149,10 @@ const Navbar = () => {
             Patient Records
           </NavLink>
           <NavLink
-            to="/nurse"
+            to="/patientvitals"
             className="pl-5 pr-5 font-bold hover:underline rounded"
           >
-            Data Entry
+            Patient Vitals
           </NavLink>
           {/* <NavLink
             to="/patientform"
@@ -266,10 +266,10 @@ const Navbar = () => {
               Patient Records
             </Link>
             <Link
-              to="/nurse"
+              to="/patientvitals"
               className="font-medium m-3 p-3 hover:bg-yellow-300 block rounded-lg"
             >
-              Data Entry
+              Patient Vitals
             </Link>
             {/* <Link
               to="/patientform"

@@ -5,6 +5,7 @@ import { createContext, useState, useEffect, useContext} from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -43,6 +44,17 @@ export const AuthProvider = ({ children }) => {
                 setAuthTokens(data);
                 setUser(jwtDecode(data.access));
                 localStorage.setItem("authTokens", JSON.stringify(data));
+                axios.get(`http://127.0.0.1:8000/api/users/?username=${username}`).then(response => {
+                    // Handle successful response
+                    console.log('User data:', response.data[0].role);
+                    if(response.data[0].role==='nurse'){
+                        navigate("/patientvitals");
+                    }
+                  }) 
+                  .catch(error => {
+                    // Handle errors
+                    console.error('Error fetching user data:', error);
+                  });
                 navigate("/home");
                 Swal.fire({
                     title: "Login Successful",

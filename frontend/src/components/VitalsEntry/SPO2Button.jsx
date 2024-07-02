@@ -42,7 +42,7 @@ const SPO2Button = (props) => {
         htmlFor="spo2"
         className="block text-lg font-semibold leading-6 text-gray-900"
       >
-        SPO2 (%)
+        SpO<sub>2</sub> (%)
         <Infobutton message="Enter saturated oxygen value (SPO2) of patients using the slider or by using the arrows." />
       </label>
       <div className="mt-2 flex justify-center items-center">
@@ -69,7 +69,7 @@ const SPO2Button = (props) => {
       </div>
       <div className="mt-4 text-center">
         <span className="text-xl font-medium text-gray-900">
-          Selected SPO2%: <span className="text-indigo-600">{spo2Value}%</span>
+          Selected SpO<sub>2</sub>%: <span className="text-indigo-600">{spo2Value}%</span>
         </span>
       </div>
     </div>

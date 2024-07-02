@@ -55,11 +55,17 @@ function Dataentry() {
       respRate,
       medication,
     };
+    const dataToSubmit = {
+      ...formData,
+      medication: formData.medication === "" ? null : formData.medication,
+      
+    };
+
 
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/patientsrecordlist/",
-        formData
+        dataToSubmit
       );
       console.log("Data submitted successfully:", response.data);
       alert("Data submitted successfully");
@@ -198,8 +204,7 @@ function Dataentry() {
     setPatientId(patient.patientId);
     setPatientName(patient.patientName);
     setDoctorName(patient.doctorName);
-    // You can perform additional actions here with the selected patient ID
-    //console.log("Selected Patient ID:", patientId);
+    
   };
 
   return (
@@ -211,7 +216,7 @@ function Dataentry() {
           <div className="border-b border-gray-900/10 pb-12">
             <div className="flex flex-row justify-between">
               <h1 className="text-base font-extrabold mt-2 leading-7 text-gray-900">
-                VITALS ENTRY PAGE
+                PATIENT VITALS ENTRY PAGE
               </h1>
             </div>
             <p className="text-sm leading-6 text-gray-800">
@@ -427,20 +432,20 @@ function Dataentry() {
                   </p> */}
                   {predictionTextAsthma==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Not yet predicted
+                    Not yet predicted
                   </p>):predictionTextAsthma<=0.3?(
                     
                      
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} No Pneumonia
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     No Asthama
                   </p>):predictionTextAsthma>0.3 && predictionTextAsthma<0.5?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Asthama
-                  </p>):predictionTextAsthma>=0.5 && predictionTextAsthma<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} High Asthama
-                  </p>):predictionTextAsthma>0.75 && predictionTextAsthma<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextAsthma} Serious Asthama
-                    </p>):(<p className="font-bold text-red-900">{predictionTextAsthma}<br/>Need Attention High Asthama</p>
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     Asthama Possibility
+                  </p>):predictionTextAsthma>=0.5 && predictionTextAsthma<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    High Asthama
+                  </p>):predictionTextAsthma>0.75 && predictionTextAsthma<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    Serious Asthama
+                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Asthama</p>
                     
                   )}
                 </div>
@@ -470,18 +475,18 @@ function Dataentry() {
                   
                    {predictionTextDiarrhea==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Not yet predicted
+                    Not yet predicted
                   </p>):predictionTextDiarrhea<=0.3?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} No Diarrhea
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    No Diarrhea
                   </p>):predictionTextDiarrhea>0.3 && predictionTextDiarrhea<0.5?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Diarrhea
-                  </p>):predictionTextDiarrhea>=0.5 && predictionTextDiarrhea<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} High Diarrhea
-                  </p>):predictionTextDiarrhea>0.75 && predictionTextDiarrhea<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextDiarrhea} Serious Diarrhea
-                    </p>):(<p className="font-bold text-red-900">{predictionTextDiarrhea}<br/>Need Attention High Diarrhea</p>
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     Diarrhea
+                  </p>):predictionTextDiarrhea>=0.5 && predictionTextDiarrhea<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    High Diarrhea
+                  </p>):predictionTextDiarrhea>0.75 && predictionTextDiarrhea<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    Serious Diarrhea
+                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Diarrhea</p>
                     
                   )}
                 </div>
@@ -510,18 +515,18 @@ function Dataentry() {
                   </h3>
                   {predictionTextPneumonia==0?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Not yet predicted
+                     Not yet predicted
                   </p>):predictionTextPneumonia<=0.3?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} No Pneumonia
+                    No Pneumonia
                   </p>):predictionTextPneumonia>0.3 && predictionTextPneumonia<0.5?(
                   <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Pneuomonia
+                    Pneuomonia
                   </p>):predictionTextPneumonia>=0.5 && predictionTextPneumonia<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} High Pneuomonia
+                    High Pneuomonia
                   </p>):predictionTextPneumonia>0.75 && predictionTextPneumonia<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextPneumonia} Serious Pneuomonia
-                    </p>):(<p className="font-bold text-red-900">{predictionTextPneumonia}<br/>Need Attention High Pneumonia</p>
+                    Serious Pneuomonia
+                    </p>):(<p className="font-bold text-red-900"><br/>Need Attention High Pneumonia</p>
                     
                   )}
                 
@@ -550,19 +555,19 @@ function Dataentry() {
                     Fever Prediction
                   </h3>
                   {predictionTextFever==0?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} Not yet predicted
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     Not yet predicted
                   </p>):predictionTextFever<=0.3?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} No Fever
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     No Fever
                   </p>):predictionTextFever>0.3 && predictionTextFever<0.5?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever}  fever
-                  </p>):predictionTextFever>=0.5 && predictionTextFever<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} High fever
-                  </p>):predictionTextFever>0.75 && predictionTextFever<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextFever} Serious fever
-                    </p>):(<p className="font-bold text-red-900">{predictionTextFever}<br/>Need Attention High Fever</p>
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     fever
+                  </p>):predictionTextFever>=0.5 && predictionTextFever<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     High fever
+                  </p>):predictionTextFever>0.75 && predictionTextFever<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    Serious fever
+                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Fever</p>
                     
                   )}
                 </div>
@@ -591,19 +596,19 @@ function Dataentry() {
                   </h3>
                   {predictionTextCough==0?(
                     
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} Not yet predicted
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     Not yet predicted
                   </p>):predictionTextCough<=0.3?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} No Cough
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    No Cough
                   </p>):predictionTextCough>0.3 && predictionTextCough<0.5?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough}  Cough
-                  </p>):predictionTextCough>=0.5 && predictionTextCough<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} High Cough
-                  </p>):predictionTextCough>0.75 && predictionTextCough<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    {predictionTextCough} Serious Cough
-                    </p>):(<p className="font-bold text-red-900">{predictionTextCough}<br/>Need Attention High Cough</p>
+                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    Cough
+                  </p>):predictionTextCough>=0.5 && predictionTextCough<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                     High Cough
+                  </p>):predictionTextCough>0.75 && predictionTextCough<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    Serious Cough
+                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Cough</p>
                     
                   )}
                 </div>

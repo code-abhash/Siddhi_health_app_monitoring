@@ -27,13 +27,19 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/disease" element={<Disease />} />
-          <Route path="/disease_summary/:patientId" element={<Disease_page/>}/>
           <Route 
             path="/patients" 
             element={
               <PrivateRoute>
                 <Patients />
+              </PrivateRoute>
+            }
+          />
+          <Route 
+            path="/disease_summary/:patientId" 
+            element={
+              <PrivateRoute>
+                <Disease_page/>
               </PrivateRoute>
             }
           />
@@ -46,7 +52,7 @@ const App = () => {
             }
           />
           <Route 
-            path="/nurse" 
+            path="/patientvitals" 
             element={
               <PrivateRoute>
                 <Dataentry />
