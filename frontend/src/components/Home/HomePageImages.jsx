@@ -23,13 +23,14 @@ const ImageSlider = ({ images }) => {
           <img
             src={image.url}
             alt={`Slide ${index}`}
-            className="w-3/4 h-auto max-h-96 mx-auto border-hidden rounded-md"
+            className="w-10/12 h-auto  mx-auto border-hidden rounded-md"
+            style={{ maxHeight: "450px" }}
           />
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+          {/* <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
             <p className="text-white text-md font-bold bg-gray-500 bg-opacity-50 p-2 rounded-md">
-              {image.caption}
+              
             </p>
-          </div>
+          </div> */}
         </div>
 
       ))}
