@@ -17,12 +17,16 @@ import PatientDetailsTable from "./components/Patient-Records/PatientRecordsData
 import PatientRecordsTab from "./components/Patient-Records/PatientRecordsTab";
 import Disease_summary from "./components/Disease-Summary/Disease-summary";
 import Disease_page from "./components/Disease-Summary/Disease_page";
+import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
+import PasswordResetRequest from "./components/auth/PasswordRequest";
 
 const App = () => {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          <Route path="/password_reset" element={<PasswordResetRequest/>} />
+          <Route path="/reset/:username/:token" element={<PasswordResetConfirm/>} />
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Signup />} />

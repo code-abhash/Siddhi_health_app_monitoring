@@ -217,7 +217,7 @@ const Login = () => {
               <div className="text-stone-950 font-bold">
                 <input type="checkbox" value="1" /> Remember me
               </div>
-              <Link to="/" className="text-red-600 font-semibold">
+              <Link to="/password_reset" className="text-red-600 font-semibold">
                 Forgot Password?
               </Link>
             </div>

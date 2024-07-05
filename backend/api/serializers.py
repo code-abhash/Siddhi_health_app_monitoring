@@ -83,6 +83,38 @@ class EditPatientDescriptionSerializer(serializers.ModelSerializer):
         model=PatientDescription
         fields=['description','treatment','diagnosis','symptoms']
 
+from rest_framework import serializers
+from api.models import User 
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.urls import reverse
+
+class PasswordResetSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+    def validate_username(self, value):
+        if not User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("There is no user registered with this username.")
+        return value
+
+    def send_password_reset_email(self, user):
+        token = default_token_generator.make_token(user)
+        
+        full_url = f"http://localhost:5173/reset/{user.username}/{token}/"
+        send_mail(
+            'Password Reset Request',
+            f'Click the link to reset your password: {full_url}',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email]
+        )
+
+    def save(self):
+        username = self.validated_data['username']
+        user = User.objects.get(username=username)
+        self.send_password_reset_email(user)
+
+
 
 
     
