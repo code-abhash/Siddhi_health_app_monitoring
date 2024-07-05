@@ -20,6 +20,7 @@ import Disease_page from "./components/Disease-Summary/Disease_page";
 import PasswordResetConfirm from "./components/auth/PasswordResetConfirm";
 import PasswordResetRequest from "./components/auth/PasswordRequest";
 
+
 const App = () => {
   return (
     <Router>
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          
           <Route 
             path="/patients" 
             element={
