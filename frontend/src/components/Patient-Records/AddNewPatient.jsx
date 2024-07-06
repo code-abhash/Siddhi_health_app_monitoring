@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 
 function AddPatientForm() {
+  // Initial form data state
   const initialFormData = {
     patientName: "",
     patientId: "",
@@ -15,26 +15,30 @@ function AddPatientForm() {
     bed: "",
   };
 
+  // States for form data, form visibility, and hint visibility
   const [formData, setFormData] = useState(initialFormData);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false); // State to manage form visibility
   const [showHint, setShowHint] = useState(false); // State to manage hint visibility
 
+  // Handle form input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Show hint when typing in patientId field
     if (e.target.name === "patientId") {
-      setShowHint(true); // Show hint when typing in patientId field
+      setShowHint(true);
     } else {
-      setShowHint(false); // Hide hint for other fields
+      setShowHint(false);
     }
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if ward is an empty string and set it to null
+    // Check if ward or bed are empty strings and convert them to null
     const dataToSubmit = {
       ...formData,
       ward: formData.ward === "" ? null : formData.ward,
@@ -53,12 +57,14 @@ function AddPatientForm() {
         }
       );
 
+      // Handle HTTP errors
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
+      // Alert on successful data submission
       alert("Data submitted successfully");
-      window.location.reload();
+      window.location.reload(); // Reload page to update patient list (consider better state management or redirection)
       setFormData(initialFormData); // Reset form data after successful submission
       setShowForm(false); // Close the popup form after submission
     } catch (error) {
@@ -67,6 +73,7 @@ function AddPatientForm() {
     }
   };
 
+  // Handle form cancellation
   const handleCancel = () => {
     setFormData(initialFormData); // Reset form data
     setShowForm(false); // Close the form

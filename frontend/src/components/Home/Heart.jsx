@@ -5,17 +5,23 @@ import axios from 'axios';
 import moment from 'moment';
 
 const HeartChart = ({ patientId }) => {
+  // State to store chart data
   const [chartData, setChartData] = useState({});
+  // State to store filter type (day, week, or month)
   const [filterType, setFilterType] = useState('day');
+  // State to store selected date (for day filter)
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
 
+  // Function to fetch and set chart data
   const chart = async () => {
     try {
+      // Construct API URL based on filter type
       let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
       if (filterType === 'day') {
         url += `&date=${selectedDate}`;
       }
 
+      // Fetch data from API
       const res = await axios.get(url);
       console.log(res); // Log the full response
       const data = res.data;
@@ -24,6 +30,7 @@ const HeartChart = ({ patientId }) => {
         let appoint_times = [];
         let heartRates = [];
 
+        // Process data for day filter
         if (filterType === 'day') {
           for (const dataObj of data) {
             appoint_times.push(dataObj.appointmentTime);
@@ -33,7 +40,7 @@ const HeartChart = ({ patientId }) => {
             labels: appoint_times,
             datasets: [
               {
-                label: "Heart Rate of Patients(bpm)",
+                label: "Heart Rate of Patients (bpm)",
                 data: heartRates,
                 backgroundColor: ["rgba(255, 99, 132, 0.6)"],
                 borderWidth: 4,
@@ -41,6 +48,7 @@ const HeartChart = ({ patientId }) => {
             ],
           });
         } else if (filterType === 'week') {
+          // Process data for week filter
           const startOfWeek = moment().startOf('week');
           const endOfWeek = moment().endOf('week');
 
@@ -72,6 +80,7 @@ const HeartChart = ({ patientId }) => {
             return null;
           });
         } else if (filterType === 'month') {
+          // Process data for month filter
           const startOfMonth = moment().startOf('month');
           const endOfMonth = moment().endOf('month');
 
@@ -110,11 +119,12 @@ const HeartChart = ({ patientId }) => {
           });
         }
 
+        // Set chart data state
         setChartData({
           labels: appoint_times,
           datasets: [
             {
-              label: filterType === 'day' ? "Heart Rate per Hour(bpm)" : (filterType === 'week' ? "Average Heart Rate per Day(bpm)" : "Average Heart Rate per Week(bpm)"),
+              label: filterType === 'day' ? "Heart Rate per Hour (bpm)" : (filterType === 'week' ? "Average Heart Rate per Day (bpm)" : "Average Heart Rate per Week (bpm)"),
               data: heartRates,
               backgroundColor: ["rgba(255, 99, 132, 0.6)"],
               borderWidth: 4,
@@ -129,14 +139,17 @@ const HeartChart = ({ patientId }) => {
     }
   };
 
+  // Fetch chart data whenever patientId, filterType, or selectedDate changes
   useEffect(() => {
     chart();
   }, [patientId, filterType, selectedDate]);
 
+  // Handle filter type change
   const handleFilterChange = (e) => {
     setFilterType(e.target.value);
   };
 
+  // Handle date change
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };

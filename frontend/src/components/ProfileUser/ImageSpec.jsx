@@ -1,107 +1,131 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Profilespec = () => {
-  const { username } = useParams();
-  const [profile, setProfile] = useState(null);
-  const [name, setName] = useState('');
-  const [specialty, setSpecialty] = useState('');
-  const [image, setImage] = useState(null);
-  const [currentImage, setCurrentImage] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const { username } = useParams(); // Extracts username from URL parameters
+  const [profile, setProfile] = useState(null); // State to store profile data
+  const [name, setName] = useState(""); // State to manage name input field
+  const [specialty, setSpecialty] = useState(""); // State to manage specialty input field
+  const [image, setImage] = useState(null); // State to manage profile image file
+  const [currentImage, setCurrentImage] = useState(""); // State to store current profile image URL
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [isFormVisible, setIsFormVisible] = useState(false); // State to manage visibility of edit/create form
+  const [user, setUser] = useState(null); // State to store user data
+  const [error, setError] = useState(null); // State to manage error messages
 
+  // Fetches user data based on username
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/users/?username=${username}`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/users/?username=${username}`
+        );
         const data = response.data;
         if (data.length > 0) {
-          setUser(data[0]);
+          setUser(data[0]); // Sets user data if found
         } else {
-          setUser(null);
+          setUser(null); // Sets user to null if not found
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Failed to fetch user data.');
+        console.error("Error fetching user data:", error);
+        setError("Failed to fetch user data.");
       }
     };
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/profiles/${username}/`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/profiles/${username}/`
+        );
         if (response.data) {
-          setProfile(response.data);
-          setName(response.data.name);
-          setSpecialty(response.data.specialty);
-          setCurrentImage(response.data.image); // Set current profile image URL
+          setProfile(response.data); // Sets profile data if found
+          setName(response.data.name); // Sets name from profile data
+          setSpecialty(response.data.specialty); // Sets specialty from profile data
+          setCurrentImage(response.data.image); // Sets current profile image URL
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          // Profile not found, set profile to null
-          setProfile(null);
+          setProfile(null); // Sets profile to null if not found (404)
         } else {
-          console.error('Error fetching profile:', error);
-          setError('Failed to fetch profile data.');
+          console.error("Error fetching profile:", error);
+          setError("Failed to fetch profile data.");
         }
       } finally {
-        setLoading(false);
+        setLoading(false); // Sets loading to false after fetch completes
       }
     };
 
-    fetchUserData();
-    fetchProfile();
+    fetchUserData(); // Calls fetchUserData on component mount or when username changes
+    fetchProfile(); // Calls fetchProfile on component mount or when username changes
   }, [username]);
 
+  // Handles image file selection change
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    setImage(e.target.files[0]); // Sets image state to selected file
   };
 
+  // Handles name input change
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setName(e.target.value); // Updates name state on input change
   };
 
+  // Handles form submission (update or create profile)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('username', username);
-    formData.append('name', name); // Include name in formData
-    formData.append('specialty', specialty);
+    formData.append("username", username); // Appends username to formData
+    formData.append("name", name); // Appends name to formData
+    formData.append("specialty", specialty); // Appends specialty to formData
 
-    // Append image to formData if selected, otherwise use currentImage
+    // Appends image to formData if selected, otherwise uses currentImage
     if (image) {
-      formData.append('image', image);
+      formData.append("image", image);
     }
 
     try {
       let response;
       if (profile) {
-        response = await axios.put(`http://127.0.0.1:8000/api/profiles/${username}/`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        // If profile exists, update it using PUT request
+        response = await axios.put(
+          `http://127.0.0.1:8000/api/profiles/${username}/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
       } else {
-        response = await axios.post(`http://127.0.0.1:8000/api/profiles/`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        setProfile(response.data); // Update profile state after creation
+        // If profile doesn't exist, create it using POST request
+        response = await axios.post(
+          `http://127.0.0.1:8000/api/profiles/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        setProfile(response.data); // Updates profile state after creation
       }
-      alert('Profile updated successfully');
-      setIsFormVisible(false);
-      window.location.reload();
+      alert("Profile updated successfully"); // Shows success message on update/create
+      setIsFormVisible(false); // Hides form after submission
+      window.location.reload(); // Reloads the page to reflect changes
     } catch (error) {
-      console.error('Error updating profile:', error);
-      setError('Failed to update profile.');
+      console.error("Error updating profile:", error);
+      setError("Failed to update profile."); // Sets error message on update/create failure
     }
   };
 
+  // Handles cancellation of form editing
+  const handleCancel = () => {
+    setIsFormVisible(false); // Hides form on cancel
+    setImage(null); // Clears image selection
+  };
+
+  // Conditional rendering based on loading, error, or user not found
   if (loading) {
     return <div className="text-center mt-5">Loading...</div>;
   }
@@ -114,43 +138,56 @@ const Profilespec = () => {
     return <div className="text-center mt-5">User not found</div>;
   }
 
+  // Renders profile form and details
   return (
-    <div
-      className="max-w-2xl m-auto p-4 bg-gray-300 shadow-md rounded-lg overflow-hidden"
-      style={{ maxHeight: '600px' }} // Set max-height for the containing div
-    >
+    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg overflow-hidden">
+      {/* Display current profile image or upload placeholder */}
       {profile && (
-        <>
+        <div className="flex justify-center mb-6">
           {currentImage ? (
             <img
               src={`http://127.0.0.1:8000${currentImage}`}
               alt="Profile"
-              className="w-32 h-32 object-cover rounded-full mt-4"
+              className="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-white"
             />
           ) : (
-            <div className="flex items-center justify-center w-32 h-32 bg-gray-200 rounded-full m-4">
+            <div className="flex items-center justify-center w-32 h-32 bg-gray-200 rounded-full shadow-inner">
               <span className="text-gray-500">Upload Profile Picture</span>
             </div>
           )}
-        </>
+        </div>
       )}
-      <p className="text-gray-600 font-bold">Username: {user.username}</p>
-      <p className="text-gray-600 font-bold">Name: {name}</p>
-      <p className="text-gray-600 font-bold">Specialty: {specialty}</p>
-      <p className="text-gray-600 font-bold">Email: {user.email}</p>
-      <p className="text-gray-600 font-bold">Role: {user.role}</p>
-
-      <button
-        className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-700 transition duration-200"
-        onClick={() => setIsFormVisible(!isFormVisible)}
-      >
-        {profile ? 'Edit Profile' : 'Create Profile'}
-      </button>
-
+      {/* Display user and profile details */}
+      <div className="text-center mb-6">
+        <p className="text-gray-700 font-semibold text-lg">
+          Username: {user.username}
+        </p>
+        <p className="text-gray-700 font-semibold text-lg">Name: {name}</p>
+        <p className="text-gray-700 font-semibold text-lg">
+          Specialty: {specialty}
+        </p>
+        <p className="text-gray-700 font-semibold text-lg">
+          Email: {user.email}
+        </p>
+        <p className="text-gray-700 font-semibold text-lg">Role: {user.role}</p>
+      </div>
+      {/* Display edit/create profile button */}
+      <div className="flex justify-center mb-6">
+        <button
+          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300"
+          onClick={() => setIsFormVisible(!isFormVisible)}
+        >
+          {profile ? "Edit Profile" : "Create Profile"}
+        </button>
+      </div>
+      {/* Display profile edit/create form */}
       {isFormVisible && (
-        <form onSubmit={handleSubmit} className="mt-4">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Name
             </label>
             <input
@@ -161,8 +198,11 @@ const Profilespec = () => {
               className="border border-gray-300 rounded-md px-4 py-2 w-full"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="specialty" className="block text-gray-700 font-bold mb-2">
+          <div>
+            <label
+              htmlFor="specialty"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Specialty
             </label>
             <input
@@ -173,8 +213,11 @@ const Profilespec = () => {
               className="border border-gray-300 rounded-md px-4 py-2 w-full"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 font-bold mb-2">
+          <div>
+            <label
+              htmlFor="image"
+              className="block text-gray-700 font-medium mb-2"
+            >
               Profile Picture
             </label>
             <input
@@ -183,20 +226,39 @@ const Profilespec = () => {
               onChange={handleImageChange}
               className="border border-gray-300 rounded-md px-4 py-2 w-full"
             />
-            {/* Display current image URL if available */}
-            {currentImage && (
-              <p className="mt-2 text-gray-600 hidden">Current Image: {currentImage}</p>
+            {image && (
+              <div className="mt-4">
+                <h3 className="text-gray-700 font-medium mb-2">Preview:</h3>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Profile Preview"
+                  className="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-white"
+                />
+              </div>
             )}
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
-          >
-            {profile ? 'Save' : 'Create'}
-          </button>
+          <div className="flex justify-center space-x-4">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition duration-300"
+            >
+              {profile ? "Save" : "Create"}
+            </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white py-2 px-6 rounded-md hover:bg-red-600 transition duration-300"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
-      <Link to='/home' className='text-gray-600'>Click here to go to home page</Link> 
+      <div className="text-center mt-6">
+        <Link to="/home" className="text-blue-500 hover:underline">
+          Click here to go to home page
+        </Link>
+      </div>
     </div>
   );
 };

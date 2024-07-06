@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const DetailsShow = ({ patientId }) => {
+  // State to store patient details
   const [patientDetails, setPatientDetails] = useState({
     description: "",
     treatment: "",
@@ -9,8 +10,8 @@ const DetailsShow = ({ patientId }) => {
     symptoms: ""
   });
 
+  // Fetch patient details when component mounts or patientId changes
   useEffect(() => {
-    // Fetch patient details from the backend
     axios.get(`http://127.0.0.1:8000/api/patient_description/${patientId}/`)
       .then(response => {
         setPatientDetails(response.data); // Assuming the response is an object with properties for each type
@@ -24,6 +25,7 @@ const DetailsShow = ({ patientId }) => {
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-lg font-bold text-gray-900 mb-4">Patient Details</h2>
       <div className="grid grid-cols-2 gap-4">
+        {/* Description section */}
         <div className='border-hidden shadow-lg rounded-lg'>
           <h3 className="text-md font-bold text-gray-700 mb-4 ml-2">Description:</h3>
           <textarea
@@ -32,6 +34,7 @@ const DetailsShow = ({ patientId }) => {
             readOnly
           />
         </div>
+        {/* Treatment section */}
         <div className='border-hidden shadow-lg rounded-lg'>
           <h3 className="text-md font-bold text-gray-700 mb-4 ml-2">Treatment:</h3>
           <textarea
@@ -40,6 +43,7 @@ const DetailsShow = ({ patientId }) => {
             readOnly
           />
         </div>
+        {/* Diagnosis section */}
         <div className='border-hidden shadow-lg rounded-lg'>
           <h3 className="text-md font-bold text-gray-700 mb-4 ml-2">Diagnosis:</h3>
           <textarea
@@ -48,6 +52,7 @@ const DetailsShow = ({ patientId }) => {
             readOnly
           />
         </div>
+        {/* Symptoms section */}
         <div className='border-hidden shadow-lg rounded-lg'>
           <h3 className="text-md font-bold text-gray-700 mb-4 ml-2">Symptoms:</h3>
           <textarea

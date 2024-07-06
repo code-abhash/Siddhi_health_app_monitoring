@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AddDetails = ({ patientId }) => {
+  // Initial form data with default values
   const initialFormData = {
     patientId: patientId,
     description: "",
@@ -10,12 +11,15 @@ const AddDetails = ({ patientId }) => {
     symptoms: ""
   };
 
+  // State to manage form input values
   const [formData, setFormData] = useState(initialFormData);
+  // State to manage form visibility
   const [showForm, setShowForm] = useState(false);
+  // State to check if the form is in editing mode
   const [isEditing, setIsEditing] = useState(false);
 
+  // Fetch existing data if available
   useEffect(() => {
-    // Fetch existing data if available
     axios.get(`http://127.0.0.1:8000/api/patient_description/${patientId}/`)
       .then(response => {
         const { data } = response;
@@ -39,11 +43,13 @@ const AddDetails = ({ patientId }) => {
       });
   }, [patientId]);
 
+  // Handle changes in form inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditing) {
@@ -69,6 +75,7 @@ const AddDetails = ({ patientId }) => {
     }
   };
 
+  // Handle form close
   const onClose = () => {
     setShowForm(false);
   };
@@ -76,12 +83,12 @@ const AddDetails = ({ patientId }) => {
   return (
     <div>
       <div className='flex justify-end'>
-      <button
-        onClick={() => setShowForm(true)}
-        className={`bg-${isEditing ? 'blue' : 'green'}-500 hover:bg-${isEditing ? 'blue' : 'green'}-700 text-white font-bold py-2 px-4 m-6 rounded-lg`}
-      >
-        {isEditing ? 'Edit Description' : 'Add Description'}
-      </button>
+        <button
+          onClick={() => setShowForm(true)}
+          className={`bg-${isEditing ? 'blue' : 'green'}-500 hover:bg-${isEditing ? 'blue' : 'green'}-700 text-white font-bold py-2 px-4 m-6 rounded-lg`}
+        >
+          {isEditing ? 'Edit Description' : 'Add Description'}
+        </button>
       </div>
 
       {showForm && (
@@ -109,23 +116,17 @@ const AddDetails = ({ patientId }) => {
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700">Diagnosis</label>
-                {/* <textarea
+                {/* Diagnosis field is a select dropdown */}
+                <select
+                  id="diagnosis"
                   name="diagnosis"
                   value={formData.diagnosis}
                   onChange={handleChange}
                   className="border rounded-lg w-full p-2"
-                /> */}
-                <select
-                id="daignosi"
-                name="diagnosis"
-                value={formData.diagnosis}
-                onChange={handleChange}
-                className="border rounded-lg w-full p-2"
                 >
                   <option value="">--Diagnosis--</option>
                   <option value="Head Injury">Head Injury</option>
                   <option value="Spinal Injury">Spinal Injury</option>
-
                 </select>
               </div>
               <div className="mb-4">
@@ -147,8 +148,8 @@ const AddDetails = ({ patientId }) => {
                 </button>
                 <button
                   type="submit"
-                  onClick={()=>{
-                    window.location.reload()
+                  onClick={() => {
+                    window.location.reload(); // Reload the page after form submission
                   }}
                   className={`bg-${isEditing ? 'blue' : 'green'}-500 hover:bg-${isEditing ? 'blue' : 'green'}-700 text-white font-bold py-2 px-4 rounded-lg`}
                 >
