@@ -22,7 +22,7 @@ input[type='number'] {
 
 const SPO2Button = (props) => {
   const [spo2Value, setSpo2Value] = useState(95); // Default to average normal SPO2 value
-  props.getspo2Value(spo2Value)
+  props.getspo2Value(spo2Value);
 
   // Function to handle slider change
   const handleSliderChange = (event) => {
@@ -69,7 +69,8 @@ const SPO2Button = (props) => {
       </div>
       <div className="mt-4 text-center">
         <span className="text-xl font-medium text-gray-900">
-          Selected SpO<sub>2</sub>%: <span className="text-indigo-600">{spo2Value}%</span>
+          Selected SpO<sub>2</sub>%:{" "}
+          <span className="text-indigo-600">{spo2Value}%</span>
         </span>
       </div>
     </div>

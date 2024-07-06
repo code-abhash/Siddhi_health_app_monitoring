@@ -1,4 +1,3 @@
-
 import React from 'react'
 import AddPatientForm from './AddNewPatient'
 import PatientDetailsTable from './PatientRecordsData'

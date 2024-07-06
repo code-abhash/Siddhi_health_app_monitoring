@@ -12,13 +12,11 @@ import RespiratoryRateButton from "./RespiratoryRateButton";
 import Panel from "../Home/Panel";
 import axios from "axios";
 import Footer from "../Footer";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dataentry() {
   const navigate = useNavigate();
-  
 
   const [patientId, setPatientId] = useState("");
   const [patientName, setPatientName] = useState("");
@@ -41,7 +39,6 @@ function Dataentry() {
 
   const submitVal = async (e) => {
     e.preventDefault();
-    
 
     const formData = {
       patientId,
@@ -58,9 +55,7 @@ function Dataentry() {
     const dataToSubmit = {
       ...formData,
       medication: formData.medication === "" ? null : formData.medication,
-      
     };
-
 
     try {
       const response = await axios.post(
@@ -93,7 +88,6 @@ function Dataentry() {
       bodyTemp,
       spo2Value,
       respRate,
-      
     };
 
     fetch("http://localhost:5000/predict", {
@@ -115,23 +109,21 @@ function Dataentry() {
         setPredictionTextPneumonia(data["Pneumonia likelihood"]);
         setPredictionTextFever(data["Fever likelihood"]);
         setPredictionTextCough(data["Cough likelihood"]);
-        if (data['Asthma likelihood'] !== 0) {
-          
-          showNotification('Asthma', data['Asthma likelihood']);
+        if (data["Asthma likelihood"] !== 0) {
+          showNotification("Asthma", data["Asthma likelihood"]);
         }
-        if (data['Diarrhea likelihood'] !== 0) {
-          showNotification('Diarrhea', data['Diarrhea likelihood']);
+        if (data["Diarrhea likelihood"] !== 0) {
+          showNotification("Diarrhea", data["Diarrhea likelihood"]);
         }
-        if (data['Pneumonia likelihood'] !== 0) {
-          showNotification('Pneumonia', data['Pneumonia likelihood']);
+        if (data["Pneumonia likelihood"] !== 0) {
+          showNotification("Pneumonia", data["Pneumonia likelihood"]);
         }
-        if (data['Fever likelihood'] !== 0) {
-          showNotification('Fever', data['Fever likelihood']);
+        if (data["Fever likelihood"] !== 0) {
+          showNotification("Fever", data["Fever likelihood"]);
         }
-        if (data['Cough likelihood'] !== 0) {
-          showNotification('Cough', data['Cough likelihood']);
+        if (data["Cough likelihood"] !== 0) {
+          showNotification("Cough", data["Cough likelihood"]);
         }
-       
       })
       .catch((error) => {
         console.error("Error fetching prediction:", error);
@@ -141,13 +133,9 @@ function Dataentry() {
   const showNotification = (category, likelihood) => {
     const notificationMessage = getNotificationMessage(category, likelihood);
     toast.info(notificationMessage, {
-      
       autoClose: 10000, // 5 seconds
-      className: 'custom-toast',
-    }
-    
-  );
-  
+      className: "custom-toast",
+    });
   };
 
   const getNotificationMessage = (category, likelihood) => {
@@ -164,17 +152,16 @@ function Dataentry() {
     }
   };
   const medicationsList = [
-      "Ceftriaxone",
-      "Cefepime",
-      "Meropenem",
-      "Piperacillin/tazobactam",
-      "Ciprofloxacin",
-      "Levofloxacin",
-      "Vancomycin",
-      "Linezolid",
-      "Tigecycline",
-    ];
-   
+    "Ceftriaxone",
+    "Cefepime",
+    "Meropenem",
+    "Piperacillin/tazobactam",
+    "Ciprofloxacin",
+    "Levofloxacin",
+    "Vancomycin",
+    "Linezolid",
+    "Tigecycline",
+  ];
 
   const cancelVal = (e) => {
     e.preventDefault();
@@ -204,13 +191,12 @@ function Dataentry() {
     setPatientId(patient.patientId);
     setPatientName(patient.patientName);
     setDoctorName(patient.doctorName);
-    
   };
 
   return (
     <>
       <Navbar />
-      
+
       <div className="bg-gray-50 font-roboto">
         <div className="space-y-12 mr-5 ml-5">
           <div className="border-b border-gray-900/10 pb-12">
@@ -334,8 +320,6 @@ function Dataentry() {
                   required
                 />
               </div>
-              
-              
             </div>
 
             {/* HeartRateSlider Component */}
@@ -371,8 +355,7 @@ function Dataentry() {
                 htmlFor="medication"
                 className="block font-semibold text-lg leading-6 text-gray-900"
               >
-                Medication{" "}
-                <Infobutton message="Select Medicines" />
+                Medication <Infobutton message="Select Medicines" />
               </label>
               <div className="mt-2 font-bold">
                 {/* <input
@@ -385,24 +368,25 @@ function Dataentry() {
                   onChange={(e) => setMedication(e.target.value)}
                   
                 /> */}
-                 <select
-          id="medication"
-          name="medication"
-          className="block flex-1 border-0 bg-transparent p-1.5 pl-1 pt-4 shadow-lg border-hidden rounded-md text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-          value={medication}
-          onChange={(e) => setMedication(e.target.value)}
-          required
-        >
-          <option value="" disabled>--Select Medication--</option>
-          {medicationsList.map((med, index) => (
-            <option key={index} value={med}>
-              {med}
-            </option>
-          ))}
-        </select>
+                <select
+                  id="medication"
+                  name="medication"
+                  className="block flex-1 border-0 bg-transparent p-1.5 pl-1 pt-4 shadow-lg border-hidden rounded-md text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  value={medication}
+                  onChange={(e) => setMedication(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    --Select Medication--
+                  </option>
+                  {medicationsList.map((med, index) => (
+                    <option key={index} value={med}>
+                      {med}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
@@ -430,23 +414,34 @@ function Dataentry() {
                   {/* <p className="mt-1 text-sm leading-6 text-gray-800">
                     {predictionTextAsthma}
                   </p> */}
-                  {predictionTextAsthma==0?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    Not yet predicted
-                  </p>):predictionTextAsthma<=0.3?(
-                    
-                     
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     No Asthama
-                  </p>):predictionTextAsthma>0.3 && predictionTextAsthma<0.5?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     Asthama Possibility
-                  </p>):predictionTextAsthma>=0.5 && predictionTextAsthma<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    High Asthama
-                  </p>):predictionTextAsthma>0.75 && predictionTextAsthma<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    Serious Asthama
-                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Asthama</p>
-                    
+                  {predictionTextAsthma == 0 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Not yet predicted
+                    </p>
+                  ) : predictionTextAsthma <= 0.3 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      No Asthama
+                    </p>
+                  ) : predictionTextAsthma > 0.3 &&
+                    predictionTextAsthma < 0.5 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Asthama Possibility
+                    </p>
+                  ) : predictionTextAsthma >= 0.5 &&
+                    predictionTextAsthma < 0.75 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      High Asthama
+                    </p>
+                  ) : predictionTextAsthma > 0.75 &&
+                    predictionTextAsthma < 0.95 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Serious Asthama
+                    </p>
+                  ) : (
+                    <p className="font-bold text-lg text-red-900">
+                      <br />
+                      Need Attention High Asthama
+                    </p>
                   )}
                 </div>
               </div>
@@ -472,22 +467,35 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Diarrhea Prediction
                   </h3>
-                  
-                   {predictionTextDiarrhea==0?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    Not yet predicted
-                  </p>):predictionTextDiarrhea<=0.3?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    No Diarrhea
-                  </p>):predictionTextDiarrhea>0.3 && predictionTextDiarrhea<0.5?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     Diarrhea
-                  </p>):predictionTextDiarrhea>=0.5 && predictionTextDiarrhea<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    High Diarrhea
-                  </p>):predictionTextDiarrhea>0.75 && predictionTextDiarrhea<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    Serious Diarrhea
-                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Diarrhea</p>
-                    
+
+                  {predictionTextDiarrhea == 0 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Not yet predicted
+                    </p>
+                  ) : predictionTextDiarrhea <= 0.3 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      No Diarrhea
+                    </p>
+                  ) : predictionTextDiarrhea > 0.3 &&
+                    predictionTextDiarrhea < 0.5 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Diarrhea
+                    </p>
+                  ) : predictionTextDiarrhea >= 0.5 &&
+                    predictionTextDiarrhea < 0.75 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      High Diarrhea
+                    </p>
+                  ) : predictionTextDiarrhea > 0.75 &&
+                    predictionTextDiarrhea < 0.95 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Serious Diarrhea
+                    </p>
+                  ) : (
+                    <p className="font-bold text-lg text-red-900">
+                      <br />
+                      Need Attention High Diarrhea
+                    </p>
                   )}
                 </div>
               </div>
@@ -513,23 +521,35 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Pneumonia Prediction
                   </h3>
-                  {predictionTextPneumonia==0?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                     Not yet predicted
-                  </p>):predictionTextPneumonia<=0.3?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    No Pneumonia
-                  </p>):predictionTextPneumonia>0.3 && predictionTextPneumonia<0.5?(
-                  <p className="mt-1 text-sm leading-6 text-gray-800">
-                    Pneuomonia
-                  </p>):predictionTextPneumonia>=0.5 && predictionTextPneumonia<0.75?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    High Pneuomonia
-                  </p>):predictionTextPneumonia>0.75 && predictionTextPneumonia<0.95?(<p className="mt-1 text-sm leading-6 text-gray-800">
-                    Serious Pneuomonia
-                    </p>):(<p className="font-bold text-red-900"><br/>Need Attention High Pneumonia</p>
-                    
+                  {predictionTextPneumonia == 0 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Not yet predicted
+                    </p>
+                  ) : predictionTextPneumonia <= 0.3 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      No Pneumonia
+                    </p>
+                  ) : predictionTextPneumonia > 0.3 &&
+                    predictionTextPneumonia < 0.5 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Pneuomonia
+                    </p>
+                  ) : predictionTextPneumonia >= 0.5 &&
+                    predictionTextPneumonia < 0.75 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      High Pneuomonia
+                    </p>
+                  ) : predictionTextPneumonia > 0.75 &&
+                    predictionTextPneumonia < 0.95 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Serious Pneuomonia
+                    </p>
+                  ) : (
+                    <p className="font-bold text-red-900">
+                      <br />
+                      Need Attention High Pneumonia
+                    </p>
                   )}
-                
                 </div>
               </div>
             </div>
@@ -554,21 +574,33 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Fever Prediction
                   </h3>
-                  {predictionTextFever==0?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     Not yet predicted
-                  </p>):predictionTextFever<=0.3?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     No Fever
-                  </p>):predictionTextFever>0.3 && predictionTextFever<0.5?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     fever
-                  </p>):predictionTextFever>=0.5 && predictionTextFever<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     High fever
-                  </p>):predictionTextFever>0.75 && predictionTextFever<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    Serious fever
-                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Fever</p>
-                    
+                  {predictionTextFever == 0 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Not yet predicted
+                    </p>
+                  ) : predictionTextFever <= 0.3 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      No Fever
+                    </p>
+                  ) : predictionTextFever > 0.3 && predictionTextFever < 0.5 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      fever
+                    </p>
+                  ) : predictionTextFever >= 0.5 &&
+                    predictionTextFever < 0.75 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      High fever
+                    </p>
+                  ) : predictionTextFever > 0.75 &&
+                    predictionTextFever < 0.95 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Serious fever
+                    </p>
+                  ) : (
+                    <p className="font-bold text-lg text-red-900">
+                      <br />
+                      Need Attention High Fever
+                    </p>
                   )}
                 </div>
               </div>
@@ -594,22 +626,33 @@ function Dataentry() {
                   <h3 className="text-base font-semibold leading-7 text-gray-900">
                     Cough Prediction
                   </h3>
-                  {predictionTextCough==0?(
-                    
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     Not yet predicted
-                  </p>):predictionTextCough<=0.3?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    No Cough
-                  </p>):predictionTextCough>0.3 && predictionTextCough<0.5?(
-                  <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    Cough
-                  </p>):predictionTextCough>=0.5 && predictionTextCough<0.75?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                     High Cough
-                  </p>):predictionTextCough>0.75 && predictionTextCough<0.95?(<p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                    Serious Cough
-                    </p>):(<p className="font-bold text-lg text-red-900"><br/>Need Attention High Cough</p>
-                    
+                  {predictionTextCough == 0 ? (
+                    <p className="mt-1 text-sm leading-6 text-gray-800">
+                      Not yet predicted
+                    </p>
+                  ) : predictionTextCough <= 0.3 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      No Cough
+                    </p>
+                  ) : predictionTextCough > 0.3 && predictionTextCough < 0.5 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Cough
+                    </p>
+                  ) : predictionTextCough >= 0.5 &&
+                    predictionTextCough < 0.75 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      High Cough
+                    </p>
+                  ) : predictionTextCough > 0.75 &&
+                    predictionTextCough < 0.95 ? (
+                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                      Serious Cough
+                    </p>
+                  ) : (
+                    <p className="font-bold text-lg text-red-900">
+                      <br />
+                      Need Attention High Cough
+                    </p>
                   )}
                 </div>
               </div>
@@ -636,11 +679,9 @@ function Dataentry() {
 
         <Footer />
         <ToastContainer />
-        
       </div>
     </>
   );
 }
 
 export default Dataentry;
-

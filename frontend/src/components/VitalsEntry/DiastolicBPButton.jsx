@@ -19,10 +19,9 @@ input[type='number'] {
 
 `;
 
-
 const DiastolicBPButton = (props) => {
   const [diastolicBP, setDiastolicBP] = useState(80); // Default to average normal diastolic BP
-  props.getdiastolicBP(diastolicBP)
+  props.getdiastolicBP(diastolicBP);
   // Function to handle slider change
   const handleSliderChange = (event) => {
     setDiastolicBP(event.target.value);
@@ -68,7 +67,8 @@ const DiastolicBPButton = (props) => {
       </div>
       <div className="mt-4 text-center">
         <span className="text-xl font-medium text-gray-900">
-          Selected Diastolic BP: <span className="text-indigo-600">{diastolicBP} mm Hg</span>
+          Selected Diastolic BP:{" "}
+          <span className="text-indigo-600">{diastolicBP} mm Hg</span>
         </span>
       </div>
     </div>
@@ -76,4 +76,3 @@ const DiastolicBPButton = (props) => {
 };
 
 export default DiastolicBPButton;
-
