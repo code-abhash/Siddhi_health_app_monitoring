@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=User
-        fields = ['id', 'username', 'email']
+        fields = ['id','username', 'email',]
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -18,7 +18,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['role']= user.role
         token['username']= user.username
         token['email']= user.email
-        # token['verified']= user.profile.verified
 
         return token
     
@@ -116,5 +115,9 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
 
     

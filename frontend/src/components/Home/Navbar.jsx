@@ -1,86 +1,74 @@
-
-
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faBell,
-  faEnvelope,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faBell, faEnvelope, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import img1 from "./img/logo.png";
 import img2 from "./img/img3.jpg";
 import "./Home.css";
 import AuthContext from "../../../Auth_contxt/Authcontext";
+import axios from "axios"; // Import axios for API calls
 
 const UserDetailsPopup = ({ user, onClose }) => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleChangePassword = () => {
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match.");
-      return;
+  const[profileImage, setProfileImage]= useState(null)
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/profiles/${user.username}/`);
+        setProfileImage(response.data.image);
+      } catch (error) {
+        console.error("Error fetching profile image:", error);
+        // Handle error fetching profile image
+      }
+    };
+
+    if (user) {
+      fetchProfileImage();
     }
-    // Add your password change logic here
-    console.log("Password changed successfully!");
-    onClose();
+  }, [user]);
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/login");
   };
 
+
   return (
-    <div className="absolute right-0 mt-2 w-80 p-4 bg-white border rounded-lg shadow-lg z-30">
+    <div className="absolute right-0 mt-2 w-80 p-4 bg-blue-50 border rounded-lg shadow-lg z-30">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">User Details</h2>
         <button onClick={onClose} className="text-gray-600 hover:text-gray-900">
           <FontAwesomeIcon icon={faXmark} className="h-6" />
         </button>
       </div>
+
       <div className="mb-4 text-center">
+        {/* Display user image */}
         <img
-          src={img2}
+          src={profileImage ? `http://127.0.0.1:8000${profileImage}` : img2} // Use profile image URL or default image
           alt="User"
           className="object-cover w-24 h-24 border border-transparent rounded-lg mx-auto"
         />
       </div>
       <div className="text-center mb-4">
-        <p className="text-lg font-semibold">{user.username}</p>
+      <Link
+                    to={`/profile/${user.username}`}
+                    className="text-black-500 hover:underline pl-4 font-medium"
+                  >
+                    {user.username}
+                  </Link>
         <p className="text-gray-600">{user.email}</p>
-        <p className="text-gray-600">
-          Patients under your Supervision: {user.patientsCount}
-        </p>
-      </div>
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">Change Password</h3>
-        <input
-          type="password"
-          placeholder="Current Password"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          className="w-full mb-2 p-2 border rounded"
-        />
-        <input
-          type="password"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full mb-2 p-2 border rounded"
-        />
-        <input
-          type="password"
-          placeholder="Confirm New Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className="w-full mb-4 p-2 border rounded"
-        />
         <button
-          onClick={handleChangePassword}
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-        >
-          Change Password
+                onClick={handleLogout}
+                className="font-medium m-3 p-3 hover:bg-yellow-300 block rounded-lg w-full align-middle"
+              >
+                Logout
         </button>
+        
+        
       </div>
+      
     </div>
   );
 };
@@ -91,6 +79,23 @@ const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const userRef = useRef(null);
+  const [profileImage, setProfileImage] = useState(null); // State to store profile image URL
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/profiles/${user.username}/`);
+        setProfileImage(response.data.image);
+      } catch (error) {
+        console.error("Error fetching profile image:", error);
+        // Handle error fetching profile image
+      }
+    };
+
+    if (user) {
+      fetchProfileImage();
+    }
+  }, [user]);
 
   const handleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -99,17 +104,6 @@ const Navbar = () => {
   const togglePopup = () => {
     setPopupOpen(!isPopupOpen);
   };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768 && isMenuOpen) {
-        setMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isMenuOpen]);
 
   const handleLogout = () => {
     logoutUser();
@@ -154,12 +148,6 @@ const Navbar = () => {
           >
             Patient Vitals
           </NavLink>
-          {/* <NavLink
-            to="/patientform"
-            className="pl-5 pr-5 font-bold hover:underline rounded"
-          >
-            Patient Details
-          </NavLink> */}
         </div>
         <div
           id="nav-menu"
@@ -184,12 +172,17 @@ const Navbar = () => {
                 className="hidden lg:flex gap-3 justify-between items-center"
               >
                 <img
-                  src={img2}
+                  src={profileImage ? `http://127.0.0.1:8000${profileImage}` : img2} // Use profile image or default image
                   alt="Doctor"
                   className="object-cover w-12 h-auto border border-transparent rounded-lg"
                 ></img>
                 <div>
-                  <span className="pl-4 font-medium ">{user.username}</span>
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className="text-black-500 hover:underline pl-4 font-medium"
+                  >
+                    {user.username}
+                  </Link>
                 </div>
               </button>
               {isPopupOpen && (
@@ -228,12 +221,17 @@ const Navbar = () => {
             {user && (
               <div className="flex items-center">
                 <img
-                  src={img2}
+                  src={`http://127.0.0.1:8000${profileImage}`||img2} // Use profile image or default image
                   alt="User"
                   className="object-cover w-10 h-10 border border-transparent rounded-lg"
                 />
                 <div className="pl-2">
-                  <p className="text-lg font-semibold">{user.username}</p>
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className="text-blue-500 hover:underline pl-4 font-medium"
+                  >
+                    {user.username}
+                  </Link>
                 </div>
               </div>
             )}
@@ -271,12 +269,6 @@ const Navbar = () => {
             >
               Patient Vitals
             </Link>
-            {/* <Link
-              to="/patientform"
-              className="font-medium m-3 p-3 hover:bg-yellow-300 block rounded-lg"
-            >
-              Patient Details
-            </Link> */}
             {user ? (
               <button
                 onClick={handleLogout}

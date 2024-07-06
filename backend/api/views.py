@@ -255,3 +255,28 @@ class PasswordResetConfirmView(APIView):
         user.save()
         return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
 
+
+
+# views.py
+from rest_framework import generics
+from .models import Profile
+from .serializers import ProfileSerializer
+from rest_framework.response import Response
+from rest_framework import status
+
+class ProfileDetail(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'username'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = self.queryset.get(username=kwargs['username'])
+            serializer = self.serializer_class(profile)
+            return Response(serializer.data)
+        except Profile.DoesNotExist:
+            return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class ProfileCreate(generics.CreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer

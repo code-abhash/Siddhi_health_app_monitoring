@@ -14,18 +14,17 @@ class User(AbstractUser):
     
 
     def __str__(self):
-        return self.role
+        return self.username
     
 
 class Profile(models.Model):
-    # user=models.OneToOneField(User, on_delete=models.CASCADE) 
-    role=models.CharField(max_length=100,default='doctor') 
-    verified=models.BooleanField(default=False)
-    Name=models.CharField( max_length=150)
+    username=models.CharField(max_length=100) 
     specialty = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    name=models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.Name
+        return self.username
     
 
     

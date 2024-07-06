@@ -23,6 +23,8 @@ urlpatterns = [
     path('patient_description/<str:patient_id>/', views.patient_description, name='patient_description_detail'),  # For GET and PUT
     path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('reset/<str:username>/<str:token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('profiles/<str:username>/', views.ProfileDetail.as_view(), name='profile-detail'),
+    path('profiles/', views.ProfileCreate.as_view(), name='profile-create'),
 
     
     path('', views.getRoutes),
