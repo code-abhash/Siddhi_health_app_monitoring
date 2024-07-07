@@ -8,8 +8,9 @@ const RespiratoryRateChart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
   const [filterType, setFilterType] = useState('day');
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+  const [analysisResult, setAnalysisResult] = useState('');
 
-  const chart = async () => {
+  const fetchRespiratoryRateData = async () => {
     try {
       let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
       if (filterType === 'day') {
@@ -29,17 +30,6 @@ const RespiratoryRateChart = ({ patientId }) => {
             appoint_times.push(dataObj.appointmentTime);
             respiratoryRates.push(parseInt(dataObj.respRate, 10));
           }
-          setChartData({
-            labels: appoint_times,
-            datasets: [
-              {
-                label: "Respiratory Rate of Patients (rpm)",
-                data: respiratoryRates,
-                backgroundColor: ["rgba(54, 162, 235, 0.6)"],
-                borderWidth: 4,
-              },
-            ],
-          });
         } else if (filterType === 'week') {
           const startOfWeek = moment().startOf('week');
           const endOfWeek = moment().endOf('week');
@@ -121,6 +111,11 @@ const RespiratoryRateChart = ({ patientId }) => {
             },
           ],
         });
+
+        // Send the data to Flask API for analysis
+        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', respiratoryRates);
+        setAnalysisResult(analysisRes.data.analysis_result);
+
       } else {
         console.error('Data is not an array:', data);
       }
@@ -130,7 +125,7 @@ const RespiratoryRateChart = ({ patientId }) => {
   };
 
   useEffect(() => {
-    chart();
+    fetchRespiratoryRateData();
   }, [patientId, filterType, selectedDate]);
 
   const handleFilterChange = (e) => {
@@ -164,6 +159,12 @@ const RespiratoryRateChart = ({ patientId }) => {
           <p>Loading...</p>
         )}
       </>
+      {analysisResult && (
+        <div>
+          <h2>Analysis Result</h2>
+          <pre>{analysisResult}</pre>
+        </div>
+      )}
     </div>
   );
 };
