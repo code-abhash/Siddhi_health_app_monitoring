@@ -509,7 +509,7 @@ function PatientDetailsTable() {
                     onChange={handleInputChange}
                     className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     placeholder="Enter Bed Number"
-                    required
+                    
                   />
                 </div>
               </div>

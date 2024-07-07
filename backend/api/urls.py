@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
 from api import views
 
-
+# These are url links for api endpoints to get , post or update patients information based 
 urlpatterns = [
     
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -15,7 +15,6 @@ urlpatterns = [
     path('patientsrecordlistview/', views.patient_records_list, name='patient_recordlistview'),
     path('patientslistcreate/', views.PatientlistCreate.as_view(), name='patients_list_view'),
     path('patientdrop/',views.PatientDropList.as_view(), name='patient-id-list'),
-    #path('patientrecords/', views.PatientRecordsListCreate.as_view(), name='patient_records_list_create'),
     path('patientinfo/<str:patient_id>/', views.get_patient_info, name='get_patient_info'),
     path('v1/patients/<str:patientId>/vitals', views.get_patient_vitals, name='patient-records-list'),
     path('patients/<str:patient_id>/', views.patient_detail, name='patient_detail'),

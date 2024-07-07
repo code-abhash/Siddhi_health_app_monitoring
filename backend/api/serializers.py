@@ -48,7 +48,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
+        self.send_welcome_email(user)
+
+
         return user
+    def send_welcome_email(self, user):
+        subject = 'Welcome to Patient Health Monitoring'
+        message = f'Dear {user.username},\n\nThank you for registering at Patient Health Monitoring . We are excited to have you with us.\n\nBest regards,\nPatient Health monitoring'
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [user.email]
+
+        send_mail(subject, message, from_email, recipient_list)
+
     
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,7 +114,8 @@ class PasswordResetSerializer(serializers.Serializer):
         full_url = f"http://localhost:5173/reset/{user.username}/{token}/"
         send_mail(
             'Password Reset Request',
-            f'Click the link to reset your password: {full_url}',
+            f'Dear {user.username},\n\n We recieved password request.'
+            f'Click the link to reset your password: {full_url}\n\n\n Thank you, \n for your regards',
             settings.DEFAULT_FROM_EMAIL,
             [user.email]
         )

@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import  get_object_or_404
 from api.models import Profile, User, Patient, PatientRecords, PatientDescription
-from api.serializers import UserSerializer, MyTokenObtainPairSerializer, RegisterSerializer, PatientSerializer, PatientRecordsSerializer, PatientDropSerializer, PatientDescriptionSerializer
+from api.serializers import  MyTokenObtainPairSerializer, RegisterSerializer, PatientSerializer, PatientRecordsSerializer, PatientDropSerializer, PatientDescriptionSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, status
@@ -9,31 +9,48 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from datetime import datetime, timedelta
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.tokens import default_token_generator
+from api.models import User  # Adjust import to your custom user model
+from .serializers import PasswordResetSerializer
+from rest_framework import generics
+from .models import Profile
+from .serializers import ProfileSerializer
+from rest_framework.response import Response
+from rest_framework import status
 import json
 
-
+# Custom token obtain pair view using MyTokenObtainPairSerializer
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+# Registration view using RegisterSerializer
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
     serializer_class = RegisterSerializer
 
+
+# API view to list users, with optional filtering by username
 @api_view(['GET'])
+# Extract 'username' parameter from query params if it exists
 def userList(request):
     username = request.query_params.get('username', None)
 
     if username is not None:
-        users = User.objects.filter(username=username)
+        users = User.objects.filter(username=username) # Filter users by username if provided
     else:
-        users = User.objects.all()
+        users = User.objects.all()# Otherwise, retrieve all users
 
     serializer = RegisterSerializer(users, many=True)
     return Response(serializer.data)
 
 
+# API view to list available API routes
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -44,7 +61,7 @@ def getRoutes(request):
     ]
     return Response(routes)
 
-
+# Dashboard view with GET and POST methods, requiring authentication to check api
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def dashboard(request):
@@ -59,24 +76,25 @@ def dashboard(request):
     return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Create view for patient list using PatientSerializer
 class PatientlistCreate(generics.CreateAPIView):
     queryset = Patient.objects.all()
     permission_classes = [AllowAny]
     serializer_class = PatientSerializer
 
-
+# API view to list all patients
 @api_view(['GET'])
 def patientslist(request):
     patients = Patient.objects.all()
     serializer = PatientSerializer(patients, many=True)
     return Response(serializer.data)
 
-
+# List view for patient dropdown using PatientDropSerializer
 class PatientDropList(generics.ListAPIView):
     queryset = Patient.objects.all()
     serializer_class = PatientDropSerializer
 
-
+# API view to create patient records
 @api_view(['POST'])
 def patient_records_create(request):
     serializer = PatientRecordsSerializer(data=request.data)
@@ -85,25 +103,23 @@ def patient_records_create(request):
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
 
-
+# API view to list all patient records
 @api_view(['GET'])
 def patient_records_list(request):
     patientrecords = PatientRecords.objects.all()
     serializer = PatientRecordsSerializer(patientrecords, many=True)
     return Response(serializer.data)
 
-
+# Function to get detailed patient info and their recent record
 def get_patient_info(request, patient_id):
-    patient = get_object_or_404(Patient, patientId=patient_id)
+    patient = get_object_or_404(Patient, patientId=patient_id)# Retrieve patient by patient_id, or return 404 if not found
     recent_record = PatientRecords.objects.filter(patientId=patient_id).order_by('-appointmentDate', '-appointmentTime').first()
 
     patient_data = {
         'patientId': patient.patientId,
         'patientName': patient.patientName,
         'doctorName': patient.doctorName,
-        
         'ward': patient.ward,
-        
         'pastMedHis': patient.pastMedHis,
         'patientAge': patient.patientAge,
         'patientHeight': patient.patientHeight,
@@ -134,7 +150,7 @@ def get_patient_info(request, patient_id):
 
     return JsonResponse(data)
 
-
+# API view to get patient vitals with filtering options (day, week, month)
 @api_view(['GET'])
 def get_patient_vitals(request, patientId):
     try:
@@ -165,7 +181,7 @@ def get_patient_vitals(request, patientId):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+# API view to retrieve, update, or delete patient details
 @api_view(['GET', 'PUT', 'DELETE'])
 def patient_detail(request, patient_id):
     try:
@@ -188,6 +204,8 @@ def patient_detail(request, patient_id):
         patient.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
+# API view to create, retrieve, or update patient description    
 @api_view(['POST','GET','PUT'])
 def patient_description(request, patient_id=None):
     if request.method == 'POST':
@@ -216,15 +234,7 @@ def patient_description(request, patient_id=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from django.contrib.auth.tokens import default_token_generator
-from api.models import User  # Adjust import to your custom user model
-from .serializers import PasswordResetSerializer
-
+# API view to handle password reset requests
 class PasswordResetView(APIView):
     permission_classes = [AllowAny]
 
@@ -235,6 +245,8 @@ class PasswordResetView(APIView):
             return Response({"message": "Password reset email sent."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# API view to handle password reset confirmation
 class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
 
@@ -258,12 +270,10 @@ class PasswordResetConfirmView(APIView):
 
 
 # views.py
-from rest_framework import generics
-from .models import Profile
-from .serializers import ProfileSerializer
-from rest_framework.response import Response
-from rest_framework import status
 
+
+
+# Generic view to retrieve and update profile details
 class ProfileDetail(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -277,6 +287,8 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
         except Profile.DoesNotExist:
             return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
 
+
+# Generic view to list profiles
 class ProfileCreate(generics.CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer

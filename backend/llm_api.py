@@ -39,7 +39,7 @@ def generate_analysis(dataframe):
                 anomalies.append(f"{column}: Unusual change from {values[i]} to {values[i+1]} (time instance {i+2})")
 
     # Generate the analysis text
-    analysis_text = f"Based on the provided dataframe, here is the analysis:\n\nTrends:**\n\n"
+    analysis_text = f"Based on the provided dataframe, here is the analysis:\n\nTrends:\n\n"
     analysis_text += "\n".join(trends)
     analysis_text += "\n\nAnomalies:\n\n"
     analysis_text += "\n".join(anomalies)

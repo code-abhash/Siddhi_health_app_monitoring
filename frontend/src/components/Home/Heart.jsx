@@ -112,7 +112,7 @@ const HeartChart = ({ patientId }) => {
         });
 
         // Send the data to Flask API for analysis
-        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', heartRates);
+        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', {heartRates});
         setAnalysisResult(analysisRes.data.analysis_result);
       } else {
         console.error('Data is not an array:', data);

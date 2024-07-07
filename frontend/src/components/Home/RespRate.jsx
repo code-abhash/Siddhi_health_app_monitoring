@@ -113,7 +113,7 @@ const RespiratoryRateChart = ({ patientId }) => {
         });
 
         // Send the data to Flask API for analysis
-        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', respiratoryRates);
+        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', {respiratoryRates});
         setAnalysisResult(analysisRes.data.analysis_result);
 
       } else {
