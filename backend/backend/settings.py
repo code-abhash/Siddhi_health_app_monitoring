@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from datetime import timedelta
 import os
 
-load_dotenv()
+load_dotenv() # Load environment variables from a .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,17 +45,17 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    'jazzmin', # Jazzmin theme for Django admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
-    'rest_framework',
-    'corsheaders',
-    'rest_framework_simplejwt.token_blacklist'
+    'api', # Custom app
+    'rest_framework',# Django REST framework
+    'corsheaders', # Handling Cross-Origin Resource Sharing
+    'rest_framework_simplejwt.token_blacklist'  # JWT token blacklist
 ]
 
 MIDDLEWARE = [
@@ -66,7 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # Middleware for handling CORS
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -185,16 +185,18 @@ SIMPLE_JWT = {
 
 # settings.py
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'abhashraj751@gmail.com'
-EMAIL_HOST_PASSWORD ='fdgc uapn fjry ltpt'
+# Email backend settings for sending emails using SMTP.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Specifies the backend to use for sending emails.
+EMAIL_HOST = 'smtp.gmail.com'  # The SMTP server to use for sending emails.
+EMAIL_USE_TLS = True  # Use TLS (Transport Layer Security) for secure email transmission.
+EMAIL_PORT = 587  # The port to use for the SMTP server.
+EMAIL_HOST_USER = 'abhashraj751@gmail.com'  # The email address to use for sending emails.
+EMAIL_HOST_PASSWORD = 'fdgc uapn fjry ltpt'  # The password for the email address.
 
+# Base directory of the Django project.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Media settings for handling uploaded media files.
+MEDIA_URL = '/media/'  # URL to access media files.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # File system path to store media files.

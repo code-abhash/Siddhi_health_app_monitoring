@@ -1,11 +1,8 @@
 #importing Abstract user to add extra fields
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.utils import timezone
 
-
+# Extending the AbstractUser to add additional fields.
 class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     email=models.EmailField(unique=True)
@@ -17,6 +14,7 @@ class User(AbstractUser):
         return self.username
     
 
+# Profile model to store additional user profile information.
 class Profile(models.Model):
     username=models.CharField(max_length=100) 
     specialty = models.CharField(max_length=100)
@@ -27,8 +25,7 @@ class Profile(models.Model):
         return self.username
     
 
-    
-
+# Patient model to store patient information.
 class Patient(models.Model):
     patientName = models.CharField(max_length=100)
     patientId = models.CharField(max_length=100, unique=True, primary_key=True)
@@ -43,7 +40,8 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.patientId
-    
+
+# Model to store patient records, linked to the Patient model.
 class PatientRecords(models.Model):
     patientId = models.ForeignKey(Patient,on_delete=models.CASCADE,related_name='records')
     appointmentDate = models.DateField()
@@ -59,9 +57,8 @@ class PatientRecords(models.Model):
     def __str__(self):
         return f"{self.patientId.patientId} - {self.appointmentDate} {self.appointmentTime}"
     
-
+# Model to store detailed patient description, linked to the Patient model.
 class PatientDescription(models.Model):
-    # patientId = models.CharField(max_length=100,unique=True)
     patientId = models.OneToOneField(Patient, on_delete=models.CASCADE, primary_key=True, related_name='description')
     description = models.TextField(default="No description available.")
     treatment = models.TextField(default="No treatment information available.")
