@@ -1,9 +1,19 @@
 # Patient Health Monitoring Frontend
 
+- Our Github Repo: https://github.com/varunbalaji167/Siddhi_health_app_monitoring.git or https://github.com/code-abhash/Siddhi_health_app_monitoring.git
+
 The frontend is developed using React, Vite, and Tailwind CSS. The system is designed to record patient vitals using a bedside tablet and provide real-time analysis.
 
 The Patient Health Monitoring system is a comprehensive solution designed to track and analyze patient vitals in real-time. This Readme file of the project focuses on the frontend application, which provides an intuitive user interface for healthcare professionals to monitor patient data and manage health records.
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Folder Structure](#folder-structure)
+- [Technologies Used](#technologies-used)
+- [Documentation of Techstakes used](#documentation-of-techstakes-used)
 
 ## Features
 
