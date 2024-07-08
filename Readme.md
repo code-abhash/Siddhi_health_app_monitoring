@@ -257,5 +257,6 @@ If you want to see the backend portion of the project, check out the [backend fo
 ### ML Model (Flask)
 
 	•	POST /predict: Predict using the ML model.
+ 	•	POST /api/v1/analysis : Analyze the trends and anomalies using LLM.
 
-- For more brief details please go through [Fackend Readme File](./backend/Readme.md) and [Frontend Readme File](./frontend/README.md)   
+- For more brief details please go through [Backend Readme File](./backend/Readme.md) and [Frontend Readme File](./frontend/README.md)   
