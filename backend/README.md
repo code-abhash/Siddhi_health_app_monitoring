@@ -43,7 +43,7 @@ This project is a Django-based backend application for managing patient informat
 - numpy
 - tensorflow
 - joblib
-
+-pytorch
 ## Installation
 
 
@@ -196,8 +196,12 @@ Step 5 : Runserver
 
 ### Flask Endpoints:
 
-      1. http://127.0.0.1:8001/api/v1/analysis
-      2. http://localhost:5000/predict
+      **1.Analysis Endpoint:** http://127.0.0.1:8001/api/v1/analysis
+        Method: POST
+        Discription: This endpoint accepts a JSON payload containing a dataframe of vitals and returns an analysis of the data, identifying trends and anomalies.
+      **2.Prediction Endpoint:** http://localhost:5000/predict
+        Method: POST
+        Discription: This endpoint accepts patient vitals data and returns predictions for various health conditions such as asthma, diarrhea, pneumonia, fever, and cough.
 
 
 ### Documentations or refrences: 
