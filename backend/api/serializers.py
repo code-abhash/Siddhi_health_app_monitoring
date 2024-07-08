@@ -48,18 +48,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        self.send_welcome_email(user)
-
-
         return user
-     # Method to send a welcome email to the newly registered user.
-    def send_welcome_email(self, user):
-        subject = 'Welcome to Patient Health Monitoring'
-        message = f'Dear {user.username},\n\nThank you for registering at Patient Health Monitoring . We are excited to have you with us.\n\nBest regards,\nPatient Health monitoring'
-        from_email = settings.DEFAULT_FROM_EMAIL
-        recipient_list = [user.email]
-
-        send_mail(subject, message, from_email, recipient_list)
 
 # PatientSerializer is used to serialize all fields of the Patient model.    
 class PatientSerializer(serializers.ModelSerializer):
