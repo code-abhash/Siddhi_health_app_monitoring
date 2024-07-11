@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import AxiosInstance from "../Axios/Axios";
 
 const Profilespec = () => {
   const { username } = useParams(); // Extracts username from URL parameters
@@ -19,8 +20,8 @@ const Profilespec = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/users/?username=${username}`
+        const response = await AxiosInstance.get(
+          `users/?username=${username}`
         );
         const data = response.data;
         if (data.length > 0) {
@@ -36,8 +37,8 @@ const Profilespec = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/profiles/${username}/`
+        const response = await AxiosInstance.get(
+          `profiles/${username}/`
         );
         if (response.data) {
           setProfile(response.data); // Sets profile data if found
@@ -88,8 +89,8 @@ const Profilespec = () => {
       let response;
       if (profile) {
         // If profile exists, update it using PUT request
-        response = await axios.put(
-          `http://127.0.0.1:8000/api/profiles/${username}/`,
+        response = await AxiosInstance.put(
+          `profiles/${username}/`,
           formData,
           {
             headers: {
@@ -99,8 +100,8 @@ const Profilespec = () => {
         );
       } else {
         // If profile doesn't exist, create it using POST request
-        response = await axios.post(
-          `http://127.0.0.1:8000/api/profiles/`,
+        response = await AxiosInstance.post(
+          `profiles/`,
           formData,
           {
             headers: {

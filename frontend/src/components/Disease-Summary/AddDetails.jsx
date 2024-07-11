@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AxiosInstance from '../Axios/Axios';
 
 const AddDetails = ({ patientId }) => {
   // Initial form data with default values
@@ -20,7 +21,7 @@ const AddDetails = ({ patientId }) => {
 
   // Fetch existing data if available
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/patient_description/${patientId}/`)
+    AxiosInstance.get(`patient_description/${patientId}/`)
       .then(response => {
         const { data } = response;
         if (data) {
@@ -54,7 +55,7 @@ const AddDetails = ({ patientId }) => {
     e.preventDefault();
     if (isEditing) {
       // Submit data to update existing record
-      axios.put(`http://127.0.0.1:8000/api/patient_description/${patientId}/`, formData)
+      AxiosInstance.put(`patient_description/${patientId}/`, formData)
         .then(response => {
           console.log("Data updated successfully:", response.data);
           setShowForm(false); // Close the form after saving
@@ -64,7 +65,7 @@ const AddDetails = ({ patientId }) => {
         });
     } else {
       // Submit data to create new record
-      axios.post(`http://127.0.0.1:8000/api/patient_description/`, formData)
+      AxiosInstance.post(`patient_description/`, formData)
         .then(response => {
           console.log("Data saved successfully:", response.data);
           setShowForm(false); // Close the form after saving

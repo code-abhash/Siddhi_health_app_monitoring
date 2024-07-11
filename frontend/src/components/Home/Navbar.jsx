@@ -7,6 +7,7 @@ import img2 from "./img/img3.jpg";
 import "./Home.css";
 import AuthContext from "../../../Auth_contxt/Authcontext";
 import axios from "axios"; // Import axios for API calls
+import AxiosInstance from "../Axios/Axios";
 
 // Component for displaying user details in a popup
 const UserDetailsPopup = ({ user, onClose }) => {
@@ -16,8 +17,8 @@ const UserDetailsPopup = ({ user, onClose }) => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/profiles/${user.username}/`
+        const response = await AxiosInstance.get(
+          `profiles/${user.username}/`
         );
         setProfileImage(response.data.image);
       } catch (error) {
@@ -89,8 +90,8 @@ const Navbar = () => {
   useEffect(() => {
     const fetchProfileImage = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/profiles/${user.username}/`
+        const response = await AxiosInstance.get(
+          `profiles/${user.username}/`
         );
         setProfileImage(response.data.image);
       } catch (error) {

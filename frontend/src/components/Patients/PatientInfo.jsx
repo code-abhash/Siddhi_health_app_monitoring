@@ -7,6 +7,7 @@ import {
   LifebuoyIcon,
   FingerPrintIcon,
 } from "@heroicons/react/24/outline";
+import AxiosInstance from "../Axios/Axios";
 
 const PatientInfo = ({ patientId }) => {
   // State to store patient data and the most recent record
@@ -16,8 +17,8 @@ const PatientInfo = ({ patientId }) => {
   useEffect(() => {
     // Fetch patient information when patientId changes
     if (patientId) {
-      axios
-        .get(`http://127.0.0.1:8000/api/patientinfo/${patientId}/`)
+      AxiosInstance
+        .get(`patientinfo/${patientId}/`)
         .then((response) => {
           // Update state with fetched data
           setPatientData(response.data.patientData);

@@ -15,6 +15,7 @@ import {
   FingerPrintIcon,
 } from "@heroicons/react/24/outline";
 import DetailsShow from "./DeatilsShow";
+import AxiosInstance from "../Axios/Axios";
 
 const Disease_summary = () => {
   const { patientId } = useParams(); // Extract patientId from URL parameters
@@ -24,8 +25,8 @@ const Disease_summary = () => {
   // Fetch patient details and recent record when patientId changes
   useEffect(() => {
     if (patientId) {
-      axios
-        .get(`http://127.0.0.1:8000/api/patientinfo/${patientId}/`)
+      AxiosInstance
+        .get(`patientinfo/${patientId}/`)
         .then((response) => {
           setPatientDetails(response.data.patientData); // Set patient details
           setRecentRecord(response.data.recentRecord || {}); // Set recent record or an empty object

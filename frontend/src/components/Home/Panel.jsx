@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AxiosInstance from "../Axios/Axios";
 
 const Panel = ({ onPatientSelect }) => {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ const Panel = ({ onPatientSelect }) => {
 
   // Fetch patients from API on component mount
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/patientdrop/")
+    AxiosInstance
+      .get(`patientdrop/`)
       .then((response) => {
         // Filter unique patients based on patientId
         const uniquePatients = filterUniquePatients(response.data);

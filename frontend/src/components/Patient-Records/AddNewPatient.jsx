@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AxiosInstance from "../Axios/Axios";
 
 function AddPatientForm() {
   // Initial form data state
@@ -45,33 +46,52 @@ function AddPatientForm() {
       bed: formData.bed === "" ? null : formData.bed,
     };
 
-    try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/patientslistcreate/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSubmit),
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       "http://127.0.0.1:8000/api/patientslistcreate/",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(dataToSubmit),
+  //       }
+  //     );
 
-      // Handle HTTP errors
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  //     // Handle HTTP errors
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
 
-      // Alert on successful data submission
-      alert("Data submitted successfully");
-      window.location.reload(); // Reload page to update patient list (consider better state management or redirection)
-      setFormData(initialFormData); // Reset form data after successful submission
-      setShowForm(false); // Close the popup form after submission
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      alert("Failed to submit data");
+  //     // Alert on successful data submission
+  //     alert("Data submitted successfully");
+  //     window.location.reload(); // Reload page to update patient list (consider better state management or redirection)
+  //     setFormData(initialFormData); // Reset form data after successful submission
+  //     setShowForm(false); // Close the popup form after submission
+  //   } catch (error) {
+  //     console.error("Error submitting data:", error);
+  //     alert("Failed to submit data");
+  //   }
+  // };
+  try {
+    const response = await AxiosInstance.post(`patientslistcreate/`, dataToSubmit);
+
+    // Handle HTTP errors
+    if (!response.status === 200) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+
+    // Alert on successful data submission
+    alert("Data submitted successfully");
+    window.location.reload(); // Reload page to update patient list (consider better state management or redirection)
+    setFormData(initialFormData); // Reset form data after successful submission
+    setShowForm(false); // Close the popup form after submission
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    alert("Failed to submit data");
+  }
+};
+
 
   // Handle form cancellation
   const handleCancel = () => {

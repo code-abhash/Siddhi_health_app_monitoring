@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDisease } from "@fortawesome/free-solid-svg-icons";
+import AxiosInstance from '../Axios/Axios';
 
 const Sidebar = ({patientId}) => {
   // State to store patient data and recent record
@@ -14,7 +15,7 @@ const Sidebar = ({patientId}) => {
   // Effect hook to fetch patient data and recent record when patientId changes
   useEffect(() => {
     if (patientId) {
-      axios.get(`http://127.0.0.1:8000/api/patientinfo/${patientId}/`)
+      AxiosInstance.get(`patientinfo/${patientId}/`)
         .then(response => {
           setPatientData(response.data.patientData); // Set patient data from API response
           setRecentRecord(response.data.recentRecord); // Set recent record from API response

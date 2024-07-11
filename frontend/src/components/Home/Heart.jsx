@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import axios from 'axios';
 import moment from 'moment';
+import AxiosInstance from '../Axios/Axios';
+import axios from 'axios';
+import AxiosLLM from '../Axios/Api_llm';
 
 const HeartChart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
@@ -12,12 +14,12 @@ const HeartChart = ({ patientId }) => {
 
   const fetchVitals = async () => {
     try {
-      let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
+      let url = `v1/patients/${patientId}/vitals?filter_type=${filterType}`;
       if (filterType === 'day') {
         url += `&date=${selectedDate}`;
       }
 
-      const res = await axios.get(url);
+      const res = await AxiosInstance.get(url);
       const data = res.data;
 
       if (Array.isArray(data)) {
@@ -112,7 +114,7 @@ const HeartChart = ({ patientId }) => {
         });
 
         // Send the data to Flask API for analysis
-        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', {heartRates});
+        const analysisRes = await AxiosLLM.post('v1/analysis', {heartRates});
         setAnalysisResult(analysisRes.data.analysis_result);
       } else {
         console.error('Data is not an array:', data);

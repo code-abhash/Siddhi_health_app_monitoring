@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import AxiosInstance from '../Axios/Axios';
 
 const PasswordResetConfirm = () => {
     // State to store the new password input value
@@ -26,7 +27,7 @@ const PasswordResetConfirm = () => {
 
         try {
             // Send POST request to API for password reset
-            const response = await axios.post(`http://127.0.0.1:8000/api/reset/${username}/${token}/`, { password });
+            const response = await AxiosInstance.post(`reset/${username}/${token}/`, { password });
             // Set success message if request is successful
             setMessage('Password has been reset successfully.');
             // Redirect to login page after successful reset

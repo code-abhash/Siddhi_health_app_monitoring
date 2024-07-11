@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import AxiosInstance from '../Axios/Axios';
 
 const PasswordResetRequest = () => {
     // State to store the username input value
@@ -12,7 +13,7 @@ const PasswordResetRequest = () => {
         e.preventDefault(); // Prevent default form submission
         try {
             // Send POST request to API for password reset
-            await axios.post('http://127.0.0.1:8000/api/password_reset/', { username });
+            await AxiosInstance.post('password_reset/', { username });
             // Set success message if request is successful
             setMessage('Password reset email sent.');
         } catch (error) {

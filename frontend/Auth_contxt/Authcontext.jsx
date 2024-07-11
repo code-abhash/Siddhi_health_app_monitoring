@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode"; // Import jwtDecode from jwt-decode libr
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import Swal from "sweetalert2"; // Import SweetAlert2 for notifications
 import axios from "axios"; // Import Axios for HTTP requests
+import AxiosInstance from "../src/components/Axios/Axios";
 
 const AuthContext = createContext(); // Create authentication context
 
@@ -25,55 +26,50 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate(); // Hook for navigation instead of useHistory
 
   // Function to login user
-  const loginUser = async (username, password) => {
+  const loginUser = async (username, password) => {  
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/token/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await AxiosInstance.post('token/', {
+        username,
+        password,
       });
-      const data = await response.json(); // Parse response data
-
-      if (response.status === 200) { // If login successful
+  
+      if (response.status === 200) {
+        const data = response.data; // Axios parses JSON automatically
         setAuthTokens(data); // Set authentication tokens
         setUser(jwtDecode(data.access)); // Decode JWT to get user details
-        localStorage.setItem("authTokens", JSON.stringify(data)); // Store auth tokens in localStorage
-        axios
-          .get(`http://127.0.0.1:8000/api/users/?username=${username}`)
-          .then((response) => {
-            // Handle successful response
-            console.log("User data:", response.data[0].role);
-            if (response.data[0].role === "nurse") {
-              navigate("/patientvitals"); // Redirect to patient vitals page for nurses
-            }
-          })
-          .catch((error) => {
-            // Handle errors
-            console.error("Error fetching user data:", error);
-          });
-        navigate("/home"); // Redirect to home page after login
-        Swal.fire({ // Show success notification
-          title: "Login Successful",
-          icon: "success",
+        localStorage.setItem('authTokens', JSON.stringify(data)); // Store auth tokens in localStorage
+  
+        const userResponse = await AxiosInstance.get(`users/?username=${username}`);
+        if (userResponse.status === 200) {
+          const userRole = userResponse.data[0].role;
+          console.log('User data:', userRole);
+          if (userRole === 'nurse') {
+            navigate('/patientvitals'); // Redirect to patient vitals page for nurses
+          } else {
+            navigate('/home'); // Redirect to home page for other roles
+          }
+        }
+  
+        Swal.fire({
+          title: 'Login Successful',
+          icon: 'success',
           toast: true,
           timer: 3000,
-          position: "top-right",
+          position: 'top-right',
           timerProgressBar: true,
           showConfirmButton: false,
         });
       } else {
-        throw new Error("Invalid credentials");
+        throw new Error('Invalid credentials');
       }
     } catch (error) {
-      console.error("Login error:", error);
-      Swal.fire({ // Show error notification for login failure
-        title: "Username or password is incorrect",
-        icon: "error",
+      console.error('Login error:', error);
+      Swal.fire({
+        title: 'Username or password is incorrect',
+        icon: 'error',
         toast: true,
         timer: 3000,
-        position: "top-right",
+        position: 'top-right',
         timerProgressBar: true,
         showConfirmButton: false,
       });
@@ -83,13 +79,17 @@ export const AuthProvider = ({ children }) => {
   // Function to register user
   const registerUser = async (email, username, role, password, password2) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, role, password, password2 }),
+      // const response = await AxiosInstance.post(`register/`, {
+      //    email, username, role, password, password2 ),
+      // });
+      const response = await AxiosInstance.post(`register/`, {
+        email,
+        username,
+        role,
+        password,
+        password2,
       });
+
 
       if (response.status === 201) { // If registration successful
         navigate("/login"); // Redirect to login page after successful registration

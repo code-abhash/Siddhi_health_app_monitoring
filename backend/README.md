@@ -193,11 +193,18 @@ Step 5 : Runserver
         Endpoint_PUT_GET: http://127.0.0.1:8000/api/patient_description/<str:patient_id>/
         Description: In patient_description we have made POST, PUT and GET here in POST we store description about patient disease and in PUT and GET we made a function to update and fetch all descriptions.
 
+**Flask Endpoints**
+
+*1.Analysis Endpoint:* http://127.0.0.1:8001/api/v1/analysis
+        Method: POST
+        Discription: This endpoint accepts a JSON payload containing a dataframe of vitals and returns an analysis of the data, identifying trends and anomalies.
+
+*2.Prediction Endpoint:* http://localhost:5000/predict
+        Method: POST
+        Discription: This endpoint accepts patient vitals data and returns predictions for various health conditions such as asthma, diarrhea, pneumonia, fever, and cough.
 
 ### Flask Endpoints:
 
-      1. http://127.0.0.1:8001/api/v1/analysis
-      2. http://localhost:5000/predict
 
 
 ### Documentations or refrences: 

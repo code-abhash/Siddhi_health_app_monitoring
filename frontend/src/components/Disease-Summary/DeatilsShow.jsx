@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import AxiosInstance from '../Axios/Axios';
 
 const DetailsShow = ({ patientId }) => {
   // State to store patient details
@@ -12,7 +13,7 @@ const DetailsShow = ({ patientId }) => {
 
   // Fetch patient details when component mounts or patientId changes
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/patient_description/${patientId}/`)
+    AxiosInstance.get(`patient_description/${patientId}/`)
       .then(response => {
         setPatientDetails(response.data); // Assuming the response is an object with properties for each type
       })

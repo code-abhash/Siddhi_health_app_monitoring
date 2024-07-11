@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)t78)i@sn$u8vhli9q9=fa87oj^fknng-!jfn#m$knoemnx1(1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'  # Example for DEBUG mode
 
 ALLOWED_HOSTS = ["*"]
 
@@ -144,6 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+
 CORS_ALLOW_ALL_CREDENTIALS = True
 
 
@@ -191,8 +192,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Specifies the b
 EMAIL_HOST = 'smtp.gmail.com'  # The SMTP server to use for sending emails.
 EMAIL_USE_TLS = True  # Use TLS (Transport Layer Security) for secure email transmission.
 EMAIL_PORT = 587  # The port to use for the SMTP server.
-EMAIL_HOST_USER = 'abhashraj751@gmail.com'  # The email address to use for sending emails.
-EMAIL_HOST_PASSWORD = 'fdgc uapn fjry ltpt'  # The password for the email address.
+# EMAIL_HOST_USER = 'abhashraj751@gmail.com'  # The email address to use for sending emails.
+# EMAIL_HOST_PASSWORD = 'fdgc uapn fjry ltpt'  # The password for the email address.
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
 
 # Base directory of the Django project.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

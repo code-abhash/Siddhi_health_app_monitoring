@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Infobutton from "../Infobutton/Infobutton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import AxiosInstance from "../Axios/Axios";
 
 function PatientDetailsTable() {
   // State variables for managing patient data, edit mode, and form data
@@ -33,29 +34,53 @@ function PatientDetailsTable() {
 
   // Function to fetch patients data from the API
   const fetchPatients = async () => {
+    // try {
+    //   const response = await fetch("http://127.0.0.1:8000/api/patientslist/");
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    //   }
+    //   const data = await response.json();
+    //   setPatients(data);
+    //   setFilteredPatients(data); // Initialize filtered patients with all patients
+    // } catch (error) {
+    //   console.error("Error fetching patient data:", error);
+    // }
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/patientslist/");
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setPatients(data);
-      setFilteredPatients(data); // Initialize filtered patients with all patients
+      const response = await AxiosInstance.get(`/patientslist/`);
+      setPatients(response.data);
+      setFilteredPatients(response.data); // Initialize filtered patients with all patients
     } catch (error) {
       console.error("Error fetching patient data:", error);
     }
   };
 
   // Function to handle deletion of a patient
+  // const handleDelete = async (patientId) => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://127.0.0.1:8000/api/patients/${patientId}/`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       // Update patients and filtered patients after deletion
+  //       setPatients((prevPatients) =>
+  //         prevPatients.filter((patient) => patient.patientId !== patientId)
+  //       );
+  //       setFilteredPatients((prevPatients) =>
+  //         prevPatients.filter((patient) => patient.patientId !== patientId)
+  //       );
+  //     } else {
+  //       throw new Error(`Failed to delete patient with ID: ${patientId}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting patient:", error);
+  //   }
   const handleDelete = async (patientId) => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/patients/${patientId}/`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (response.ok) {
+      const response = await AxiosInstance.delete(`/patients/${patientId}/`);
+      if (response.status === 204) {
         // Update patients and filtered patients after deletion
         setPatients((prevPatients) =>
           prevPatients.filter((patient) => patient.patientId !== patientId)
@@ -95,6 +120,35 @@ function PatientDetailsTable() {
   };
 
   // Function to handle form submission for updating patient details
+  // const handleFormSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const dataToSubmit = {
+  //     ...formData,
+  //     ward: formData.ward === "" ? null : formData.ward,
+  //     bed: formData.bed === "" ? null : formData.bed,
+  //   };
+  //   try {
+  //     const response = await fetch(
+  //       `http://127.0.0.1:8000/api/patients/${formData.patientId}/`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(dataToSubmit),
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       fetchPatients(); // Fetch updated patient list after successful update
+  //       alert("Patient details updated successfully");
+  //       setEditPatient(null); // Clear edit state
+  //     } else {
+  //       throw new Error("Failed to update patient details");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating patient:", error);
+  //   }
+  // };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const dataToSubmit = {
@@ -103,17 +157,11 @@ function PatientDetailsTable() {
       bed: formData.bed === "" ? null : formData.bed,
     };
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/patients/${formData.patientId}/`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSubmit),
-        }
+      const response = await AxiosInstance.put(
+        `/patients/${formData.patientId}/`,
+        dataToSubmit
       );
-      if (response.ok) {
+      if (response.status === 200) {
         fetchPatients(); // Fetch updated patient list after successful update
         alert("Patient details updated successfully");
         setEditPatient(null); // Clear edit state

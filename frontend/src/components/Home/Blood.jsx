@@ -3,6 +3,8 @@ import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import axios from 'axios';
 import moment from 'moment';
+import AxiosInstance from '../Axios/Axios';
+import AxiosLLM from '../Axios/Api_llm';
 
 const BloodPressureChart = ({ patientId }) => {
   const [chartData, setChartData] = useState({});
@@ -12,12 +14,12 @@ const BloodPressureChart = ({ patientId }) => {
 
   const fetchBloodPressureData = async () => {
     try {
-      let url = `http://127.0.0.1:8000/api/v1/patients/${patientId}/vitals?filter_type=${filterType}`;
+      let url = `v1/patients/${patientId}/vitals?filter_type=${filterType}`;
       if (filterType === 'day') {
         url += `&date=${selectedDate}`;
       }
 
-      const res = await axios.get(url);
+      const res = await AxiosInstance.get(url);
       console.log(res); // Log the full response
       const data = res.data;
 
@@ -141,7 +143,7 @@ const BloodPressureChart = ({ patientId }) => {
         });
 
         // data to Flask API 
-        const analysisRes = await axios.post('http://127.0.0.1:8001/api/v1/analysis', { systolicValues, diastolicValues });
+        const analysisRes = await AxiosLLM.post('v1/analysis', { systolicValues, diastolicValues });
         setAnalysisResult(analysisRes.data.analysis_result);
 
       } else {
