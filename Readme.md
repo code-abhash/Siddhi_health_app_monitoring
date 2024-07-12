@@ -258,4 +258,4 @@ If you want to see the backend portion of the project, check out the [backend fo
 
 	•	POST /predict: Predict using the ML model.
 
-- For more brief details please go through [Fackend Readme File](./backend/Readme.md) and [Frontend Readme File](./frontend/README.md)   
+- For more brief details please go through [Backend Readme File](./backend/README.md) and [Frontend Readme File](./frontend/README.md)   
