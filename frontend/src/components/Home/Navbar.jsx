@@ -36,6 +36,11 @@ const UserDetailsPopup = ({ user, onClose }) => {
     logoutUser();
     navigate("/login");
   };
+  const baseUrl =
+      import.meta.env.MODE === 'production'
+      ? import.meta.env.MODEVITE_API_BASE_URL_PROD_IMG
+      : import.meta.env.VITE_API_BASE_URL_LOCAL_IMG;
+
 
   return (
     <div className="absolute right-0 mt-2 w-96 p-6 bg-white border rounded-lg shadow-lg z-30">
@@ -51,7 +56,7 @@ const UserDetailsPopup = ({ user, onClose }) => {
 
       <div className="mb-6 text-center">
         <img
-          src={profileImage ? `http://127.0.0.1:8000${profileImage}` : img2}
+          src={profileImage ? `${baseUrl}${profileImage}` : img2}
           alt="User"
           className="object-cover w-32 h-32 border-4 border-gray-200 rounded-full mx-auto shadow-lg"
         />
@@ -121,6 +126,11 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const baseUrl =
+      import.meta.env.MODE === 'production'
+      ? import.meta.env.MODEVITE_API_BASE_URL_PROD_IMG
+      : import.meta.env.VITE_API_BASE_URL_LOCAL_IMG;
+
   return (
     <>
       <nav className="p-4 flex justify-between items-center bg-white shadow-md">
@@ -172,7 +182,7 @@ const Navbar = () => {
               <button onClick={togglePopup} className="flex items-center gap-3">
                 <img
                   src={
-                    profileImage ? `http://127.0.0.1:8000${profileImage}` : img2
+                    profileImage ? `${baseUrl}${profileImage}` : img2
                   } // Use profile image or default image
                   alt="Doctor"
                   className="object-cover w-12 h-12 border border-transparent rounded-full"
@@ -223,7 +233,7 @@ const Navbar = () => {
               <div className="flex items-center">
                 <img
                   src={
-                    profileImage ? `http://127.0.0.1:8000${profileImage}` : img2
+                    profileImage ? `${baseUrl}${profileImage}` : img2
                   } // Use profile image or default image
                   alt="User"
                   className="object-cover w-10 h-10 border border-transparent rounded-full"
