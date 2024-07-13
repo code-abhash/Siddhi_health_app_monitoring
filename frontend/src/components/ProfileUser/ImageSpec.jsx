@@ -139,6 +139,11 @@ const Profilespec = () => {
     return <div className="text-center mt-5">User not found</div>;
   }
 
+  const baseUrl =
+      import.meta.env.MODE === 'production'
+      ? import.meta.env.VITE_API_BASE_URL_PROD_IMG
+      : import.meta.env.VITE_API_BASE_URL_LOCAL_IMG;
+
   // Renders profile form and details
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg overflow-hidden">
@@ -147,7 +152,7 @@ const Profilespec = () => {
         <div className="flex justify-center mb-6">
           {currentImage ? (
             <img
-              src={`http://127.0.0.1:8000${currentImage}`}
+              src={`${baseUrl}${currentImage}`}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-white"
             />

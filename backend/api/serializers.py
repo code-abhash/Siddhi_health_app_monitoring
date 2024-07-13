@@ -106,7 +106,7 @@ class PasswordResetSerializer(serializers.Serializer):
     def send_password_reset_email(self, user):
         token = default_token_generator.make_token(user)
         
-        full_url = f"http://localhost:5173/reset/{user.username}/{token}/"
+        full_url = f"http://52.140.99.1/reset/{user.username}/{token}/"
         send_mail(
             'Password Reset Request',
             f'Dear {user.username},\n\n We recieved password request.'

@@ -34,17 +34,7 @@ function PatientDetailsTable() {
 
   // Function to fetch patients data from the API
   const fetchPatients = async () => {
-    // try {
-    //   const response = await fetch("http://127.0.0.1:8000/api/patientslist/");
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-    //   const data = await response.json();
-    //   setPatients(data);
-    //   setFilteredPatients(data); // Initialize filtered patients with all patients
-    // } catch (error) {
-    //   console.error("Error fetching patient data:", error);
-    // }
+    
     try {
       const response = await AxiosInstance.get(`/patientslist/`);
       setPatients(response.data);
@@ -54,29 +44,7 @@ function PatientDetailsTable() {
     }
   };
 
-  // Function to handle deletion of a patient
-  // const handleDelete = async (patientId) => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://127.0.0.1:8000/api/patients/${patientId}/`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       // Update patients and filtered patients after deletion
-  //       setPatients((prevPatients) =>
-  //         prevPatients.filter((patient) => patient.patientId !== patientId)
-  //       );
-  //       setFilteredPatients((prevPatients) =>
-  //         prevPatients.filter((patient) => patient.patientId !== patientId)
-  //       );
-  //     } else {
-  //       throw new Error(`Failed to delete patient with ID: ${patientId}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting patient:", error);
-  //   }
+  
   const handleDelete = async (patientId) => {
     try {
       const response = await AxiosInstance.delete(`/patients/${patientId}/`);
@@ -119,36 +87,7 @@ function PatientDetailsTable() {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  // Function to handle form submission for updating patient details
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const dataToSubmit = {
-  //     ...formData,
-  //     ward: formData.ward === "" ? null : formData.ward,
-  //     bed: formData.bed === "" ? null : formData.bed,
-  //   };
-  //   try {
-  //     const response = await fetch(
-  //       `http://127.0.0.1:8000/api/patients/${formData.patientId}/`,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(dataToSubmit),
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       fetchPatients(); // Fetch updated patient list after successful update
-  //       alert("Patient details updated successfully");
-  //       setEditPatient(null); // Clear edit state
-  //     } else {
-  //       throw new Error("Failed to update patient details");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating patient:", error);
-  //   }
-  // };
+  
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const dataToSubmit = {
@@ -258,17 +197,20 @@ function PatientDetailsTable() {
 
   // Function to handle search input change and filter patients
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    const searchValue = e.target.value.toLowerCase();
-    const filteredData = patients.filter(
-      (patient) =>
-        patient.patientId.includes(searchValue) ||
-        patient.patientName.toLowerCase().includes(searchValue) ||
-        patient.doctorName.toLowerCase().includes(searchValue) ||
-        patient.ward.toLowerCase().includes(searchValue) ||
-        patient.bed.toLowerCase().includes(searchValue)
+    const searchValue = e.target.value.toLowerCase(); // Convert search value to lowercase
+    setSearchTerm(searchValue); // Update search term state
+  
+    // Filter patients based on search term
+    const filteredData = patients.filter((patient) =>
+      Object.values(patient).some(
+        (value) =>
+          value &&
+          typeof value === "string" && // Check if value is a string
+          value.toLowerCase().includes(searchValue) // Convert value to lowercase and check if it includes search term
+      )
     );
-    setFilteredPatients(filteredData);
+  
+    setFilteredPatients(filteredData); // Update filtered patients state
   };
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg mt-0">
@@ -279,19 +221,21 @@ function PatientDetailsTable() {
             message={`This table displays the existing patient records. Clicking on a patient’s ID will redirect you to a detailed summary of their medical history and current diagnoses.`}
           />
         </h1>
-        <div className="flex justify-end mb-4 relative">
-          <input
-            type="text"
-            placeholder="Search Patients"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-10 sm:text-sm"
-          />
-          <FontAwesomeIcon
-            icon={faMagnifyingGlass}
-            className="absolute left-3 top-3 text-gray-400"
-          />
-        </div>
+        <div className="relative">
+  <input
+    type="text"
+    placeholder="Search Patients"
+    value={searchTerm}
+    onChange={handleSearchChange}
+    className="px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-10 sm:text-sm
+      sm:w-64 md:w-80 lg:w-96"
+    style={{ width: '100%' }} // Ensures full width on smaller screens
+  />
+  <FontAwesomeIcon
+    icon={faMagnifyingGlass}
+    className="absolute left-3 top-3 text-gray-400"
+  />
+</div>
       </div>
       <div className="overflow-x-auto">
         {patients.length > 0 ? (

@@ -38,9 +38,8 @@ const UserDetailsPopup = ({ user, onClose }) => {
   };
   const baseUrl =
       import.meta.env.MODE === 'production'
-      ? import.meta.env.MODEVITE_API_BASE_URL_PROD_IMG
+      ? import.meta.env.VITE_API_BASE_URL_PROD_IMG
       : import.meta.env.VITE_API_BASE_URL_LOCAL_IMG;
-
 
   return (
     <div className="absolute right-0 mt-2 w-96 p-6 bg-white border rounded-lg shadow-lg z-30">
@@ -128,7 +127,7 @@ const Navbar = () => {
 
   const baseUrl =
       import.meta.env.MODE === 'production'
-      ? import.meta.env.MODEVITE_API_BASE_URL_PROD_IMG
+      ? import.meta.env.VITE_API_BASE_URL_PROD_IMG
       : import.meta.env.VITE_API_BASE_URL_LOCAL_IMG;
 
   return (
