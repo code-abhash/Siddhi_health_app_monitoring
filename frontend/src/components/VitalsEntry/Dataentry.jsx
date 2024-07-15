@@ -78,49 +78,49 @@ function Dataentry() {
     }
   };
   const fetchPredictionData = () => {
-  const data = {
-    patientName,
-    patientId,
-    doctorName,
-    appointmentDate,
-    appointmentTime,
-    heartRate,
-    diastolicBP,
-    systolicBP,
-    bodyTemp,
-    spo2Value,
-    respRate,
+    const data = {
+      patientName,
+      patientId,
+      doctorName,
+      appointmentDate,
+      appointmentTime,
+      heartRate,
+      diastolicBP,
+      systolicBP,
+      bodyTemp,
+      spo2Value,
+      respRate,
+    };
+
+    api
+      .post("/predict", data)
+      .then((response) => {
+        const data = response.data;
+        setPredictionTextAsthma(data["Asthma likelihood"]);
+        setPredictionTextDiarrhea(data["Diarrhea likelihood"]);
+        setPredictionTextPneumonia(data["Pneumonia likelihood"]);
+        setPredictionTextFever(data["Fever likelihood"]);
+        setPredictionTextCough(data["Cough likelihood"]);
+        if (data["Asthma likelihood"] !== 0) {
+          showNotification("Asthma", data["Asthma likelihood"]);
+        }
+        if (data["Diarrhea likelihood"] !== 0) {
+          showNotification("Diarrhea", data["Diarrhea likelihood"]);
+        }
+        if (data["Pneumonia likelihood"] !== 0) {
+          showNotification("Pneumonia", data["Pneumonia likelihood"]);
+        }
+        if (data["Fever likelihood"] !== 0) {
+          showNotification("Fever", data["Fever likelihood"]);
+        }
+        if (data["Cough likelihood"] !== 0) {
+          showNotification("Cough", data["Cough likelihood"]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching prediction:", error);
+      });
   };
-
-  api.post('/predict', data)
-    .then((response) => {
-      const data = response.data;
-      setPredictionTextAsthma(data['Asthma likelihood']);
-      setPredictionTextDiarrhea(data['Diarrhea likelihood']);
-      setPredictionTextPneumonia(data['Pneumonia likelihood']);
-      setPredictionTextFever(data['Fever likelihood']);
-      setPredictionTextCough(data['Cough likelihood']);
-      if (data['Asthma likelihood'] !== 0) {
-        showNotification('Asthma', data['Asthma likelihood']);
-      }
-      if (data['Diarrhea likelihood'] !== 0) {
-        showNotification('Diarrhea', data['Diarrhea likelihood']);
-      }
-      if (data['Pneumonia likelihood'] !== 0) {
-        showNotification('Pneumonia', data['Pneumonia likelihood']);
-      }
-      if (data['Fever likelihood'] !== 0) {
-        showNotification('Fever', data['Fever likelihood']);
-      }
-      if (data['Cough likelihood'] !== 0) {
-        showNotification('Cough', data['Cough likelihood']);
-      }
-    })
-    .catch((error) => {
-      console.error('Error fetching prediction:', error);
-    });
-};
-
 
   const showNotification = (category, likelihood) => {
     const notificationMessage = getNotificationMessage(category, likelihood);
@@ -407,22 +407,22 @@ function Dataentry() {
                     {predictionTextAsthma}
                   </p> */}
                   {predictionTextAsthma == 0 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
                       Not yet predicted
                     </p>
                   ) : predictionTextAsthma < 0.5 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      No Asthma
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      No Asthma({predictionTextAsthma})
                     </p>
                   ) : predictionTextAsthma >= 0.5 &&
                     predictionTextAsthma < 0.75 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      Medium Asthma
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      Medium Asthma({predictionTextAsthma})
                     </p>
                   ) : (
-                    <p className="font-bold text-lg text-red-900">
+                    <p className="mt-1 text-lg text-red-700">
                       <br />
-                      Need Attention High Asthma
+                      Need Attention High Asthma({predictionTextAsthma})
                     </p>
                   )}
                 </div>
@@ -446,27 +446,27 @@ function Dataentry() {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  <h3 className="text-base font-bold leading-7 text-gray-900">
                     Diarrhea Prediction
                   </h3>
 
                   {predictionTextDiarrhea == 0 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
                       Not yet predicted
                     </p>
                   ) : predictionTextDiarrhea < 0.5 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      No Diarrhea
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      No Diarrhea({predictionTextDiarrhea})
                     </p>
-                  ): predictionTextDiarrhea >= 0.5 &&
+                  ) : predictionTextDiarrhea >= 0.5 &&
                     predictionTextDiarrhea < 0.75 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      Medium Diarrhea
+                    <p className="mt-1 text-lg leading-6 text-gray-800">
+                      Medium Diarrhea({predictionTextDiarrhea})
                     </p>
                   ) : (
-                    <p className="font-bold text-lg text-red-900">
+                    <p className="mt-1 text-lg text-red-700">
                       <br />
-                      Need Attention High Diarrhea
+                      Need Attention High Diarrhea({predictionTextDiarrhea})
                     </p>
                   )}
                 </div>
@@ -494,22 +494,22 @@ function Dataentry() {
                     Pneumonia Prediction
                   </h3>
                   {predictionTextPneumonia == 0 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    <p className="mt-1 text-lg leading-6 text-gray-800">
                       Not yet predicted
                     </p>
-                  ) : predictionTextPneumonia <0.5 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      No Pneumonia
+                  ) : predictionTextPneumonia < 0.5 ? (
+                    <p className="mt-1 text-lg leading-6 text-gray-800">
+                      No Pneumonia({predictionTextPneumonia})
                     </p>
                   ) : predictionTextPneumonia >= 0.5 &&
                     predictionTextPneumonia < 0.75 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      Medium Pneuomonia
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      Medium Pneuomonia({predictionTextPneumonia})
                     </p>
-                  ): (
-                    <p className="font-bold text-red-900">
+                  ) : (
+                    <p className="mt-1 text-lg text-red-700">
                       <br />
-                      Need Attention High Pneumonia
+                      Need Attention High Pneumonia({predictionTextPneumonia})
                     </p>
                   )}
                 </div>
@@ -533,26 +533,26 @@ function Dataentry() {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-base font-semibold leading-7 text-gray-900">
+                  <h3 className="text-base font-bold leading-7 text-gray-900">
                     Fever Prediction
                   </h3>
                   {predictionTextFever == 0 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
                       Not yet predicted
                     </p>
                   ) : predictionTextFever < 0.5 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      No Fever
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      No Fever({predictionTextFever})
                     </p>
                   ) : predictionTextFever >= 0.5 &&
                     predictionTextFever < 0.75 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      Medium fever
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      Medium fever({predictionTextFever})
                     </p>
                   ) : (
-                    <p className="font-bold text-lg text-red-900">
+                    <p className="mt-1 text-lg text-red-700">
                       <br />
-                      Need Attention High Fever
+                      Need Attention High Fever({predictionTextFever})
                     </p>
                   )}
                 </div>
@@ -580,22 +580,22 @@ function Dataentry() {
                     Cough Prediction
                   </h3>
                   {predictionTextCough == 0 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
+                    <p className="mt-1 text-lg leading-6 text-gray-800">
                       Not yet predicted
                     </p>
                   ) : predictionTextCough < 0.5 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      No Cough
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      No Cough({predictionTextCough})
                     </p>
                   ) : predictionTextCough >= 0.5 &&
                     predictionTextCough < 0.75 ? (
-                    <p className="mt-1 text-lg font-bold leading-6 text-gray-800">
-                      Medium Cough
+                    <p className="mt-1 text-lg  leading-6 text-gray-800">
+                      Medium Cough({predictionTextCough})
                     </p>
                   ) : (
-                    <p className="font-bold text-lg text-red-900">
+                    <p className="mt-1 text-lg text-red-800">
                       <br />
-                      Need Attention High Cough
+                      Need Attention High Cough({predictionTextCough})
                     </p>
                   )}
                 </div>
